@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration debug="true" packagingData="true" scan="false">
+
+	<property name="LOG_ROOT" value="/apps/log" />
+	<property name="LOG_FILE_NAME" value="kc.logic" />
+	
+	<appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${LOG_ROOT}/${LOG_FILE_NAME}.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+			<fileNamePattern>${LOG_ROOT}/${LOG_FILE_NAME}-%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
+			<!-- each archived file's size will be max 10MB -->
+			<maxFileSize>10MB</maxFileSize>
+			<!-- 30 days to keep -->
+			<maxHistory>3</maxHistory>
+			<!-- total size of all archive files, if total size > 100GB, it will delete  old archived file -->
+			<totalSizeCap>10GB</totalSizeCap>
+		</rollingPolicy>
+		<encoder>
+				<pattern>%d [%thread] %level [%c] %m%n</pattern>
+		</encoder>
+	</appender>
+	
+	<logger name="kc.logic" level="debug" additivity="false" >
+		<appender-ref ref="FILE" />
+	</logger>
+	
+	<logger name="kainos" level="error" additivity="false" >
+		<appender-ref ref="FILE" />
+	</logger>
+	
+	<logger name="org.springframework" level="error" additivity="false" >
+		<appender-ref ref="FILE" />
+	</logger>
+	
+	<root level="info">
+		<appender-ref ref="FILE" />
+	</root>
+
+
+</configuration>

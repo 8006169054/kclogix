@@ -1,0 +1,60 @@
+server:
+  port: 8081
+  
+spring:
+  profiles:
+    active: develop
+    
+  thymeleaf:
+    cache: false
+    check-template-location: true
+    enabled: true
+    prefix: classpath:/static/templates/
+    suffix: .html
+    view-names: html/*
+  messages:
+    basename: messages/view
+    
+kainos:
+  web:
+    cors:
+      credentials: true ## 필수 값 
+      responseheaders: Authorization ## 필수 값
+  datasource:
+    primary:
+      driver-class-name: org.postgresql.Driver
+      jdbcUrl: jdbc:postgresql://pgm-mj7096s66wlry3z7.pgsql.ap-northeast-2.rds.aliyuncs.com:5432/postgres
+      username: kclogix
+      password: kclogix0407!
+      maximumPoolSize: 50
+      minimumIdle: 10
+      autoCommit: false
+  response:
+    body:
+      format:
+        enabled: true
+  security:
+    enabled: true
+    sameSite: None
+    secure: true
+    httpOnly: true
+    url:
+      include: /api/*
+      exclude: /open/*,/view/*
+  session:
+    secretKey: aYEFtKMCn0xCg5caH1nnFuHfdAB0lBOvdonxq80VqOGNnG6QcyagXWOLrUdqJnzexUXYceMhGNFNYsA6rblSibUEh0yRsJ3XO1um1iMdoekOPzj4zKlokcu9TxTbz5DHYVLkqX3q9JrLgbLZFXD8ynOHfRHRL5Ge64iFZBVm9X517fwZrNornOmK2L7hUz10SgZpxAz6
+    accessExpireTime: 18000000 #5시간 Access Token
+    refreshExpireTime: 36000000 #10시간 Refresh Token
+    
+  message:
+    enabled: true
+    path: classpath:/messages/*.yml ## 파일 사용할 경우
+
+  microsoft:
+    graph:
+      url: https://graph.microsoft.com/v1.0/users/aa3020f2-aa62-4035-87d8-6983f94065b6/sendMail
+      id: dbcaac05-5b29-42f0-ba3a-2f29f41e9190
+      username: damien@kclogix.com
+      password: Kcmbp8888!
+      secret: Qix8Q~PK3gBd-.9n2vu9_ip-Hz5nNwJKddk~LcJZ
+      tenant: 11ca415f-abc6-4e73-8b2a-e16d6583a460

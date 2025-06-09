@@ -1,0 +1,51 @@
+server:
+  port: 8081
+  
+spring:
+  profiles:
+    active: local
+    
+  thymeleaf:
+    cache: false
+    check-template-location: true
+    enabled: true
+    prefix: classpath:/static/templates/
+    suffix: .html
+    view-names: html/*
+  messages:
+    basename: messages/view
+    
+kainos:
+  web:
+    cors:
+      credentials: true ## 필수 값 
+      responseheaders: Authorization ## 필수 값
+  datasource:
+    primary:
+      driver-class-name: org.postgresql.Driver
+      jdbcUrl: jdbc:postgresql://kclogic.rwlb.japan.rds.aliyuncs.com:5432/postgres
+      username: kclogic
+      password: qwer1234!
+      maximumPoolSize: 20
+      minimumIdle: 10
+      autoCommit: false
+  response:
+    body:
+      format:
+        enabled: true
+  security:
+    enabled: true
+    sameSite: None
+    secure: true
+    httpOnly: true
+    url:
+      include: /api/*
+      exclude: /open/*,/view/*
+  session:
+    secretKey: aYEFtKMCn0xCg5caH1nnFuHfdAB0lBOvdonxq80VqOGNnG6QcyagXWOLrUdqJnzexUXYceMhGNFNYsA6rblSibUEh0yRsJ3XO1um1iMdoekOPzj4zKlokcu9TxTbz5DHYVLkqX3q9JrLgbLZFXD8ynOHfRHRL5Ge64iFZBVm9X517fwZrNornOmK2L7hUz10SgZpxAz6
+    accessExpireTime: 18000000 #5시간 Access Token
+    refreshExpireTime: 36000000 #10시간 Refresh Token
+    
+  message:
+    enabled: true
+    path: classpath:/messages/*.yml ## 파일 사용할 경우
