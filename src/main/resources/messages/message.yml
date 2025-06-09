@@ -1,0 +1,19 @@
+common:
+    system.error:
+        message: 시스템 오류가 발생하였습니다. 담당자에게 문의해주세요.
+        type: E
+    login.fail:
+        message: 로그인에 실패했습니다. ID 또는 비밀번호를 확인하세요.
+        type: E
+    login.activation:
+        message: 해당 계정은 승인되지 않았습니다.
+        type: E     
+    data.insert:
+        message: 저장되었습니다.
+        type: S
+    data.update:
+        message: 변경되었습니다.
+        type: S
+    data.delete:
+        message: 삭제되었습니다.
+        type: S

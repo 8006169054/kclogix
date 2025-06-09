@@ -1,0 +1,43 @@
+common:
+    system.error:
+        message: 发生系统错误. 请联系您的管理员.
+        type: E
+    login.fail:
+        message: 登录失败. 请检查您的ID或密码.
+        type: E
+    login.activation:
+        message: 此帐户尚未获得批准.
+        type: E 
+    data.insert:
+        message: 已儲存.
+        type: S
+    data.update:
+        message: 它已经改变了.
+        type: S
+    data.delete:
+        message: 已被删除.
+        type: S
+basic:
+    consignee.insert.duplicated:
+        message: 存在同一收货人.
+        type: E
+    partner.insert.duplicated:
+        message: 存在相同的合作伙伴.
+        type: E    
+    shipping.insert.duplicated:
+        message: 存在相同的运输.
+        type: E
+    product.insert.duplicated:
+        message: 存在相同的产品.
+        type: E
+    port.insert.duplicated:
+        message: 存在相同的端口.
+        type: E
+    depot.insert.duplicated:
+        message: 存在相同的仓库.
+        type: E  
+        
+management:
+    website.insert.tankno.duplicated:
+        message: 有相同的坦克编号 ({0}).
+        type: E

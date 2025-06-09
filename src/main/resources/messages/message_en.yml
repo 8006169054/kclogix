@@ -1,0 +1,44 @@
+common:
+    system.error:
+        message: A system error has occurred. Please contact your administrator.
+        type: E
+    login.fail:
+        message: Login failed. Please check your ID or password.
+        type: E
+    login.activation:
+        message: This account has not been approved.
+        type: E  
+    data.insert:
+        message: It has Saved.
+        type: S
+    data.update:
+        message: It has changed.
+        type: S
+    data.delete:
+        message: It has been deleted.
+        type: S			
+basic:
+    consignee.insert.duplicated:
+        message: The same consignee exists.
+        type: E
+    partner.insert.duplicated:
+        message: The same partner exists.
+        type: E
+    shipping.insert.duplicated:
+        message: The same shipping exists.
+        type: E    
+    product.insert.duplicated:
+        message: The same product exists.
+        type: E
+    port.insert.duplicated:
+        message: The same port exists.
+        type: E
+    depot.insert.duplicated:
+        message: The same depot exists.
+        type: E  
+
+management:
+    website.insert.tankno.duplicated:
+        message: There is an identical tank number ({0}).
+        type: E
+        
