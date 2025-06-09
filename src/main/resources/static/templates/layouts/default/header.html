@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:fragment="HeaderFragment">
+<div class="navbar-bg"></div>
+<nav class="navbar navbar-expand-lg main-navbar">
+  <form class="form-inline mr-auto">
+    <ul class="navbar-nav mr-3">
+      <li><a href="#" data-toggle="sidebar" class="nav-link nav-link-lg"><i class="fas fa-bars"></i></a></li>
+      <li><a href="#" data-toggle="search" class="nav-link nav-link-lg d-sm-none"><i class="fas fa-search"></i></a></li>
+    </ul>
+  </form>
+  <ul class="navbar-nav navbar-right">
+		<li class="dropdown">
+			<a href="#" data-toggle="dropdown" class="nav-link dropdown-toggle nav-link-lg nav-link-user">
+				<div class="d-sm-none d-lg-inline-block" id="language"></div>
+			</a>
+			<script type="text/javascript">
+				var lang = getkainosLang();
+				if(lang === 'en') languageText = '<img class="img-fluid" src="/modules/flag-icon-css/flags/4x3/um.svg" style="width: 15px;"> English';
+				else languageText = '<img class="img-fluid" src="/modules/flag-icon-css/flags/4x3/cn.svg" style="width: 15px;"> China';
+				$("#language").text('').append(languageText);
+			</script>
+			<div class="dropdown-menu dropdown-menu-right">
+				<a href="#" class="dropdown-item has-icon text-danger"> 
+					<a class="dropdown-item has-icon" href="javascript:changeMultillanguage('en', true)">
+					<img class="img-fluid" src="/modules/flag-icon-css/flags/4x3/um.svg" style="width: 15px;"> English</a> 
+					<a class="dropdown-item has-icon" href="javascript:changeMultillanguage('zh', true)">
+					<img class="img-fluid" src="/modules/flag-icon-css/flags/4x3/cn.svg" style="width: 15px;"> China</a>
+				</a>
+			</div>
+		</li>
+
+<!-- 
+			  <li class="dropdown">
+	  	<div class="dropdown d-inline">
+        	<button class="btn dropdown-toggle" type="button" id="language" data-toggle="dropdown" aria-haspopup="true" ria-expanded="false">
+        	</button>
+        	<script type="text/javascript">
+				var lang = getkainosLang();
+				if(lang === 'en') languageText = '<img class="img-fluid" src="/modules/flag-icon-css/flags/4x3/um.svg" style="width: 15px;"> English';
+				else languageText = '<img class="img-fluid" src="/modules/flag-icon-css/flags/4x3/cn.svg" style="width: 15px;"> China';
+				$("#language").text('').append(languageText);
+			</script>
+         	<div class="dropdown-menu">
+           		<a class="dropdown-item has-icon" href="javascript:changeMultillanguage('en', true)"><img class="img-fluid" src="/modules/flag-icon-css/flags/4x3/um.svg" style="width: 15px;"> English</a>
+           		<a class="dropdown-item has-icon" href="javascript:changeMultillanguage('zh', true)"><img class="img-fluid" src="/modules/flag-icon-css/flags/4x3/cn.svg" style="width: 15px;"> China</a>
+         	</div>
+      	</div>
+	  </li>
+	   -->
+	  
+    <li class="dropdown"><a href="#" data-toggle="dropdown" class="nav-link dropdown-toggle nav-link-lg nav-link-user">
+      <div id="userName" class="d-sm-none d-lg-inline-block" style="padding-right: 2px;"></div></a>
+      <div class="dropdown-menu dropdown-menu-right">
+        <a href="javascript:logout()" class="dropdown-item has-icon text-danger">
+          <i class="fas fa-sign-out-alt"></i> Logout
+        </a>
+      </div>
+    </li>
+  </ul>
+</nav>
+
+<script type="text/javascript">
+	var kcUser = sessionStorage.getItem("KC-USER");
+// 	var kcUser = localStorage.getItem("KC-USER");
+	if(kcUser != null)
+		$("#userName").html(JSON.parse(kcUser).name);
+	
+	function changeMultillanguage(language, reload){
+		setkainosLang(language);
+	}
+	
+	const logout = async () => {
+		let response = await requestApi('GET', '/api/logout');
+		if(response.common.status === 'S'){
+			sessionStorage.clear();
+// 			window.localStorage.removeItem('kainos');
+// 			window.localStorage.removeItem('KC-USER');
+// 			window.localStorage.removeItem('kainos-lang');
+// 			$.removeCookie('kainos', { path: '/view' });
+			location.replace("/view/login/authlogin");
+		}
+	}
+
+</script>
+</html>

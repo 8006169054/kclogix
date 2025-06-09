@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<!-- Default Layout Import-->
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layouts/default/layout}" layout:fragment="Content">
+
+<!-- Page Specific JS File -->
+<!-- Main Content -->
+<script src="/templates/html/apps/system/user.js"></script>
+<div class="main-content">
+	<section class="section">
+		<div class="section-header">
+			<h1 th:text="#{common.maincontent.system.user.title}"></h1>
+			<div class="section-header-breadcrumb">
+<!-- 				<div class="breadcrumb-item active"> -->
+<!-- 					<a href="/" th:text="#{common.sidebar.hmoe.name}"></a> -->
+<!-- 				</div> -->
+<!-- 				<div class="breadcrumb-item" th:text="#{common.sidebar.system.name}"></div> -->
+<!-- 				<div class="breadcrumb-item" th:text="#{common.sidebar.system.user.name}"></div> -->
+			</div>
+		</div>
+		<div class="section-body">
+			<div class="row">
+				<div class="col-100">
+					<div class="card">
+						<div class="card-header text-right">
+							<button class="btn btn-primary" onclick="search()" th:text="#{common.button.label.search}"></button>
+						</div>
+						<div class="card-body">
+							<div class="form-group row">
+								<label class="col-form-label text-md-left col-md-5">name</label>
+								<div class="col-md-20">
+									<input type="text" id="name" name="name" class="form-control" onkeydown="if (event.key == 'Enter'){ search(); }">
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-100">
+					<div class="card">
+						<div class="card-header text-right">
+<!-- 							<button class="btn btn-info" onclick="passwordChange()">Password Reset</button> -->
+							<button class="btn btn-primary" id="add" onclick="add()" th:text="#{common.button.label.add}"></button>
+							<button class="btn btn-success" id="save" onclick="save()" th:text="#{common.button.label.save}"></button>
+						</div>
+						<div class="card-body p-0">
+							<div class="table-responsive" style="overflow: hidden;">
+								<table id="user-table"></table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+</div>
+
+</html>

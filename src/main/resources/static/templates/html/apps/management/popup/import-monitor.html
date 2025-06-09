@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<!--Thymeleaf, ConfigFragment 선언-->
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:fragment="ImportMonitorPopup">
+<div class="modal fade" tabindex="-1" role="dialog" id="importMonitorPopup">
+	<div class="modal-dialog" role="document" style="max-width: 60%;">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Import Monitor</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<div class="col-100">
+					<div class="card p-0">
+						<form id="importMonitorPopupForm" name="importMonitorPopupForm">
+							<input type="hidden" id="uuid" name="uuid">
+							<div id="formDiv" class="card-body needs-validation">
+								<div class="form-row">
+									<div class="form-group col-md-15">
+										<label for="name">HBL NO.</label>
+										<input type="text" class="form-control" id="hblNo" name="hblNo" required>
+										<div class="invalid-feedback">This is a required field.</div>
+									</div>
+									<div class="form-group col-md-30">
+										<label for="name">MBL NO.</label>
+										<input type="text" class="form-control" id="mblNo" name="mblNo" required>
+										<div class="invalid-feedback">This is a required field.</div>
+									</div>
+									<div class="form-group col-md-30">
+										<label for="name">Tank no.( , )</label>
+										<input type="text" class="form-control" id="tankNo" name="tankNo" required>
+										<div class="invalid-feedback">This is a required field.</div>
+									</div>
+									<div class="form-group col-md-10">
+										<label for="name">Q'ty</label>
+										<input type="text" class="form-control numberFormat" id="quantity" name="quantity">
+									</div>
+									<div class="form-group col-md-10">
+										<label for="name">Term</label>
+										<input type="text" class="form-control" id="term" name="term">
+									</div>
+								</div>
+								<div class="form-row">
+									<input type="hidden" class="form-control" id="concine" name="concine">
+									<div class="form-group col-md-30">
+										<label for="name">CNEE</label>
+										<input type="text" class="form-control" id="concineName" name="concineName">
+									</div>
+									<div class="form-group col-md-15">
+										<label for="name">PIC</label>
+										<input type="text" class="form-control" id="concinePic" name="concinePic" readonly="readonly">
+									</div>
+									<div class="form-group col-md-25">
+										<label for="name">Partner</label>
+										<input type="text" class="form-control" id="partner" name="partner">
+									</div>
+									<div class="form-group col-md-20">
+										<label for="name">PROFIT DATE</label>
+										<input type="text" class="form-control dateFormat" id="profitDate" name="profitDate">
+									</div>
+								</div>
+								<div class="form-row">
+									<div class="form-group col-md-34">
+										<label for="name">Item Name</label>
+										<input type="text" class="form-control" id="itemName" name="itemName">
+										<input type="hidden" class="form-control" id="cargo" name="cargo" readonly="readonly">
+									</div>
+									<div class="form-group col-md-10">
+										<label for="name">Item Date</label>
+										<input type="text" class="form-control" id="cargoDate" name="cargoDate" readonly="readonly">
+									</div>
+									<div class="form-group col-md-15">
+										<label for="name">Item Location</label>
+										<input type="text" class="form-control" id="cargoLocation" name="cargoLocation" readonly="readonly">
+									</div>
+									<div class="form-group col-md-20">
+										<label for="name">Vessel / Voyage</label>
+										<input type="text" class="form-control" id="vesselVoyage" name="vesselVoyage">
+									</div>
+									<div class="form-group col-md-14">
+										<label for="name">Carrier</label>
+										<input type="text" class="form-control" id="carrier" name="carrier">
+									</div>
+
+								</div>
+								<div class="form-row">
+									<div class="form-group col-md-10">
+										<label for="name">POL</label>
+										<input type="text" class="form-control" id="pol" name="pol">
+									</div>
+									<div class="form-group col-md-10">
+										<label for="name">POD</label>
+										<input type="text" class="form-control" id="pod" name="pod" readonly="readonly">
+									</div>
+									<div class="form-group col-md-47">
+										<label for="name">TERMINAL</label>
+										<input type="text" class="form-control" id="terminal" name="terminal">
+										<input type="hidden" class="form-control" id="terminalCode" name="terminalCode" readonly="readonly">
+										
+									</div>
+									<div class="form-group col-md-10">
+										<label for="name">ETD</label>
+										<input type="text" class="form-control dateFormat" id="etd" name="etd" >
+									</div>
+									<div class="form-group col-md-10">
+										<label for="name">ETA</label>
+										<input type="text" class="form-control dateFormat" id="eta" name="eta" >
+									</div>
+								</div>
+								<div class="form-row">
+									<div class="form-group col-md-10">
+										<label for="name">F/T</label>
+										<input type="text" class="form-control " id="ft" name="ft">
+									</div>
+									<div class="form-group col-md-10">
+										<label for="name">DEM RATE</label>
+										<input type="text" class="form-control" id="demRate" name="demRate">
+									</div>
+									<div class="form-group col-md-10">
+										<label for="name">END OF F/T</label>
+										<input type="text" class="form-control dateFormat" id="endOfFt" name="endOfFt">
+									</div>
+									<div class="form-group col-md-37">
+										<label for="name">비고</label>
+										<input type="text" class="form-control" id="remark" name="remark">
+									</div>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer bg-whitesmoke br">
+				<button type="button" class="btn btn-secondary" id="importMonitorPopupClose" data-dismiss="modal" th:text="#{common.button.label.close}"></button>
+<!-- 				<button type="button" class="btn btn-primary" onclick="paste()">Paste</button> -->
+				<button type="button" class="btn btn-success" onclick="importMonitorPopupSave()" th:text="#{common.button.label.save}"></button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+
+// var testData = {
+// 		hblNo : 'SPTK24120377',
+// 		mblNo : 'COAU7255812920\n→ COAU7256762720',
+// 		tankNo : 'MJU2503355',
+// 		quantity : '7TKS',
+// 		term : 'CY-CY',
+// 		concine : '원익큐브',
+// 		profitDate : '2025-02-07',
+// 		vesselVoyage : 'QIYUNHE / 470E',
+// 		carrier : 'COSCO',
+// 		pol : 'SHANGHAI',
+// 		etd : '2025-02-06',
+// 		eta : '2025-02-07',
+// 		ft : '14',
+// 		demRate : '35',
+// 		endOfFt : '',
+// 		remark : '비고'
+// 	}
+// 	;
+	
+$("#eta").on( "focusout", function() {
+  	if($(this).val() != '' && $('#ft').val() != ''){
+  		var etaDate = new Date($(this).val()).addDays(-1);
+  		$('#endOfFt').val(etaDate.addDays($('#ft').val()).toString("yyyy-MM-dd"));
+  	};
+});
+
+$("#ft").on( "focusout", function() {
+  	if($(this).val() != '' && $('#eta').val() != ''){
+  		var etaDate = new Date($('#eta').val()).addDays(-1);
+  		$('#endOfFt').val(etaDate.addDays($(this).val()).toString("yyyy-MM-dd"));
+  	};
+});
+
+async function partnerAutocompleteLoad(){
+	$("#partner").autocomplete({
+		source: partnerList,
+		delay: 100,
+		autoFocus: true,
+		minChars: 0,
+		minLength: 0,
+		open: function(){
+	        $(this).autocomplete('widget').css('z-index', 1100);
+	        return false;
+	    },
+	    select: function (event, ui) {
+	    },
+	    close : function (event, ui) {
+
+	        return false;
+	    }
+	}).focus(function() {
+	    $(this).autocomplete("search", $(this).val());
+	});
+}
+
+async function itemAutocompleteLoad(){
+	$("#itemName").autocomplete({
+		source: carGoList,
+		delay: 100,
+		autoFocus: true,
+		minChars: 0,
+		minLength: 0,
+		open: function(){
+	        $(this).autocomplete('widget').css('z-index', 1100);
+	        return false;
+	    },
+	    select: function (event, ui) {
+	    	$('#cargo').val(ui.item.code);
+	    	$('#cargoDate').val(ui.item.cargoDate);
+	    	$('#cargoLocation').val(ui.item.location);
+	    },
+	    close : function (event, ui) {
+	        return false;
+	    }
+	}).focus(function() {
+	    $(this).autocomplete("search", $(this).val());
+	});
+}
+
+async function terminalAutocompleteLoad(){
+	$("#terminal").autocomplete({
+		source: terminalList,
+		delay: 100,
+		autoFocus: true,
+		minChars: 0,
+		minLength: 0,
+		open: function(){
+	        $(this).autocomplete('widget').css('z-index', 1100);
+	        return false;
+	    },
+	    select: function (event, ui) {
+	    	$('#terminalCode').val(ui.item.code);
+	    	$('#pod').val(ui.item.region);
+	    },
+	    close : function (event, ui) {
+	        return false;
+	    }
+	}).focus(function() {
+	    $(this).autocomplete("search", $(this).val());
+	});
+}
+
+async function customerAutocompleteLoad(){
+	$("#concineName").autocomplete({
+		source: customerList,
+		delay: 100,
+		autoFocus: true,
+		minChars: 0,
+		minLength: 0,
+		open: function(){
+	        $(this).autocomplete('widget').css('z-index', 1100);
+	        return false;
+	    },
+	    select: function (event, ui) {
+	    	$('#concine').val(ui.item.code);
+	    	$('#concinePic').val(ui.item.pic);
+	    },
+	    close : function (event, ui) {
+	        return false;
+	    }
+	}).focus(function() {
+	    $(this).autocomplete("search", $(this).val());
+	});
+}
+
+
+$("#importMonitorPopup").on("show.bs.modal", function(e) {
+// 	dataBinding(testData);
+});
+  
+$("#importMonitorPopup").on("hide.bs.modal", function(e) {
+	clearFormValues($('#importMonitorPopupForm').serializeObject());
+  //	clearFormValues(consigneeData);
+  	$('#formDiv').removeClass('was-validated');
+});
+  
+/* 붙여넣기 */  
+function paste(){
+	var ids = ['sales','carryoverSales','arrivalNotice','invoice','concine','profitDate','domesticSales','foreignSales','quantity','partner','tankNo','term','item','vesselVoyage','carrier','mblNo','hblNo','pol','pod','terminal','etd','eta','ata','remark','ft','demRate','endOfFt','estimateReturnDate','returnDate','returnDepot','totalDem','demReceived','demRcvd','demPrch','demSales','depotInDate','repositionPrch'];
+	navigator.clipboard.readText().then(text => {
+        // use text as a variable, here text = 'clipboard text'
+		text = text.split("	");
+	 	for ( var i = 0 ; i < text.length ; i++ ) {
+	 		var data = text[i].replaceAll('US$','').replaceAll('$','').replaceAll('N/A','');
+	 		if(i == 6 || i == 7){
+	 			data = parseInt($.trim(data));
+	 		}
+	 		$('#' + ids[i]).val($.trim(data));
+		}
+    });
+}  
+
+async function importMonitorPopupSave(){
+	// 벨리데이션 체크 
+	if($('#hblNo').val() === '' || $('#tankNo').val() === ''){
+		$('#formDiv').addClass('was-validated');
+		return false;
+	}
+  	
+  	var response = await requestApi('POST', '/api/management/save-popup-port', $('#importMonitorPopupForm').serializeObject());
+  	if(response.common.status === 'S'){
+ 		$('#importMonitorPopupClose').click();
+ 	}
+}
+
+</script>
+</html>

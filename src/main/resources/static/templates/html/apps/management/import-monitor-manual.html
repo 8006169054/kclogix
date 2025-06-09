@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<!-- Default Layout Import-->
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layouts/default/layout}" layout:fragment="Content">
+
+<!-- Page Specific JS File -->
+<script src="/templates/html/apps/management/import-monitor-manual.js"></script>
+<!-- Main Content -->
+<div class="main-content">
+	<section class="section">
+		<div class="section-header">
+			<h1>Import Monitor(Manual)</h1>
+			<div class="section-header-breadcrumb">
+<!-- 				<div class="breadcrumb-item active"> -->
+<!-- 					<a href="/" th:text="#{common.sidebar.hmoe.name}"></a> -->
+<!-- 				</div> -->
+<!-- 				<div class="breadcrumb-item">Management</div> -->
+<!-- 				<div class="breadcrumb-item">Import Monitor(M)</div> -->
+			</div>
+		</div>
+		<div class="section-body">
+			<div class="row">
+				<div class="col-100">
+					<div class="card">
+						<div class="card-header text-right">
+							<button class="btn btn-primary" onclick="search()" th:text="#{common.button.label.search}"></button>
+						</div>
+						<div class="card-body">
+							<div class="form-group row">
+<!-- 								<label th:text="#{basic.port.label.name}" class="col-form-label text-md-left col-md-10"></label> -->
+								<label class="col-form-label text-md-left col-md-5">HBL NO.</label>
+								<div class="col-md-15">
+									<input type="text" id="shblNo" name="shblNo" class="form-control" onkeydown="if (event.key == 'Enter'){ search(); }">
+								</div>
+<!-- 								<label class="col-form-label text-md-left col-md-5">A/N Mail</label> -->
+<!-- 								<div class="col-md-12"> -->
+<!-- 									<select class="form-control selectric" id="sarrivalNotice" name="sarrivalNotice"> -->
+<!-- 										<option value="" selected>ALL</option> -->
+<!-- 				                        <option value="1">Sent Completed</option> -->
+<!-- 				                        <option value="0">Not Completed</option> -->
+<!-- 			                      	</select> -->
+<!-- 								</div> -->
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-100">
+					<div class="card">
+						<div class="card-header">
+						<div class="form-group row">
+							<div class="col-md-25">
+								<select class="form-control selectric" id="frozenCel" name="frozenCel" multiple="multiple" onchange="frozenCelHide(this)">
+									<option value=""></option>
+			                        <option value="sales">매출</option>
+			                        <option value="carryoverSales">이월매출</option>
+			                        <option value="arrivalNotice">A/N-EDI</option>
+			                        <option value="invoice">INVOICE</option>
+			                        <option value="concine">CNEE</option>
+			                        <option value="profitDate">PROFIT DATE</option>
+			                        <option value="domesticSales">국내매출</option>
+			                        <option value="foreignSales">해외매출</option>
+			                        <option value="quantity">Q'ty</option>
+		                      	</select>
+							</div>
+							<div class="col-md-74 text-right">
+							<button class="btn btn-primary" id="add" data-toggle="modal" data-target="#importMonitorPopup" >Add</button>
+							<button class="btn btn-success" onclick="save()" th:text="#{common.button.label.save}"></button>
+							</div>
+							</div>
+						</div>
+						<div class="card-body p-0">
+							<div class="table-responsive" style="overflow: hidden;">
+								<table id="port-table"></table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+</div>
+
+<!-- 팝업 사용방법 -->
+<!-- <th:block th:replace="html/apps/popup/terminal-popup :: Popup"></th:block> -->
+<!-- 팝업 사용방법 -->
+<th:block th:replace="html/apps/management/popup/import-monitor :: ImportMonitorPopup"></th:block>
+
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<!-- Default Layout Import-->
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layouts/default/layout}" layout:fragment="Content">
+
+<!-- Page Specific JS File -->
+<script src="/templates/html/apps/management/import-monitor-upload.js"></script>
+<!-- Main Content -->
+<div class="main-content">
+	<section class="section">
+		<div class="section-header">
+			<h1>Import Monitor(Upload)</h1>
+			<div class="section-header-breadcrumb">
+<!-- 				<div class="breadcrumb-item active"> -->
+<!-- 					<a href="/" th:text="#{common.sidebar.hmoe.name}"></a> -->
+<!-- 				</div> -->
+<!-- 				<div class="breadcrumb-item">Management</div> -->
+<!-- 				<div class="breadcrumb-item">Import Monitor(U)</div> -->
+			</div>
+		</div>
+		<div class="section-body">
+			<div class="row">
+				<div class="col-100">
+					<div class="card">
+						<div class="card-header">
+						<div class="form-group row">
+							<div class="col-md-100 text-right">
+							<input type="file" id="customFile" name="customFile" style="visibility:hidden; width: 10px;" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
+							<button class="btn btn-info" onclick="fileOpen()" th:text="#{common.button.label.upload}"></button>
+							<button class="btn btn-success" onclick="save()" th:text="#{common.button.label.save}"></button>
+							</div>
+							</div>
+						</div>
+						<div class="card-body p-0">
+							<div class="table-responsive" style="overflow: hidden;">
+								<table id="port-table"></table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+</div>
+
+</html>

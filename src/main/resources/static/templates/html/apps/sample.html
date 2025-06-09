@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<!-- Default Layout Import-->
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layouts/default/layout}" layout:fragment="Content">
+
+<!-- Page Specific JS File -->
+<!-- Main Content -->
+<div class="main-content">
+	<section class="section">
+		<div class="section-header">
+			<h1 th:text="#{common.maincontent.baseline.unit.title}"></h1>
+			<div class="section-header-breadcrumb">
+				<div class="breadcrumb-item active">
+					<a href="/" th:text="#{common.sidebar.hmoe.name}"></a>
+				</div>
+				<div class="breadcrumb-item" th:text="#{common.sidebar.baseline.name}"></div>
+				<div class="breadcrumb-item" th:text="#{common.sidebar.baseline.unit.name}"></div>
+			</div>
+		</div>
+		<div class="section-body">
+			<div class="row">
+				<div class="col-100">
+					<div class="card">
+						<div class="card-header text-right">
+							<button class="btn btn-primary" onclick="search()">Search</button>
+							<button class="btn btn-success">Save</button>
+							<button class="btn btn-success">OK</button>
+							<button class="btn btn-info">New</button>
+							<button class="btn btn-danger">Delete</button>
+							<button class="btn btn-light">Close</button>
+							<button class="btn btn-light">Cancel</button>
+							<button class="btn btn-secondary">Clear</button>
+						</div>
+						<div class="card-body">
+							<div class="form-group row">
+								<label th:text="#{basetemplate.label.dept}" class="col-form-label text-md-left col-md-5"></label>
+								<div class="col-md-10">
+									<select id="dept" class="form-control selectric"></select>
+								</div>
+								<label class="col-form-label text-md-left col-md-8">Vessel/Voyage</label>
+								<div class="input-group col-md-15">
+									<input type="text" class="form-control">
+									<div class="input-group-append">
+										<div class="input-group-text btn">
+											<i class="fas fa-search"></i>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-10">
+									<select class="form-control selectric">
+										<option>All</option>
+										<option>Option 2</option>
+										<option>Option 3</option>
+									</select>
+								</div>
+								<label class="col-form-label text-md-left col-md-8">Customer</label>
+								<div class="input-group col-md-15">
+									<input type="text" class="form-control">
+									<div class="input-group-append">
+										<div class="input-group-text btn">
+											<i class="fas fa-search"></i>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+</div>
+<script type="text/javascript">
+	$( document ).ready(function() {
+		ComSelectBox('/api/sample/selectbox', {id : 'dept', param : {}});
+	});
+</script>
+</html>
+

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:fragment="SidebarFragment">
+	<div class="main-sidebar sidebar-style-2">
+		<aside id="sidebar-wrapper">
+			<div class="sidebar-brand">
+				<a href="/">KC LOGIX</a>
+	    	</div>
+	    	<div class="sidebar-brand sidebar-brand-sm">
+	      		<a href="/">KC</a>
+	    	</div>
+	    	<ul class="sidebar-menu">
+<!-- 				<li id="A01"><a class="nav-link" href='javascript:locationHref("/view/home", "A,01")'><i class="fas fa-home"></i><span th:text="#{common.sidebar.hmoe.name}"></span></a></li> -->
+	        	<li id="B" class="nav-item dropdown">
+	        		<a  href="#" class="nav-link has-dropdown"><i class="fas fa-list"></i><span>Master Data</span></a>
+	        		<ul class="dropdown-menu">
+						<li id="B01"><a class="nav-link" href='javascript:locationHref("/view/master/partner", "B,01")'><span>Partner</span></a></li>
+						<li id="B02"><a class="nav-link" href='javascript:locationHref("/view/master/terminal", "B,02")'><span>Terminal</span></a></li>
+						<li id="B03"><a class="nav-link" href='javascript:locationHref("/view/master/cargo", "B,03")'><span>Cargo</span></a></li>
+						<li id="B04"><a class="nav-link" href='javascript:locationHref("/view/master/customer", "B,04")'><span>Customer</span></a></li>
+					</ul>
+				</li>
+<!-- 				<li id="B" class="nav-item dropdown"> -->
+<!-- 	        		<a  href="#" class="nav-link has-dropdown"><i class="fas fa-list"></i><span th:text="#{common.sidebar.baseline.name}"></span></a> -->
+<!-- 	        		<ul class="dropdown-menu"> -->
+<!-- 						<li id="B01"><a class="nav-link" href='javascript:locationHref("/view/baseline/unit", "B,01")'><span th:text="#{common.sidebar.baseline.unit.name}">단위</span></a></li> -->
+<!-- 						<li id="B02"><a class="nav-link" href='javascript:locationHref("/view/baseline/section", "B,02")'><span th:text="#{common.sidebar.baseline.section.name}">구간</span></a></li> -->
+<!-- 						<li id="B03"><a class="nav-link" href='javascript:locationHref("/view/baseline/cargotype", "B,03")'><span th:text="#{common.sidebar.baseline.cargotype.name}">화물종류</span></a></li> -->
+<!-- 					</ul> -->
+<!-- 				</li> -->
+				<li id="C" class="nav-item dropdown">
+	        		<a  href="#" class="nav-link has-dropdown"><i class="fas fa-folder"></i><span>Management</span></a>
+	        		<ul class="dropdown-menu">
+						<li id="C05"><a class="nav-link" href='javascript:locationHref("/view/management/import-monitor-upload", "C,05")'><span>Import Monitor(U)</span></a></li>
+<!-- 						<li id="C08"><a class="nav-link" href='javascript:locationHref("/view/management/import-monitor-manual", "C,08")'><span>Import Monitor(M)</span></a></li> -->
+						<li id="C09"><a class="nav-link" href='javascript:locationHref("/view/management/import-monitor-manual2", "C,09")'><span>ImportMonitor(M)</span></a></li>
+						<li id="C10"><a class="nav-link" href='javascript:locationHref("/view/management/arrival-notice", "C,10")'><span>Arrival Notice</span></a></li>
+					</ul>
+				</li>
+<!-- 				<li id="C" class="nav-item dropdown"> -->
+<!-- 	        		<a  href="#" class="nav-link has-dropdown"><i class="fas fa-folder"></i><span th:text="#{common.sidebar.basic.name}"></span></a> -->
+<!-- 	        		<ul class="dropdown-menu"> -->
+<!-- 						<li id="C01"><a class="nav-link" href='javascript:locationHref("/view/basic/consignee", "C,01")'><span th:text="#{common.sidebar.basic.consignee.name}"></span></a></li> -->
+<!-- 						<li id="C02"><a class="nav-link" href='javascript:locationHref("/view/mdm/partner", "C,02")'><span th:text="#{common.sidebar.basic.partner.name}"></span></a></li> -->
+<!-- 						<li id="C03"><a class="nav-link" href='javascript:locationHref("/view/basic/shipping", "C,03")'><span th:text="#{common.sidebar.basic.shipping.name}"></span></a></li> -->
+<!-- 						<li id="C04"><a class="nav-link" href='javascript:locationHref("/view/basic/product", "C,04")'><span th:text="#{common.sidebar.basic.product.name}"></span></a></li> -->
+<!-- 						<li id="C05"><a class="nav-link" href='javascript:locationHref("/view/basic/port", "C,05")'><span>Port(Upload)</span></a></li> -->
+<!-- 						<li id="C08"><a class="nav-link" href='javascript:locationHref("/view/basic/port-manual", "C,08")'><span>Port(Manual)</span></a></li> -->
+<!-- 						<li id="C10"><a class="nav-link" href='javascript:locationHref("/view/basic/port-an", "C,10")'><span>A/N e-Mail</span></a></li> -->
+<!-- 						<li id="C09"><a class="nav-link" href='javascript:locationHref("/view/basic/port-read", "C,09")'><span>Port(Read)</span></a></li> -->
+<!-- 						<li id="C06"><a class="nav-link" href='javascript:locationHref("/view/basic/depot", "C,06")'><span th:text="#{common.sidebar.basic.depot.name}"></span></a></li> -->
+<!-- 						<li id="C07"><a class="nav-link" href='javascript:locationHref("/view/mdm/terminal", "C,07")'><span th:text="#{common.sidebar.basic.terminal.name}"></span></a></li> -->
+<!-- 					</ul> -->
+<!-- 				</li> -->
+<!-- 				<li id="D" class="nav-item dropdown"> -->
+<!-- 	        		<a  href="#" class="nav-link has-dropdown"><i class="fas fa-file-alt"></i><span th:text="#{common.sidebar.management.name}"></span></a> -->
+<!-- 	        		<ul class="dropdown-menu"> -->
+<!-- 						<li id="D01"><a class="nav-link" href='javascript:locationHref("/view/management/inbound", "D,01")'><span th:text="#{common.sidebar.management.inbound.name}"></span></a></li> -->
+<!-- 					</ul> -->
+<!-- 				</li> -->
+<!-- 				<li id="E" class="nav-item dropdown"> -->
+<!-- 	        		<a  href="#" class="nav-link has-dropdown"><i class="fas fa-chart-area"></i><span th:text="#{common.sidebar.report.name}"></span></a> -->
+<!-- 	        		<ul class="dropdown-menu"> -->
+<!-- 						<li id="E01"><a class="nav-link" href='javascript:locationHref("/view/report/inbound", "E,01")'><span th:text="#{common.sidebar.report.inbound.name}"></span></a></li> -->
+<!-- 						<li id="E02"><a class="nav-link" href='javascript:locationHref("/view/report/inventory", "E,02")'><span th:text="#{common.sidebar.report.inventory.name}"></span></a></li> -->
+<!-- 					</ul> -->
+<!-- 				</li> -->
+				<li id="F" class="nav-item dropdown">
+	        		<a  href="#" class="nav-link has-dropdown"><i class="fas fa-th-large"></i><span th:text="#{common.sidebar.system.name}"></span></a>
+	        		<ul class="dropdown-menu">
+<!-- 						<li id="F01"><a class="nav-link" href='javascript:locationHref("/view/system/role", "F,01")'><span th:text="#{common.sidebar.system.role.name}"></span></a></li> -->
+<!-- 						<li id="F02"><a class="nav-link" href='javascript:locationHref("/view/system/authority", "F,02")'><span th:text="#{common.sidebar.system.authority.name}"></span></a></li> -->
+						<li id="F03"><a class="nav-link" href='javascript:locationHref("/view/system/user", "F,03")'><span th:text="#{common.sidebar.system.user.name}"></span></a></li>
+					</ul>
+				</li>
+				<li id="G" class="nav-item dropdown">
+	        		<a  href="#" class="nav-link has-dropdown"><i class="fas fa-file-alt"></i><span>History</span></a>
+	        		<ul class="dropdown-menu">
+						<li id="G01"><a class="nav-link" href='javascript:locationHref("/view/history/cargo", "G,01")'><span>Cargo</span></a></li>
+					</ul>
+				</li>
+	      	</ul>
+	  	</aside>
+	</div>
+	
+<script type="text/javascript">
+	let menuActive = sessionStorage.getItem("active");
+	if(menuActive != null && menuActive != undefined){
+		let menuInfo = menuActive.split(",");
+		if(menuInfo.length > 1){
+			$("#" + menuInfo[0]).addClass("active");
+			$("#" + menuInfo[0] + menuInfo[1]).addClass("active");
+		}
+	}else{
+		$("#A01").addClass("active");
+	}
+	function locationHref(url, active){
+		sessionStorage.setItem("active", active);
+		location.replace(url);
+	}
+</script>
+	
+</html>

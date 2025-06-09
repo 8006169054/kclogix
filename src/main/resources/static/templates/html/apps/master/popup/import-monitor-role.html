@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<!--Thymeleaf, ConfigFragment 선언-->
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:fragment="ImportMonitorRolePopup">
+<div class="modal fade" tabindex="-1" role="dialog" id="importMonitorRolePopup">
+	<div class="modal-dialog" role="document" style="max-width: 60%;">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Import Monitor Role</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<div class="col-100">
+					<div class="card p-0">
+						<form id="importMonitorRolePopupForm" name="importMonitorRolePopupForm">
+							<input type="hidden" id="uuid" name="uuid">
+							<div id="formDiv" class="card-body needs-validation">
+								<div class="form-row">
+									<div class="form-group col-md-98">
+										<select class="form-control selectric" id="roleSelect" name="roleSelect" multiple="multiple">
+											<option value=""></option>
+					                        <option value="quantity">Q'ty</option>
+					                        <option value="partner">Partner</option>
+											<option value="tankNo">Tank no.</option>
+											<option value="term">Term</option>
+											<option value="item">ITEM</option>
+											<option value="vesselVoyage">Vessel / Voyage</option>
+											<option value="carrier">Carrier</option>
+											<option value="mblNo">MBL NO.</option>
+											<option value="pol">POL</option>
+											<option value="pod">POD</option>
+											<option value="etd">ETD</option>
+											<option value="eta">ETA</option>
+											<option value="ft">F/T</option>
+											<option value="demRate">DEM RATE</option>
+											<option value="endOfFt">END OF F/T</option>
+											<option value="returnDate">RETURN DATE</option>
+											<option value="returnDepot">RETURN DEPOT</option>
+											<option value="totalDem">TOTAL DEM</option>
+											<option value="demPrch">COMMISSION DEM</option>
+											<option value="demSales">DEM COMMISSION</option>
+											<option value="depotInDate">DEPOT IN DATE(REPO ONLY)</option>
+											<option value="repositionPrch">REPOSITION 매입</option>
+				                      	</select>
+			                      	</div>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer bg-whitesmoke br">
+				<button type="button" class="btn btn-secondary" id="importMonitorPopupClose" data-dismiss="modal" th:text="#{common.button.label.close}"></button>
+				<button type="button" class="btn btn-success" onclick="importMonitorPopupSave()">Ok</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+
+var roleSelect = {
+	importMoniterCode : '',
+	iRow : ''
+};
+
+$("#importMonitorRolePopup").on("show.bs.modal", function(e) {
+	if(roleSelect.importMoniterCode !== ''){
+		if(roleSelect.importMoniterCode.indexOf(",") > 0){
+			var importMoniterCodes = roleSelect.importMoniterCode.split(",");
+			$('#roleSelect').val(importMoniterCodes).selectric('refresh');
+		}else{
+			$("#roleSelect").val(roleSelect.importMoniterCode).prop("selected", true);
+		}
+		$("#roleSelect").selectric('refresh');
+	}
+});
+
+$("#importMonitorRolePopup").on("hide.bs.modal", function(e) {
+	clearFormValues($('#importMonitorRolePopupForm').serializeObject());
+  	clearFormValues(roleSelect);
+	$('#roleSelect').val('').selectric('refresh');
+  	$("#roleSelect").selectric('refresh');
+  	$('#formDiv').removeClass('was-validated');
+});
+
+function importMonitorPopupSave(){
+	var code = '';
+	var text = '';
+	$("#roleSelect > option:selected").each(function(index) {
+		if(index > 0) {
+			code = code + ",";
+			text = text + ",";
+		}
+		code = code + this.value;
+		text = text + this.text;
+	});
+	
+	ComSetCellData(tableName, roleSelect.iRow, 'importMoniterRoleCode', code);
+	ComSetCellData(tableName, roleSelect.iRow, 'importMoniterRoleName', text);
+	$('#importMonitorPopupClose').click();
+}
+
+</script>
+</html>

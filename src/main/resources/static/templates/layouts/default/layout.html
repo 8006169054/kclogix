@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<!--공통 JS / CSS 영역을 관리하는 환경 영역-->
+<head th:replace="layouts/common/config :: ConfigFragment" />
+<body>
+	<div id ="loading" class="loading-mask" style="display: none;">
+        <img style="width: 100px" src="/assets/img/loading.svg" />
+    </div>
+	<div id="app">
+	    <div class="main-wrapper">
+			<!--Header 영역을 참조합니다.-->
+			<header th:replace="layouts/default/header :: HeaderFragment"></header>
+			<th:block th:replace="layouts/common/sidebar :: SidebarFragment"></th:block>
+			
+			<!--Content 내용 영역을 참조합니다-->
+			<th:block layout:fragment="Content"></th:block>
+			
+		</div>
+	</div>
+</body>
+
+<style scoped>
+.loading-mask {
+    top: 0;
+    left: 0;
+    position: fixed;
+    /* z-index: 9900; */
+    z-index: 1100;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+</style>
+
+<script type="text/javascript">
+$('input').attr('autocomplete','off');
+</script>
+
+</html>
