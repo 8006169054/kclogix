@@ -52,9 +52,9 @@ kainos:
 
   microsoft:
     graph:
-      url: https://graph.microsoft.com/v1.0/users/aa3020f2-aa62-4035-87d8-6983f94065b6/sendMail
+      url: https://graph.microsoft.com/v1.0/users/91173eac-225d-4aaa-ba35-28b100eb76e8/sendMail
       id: dbcaac05-5b29-42f0-ba3a-2f29f41e9190
-      username: damien@kclogix.com
-      password: Kcmbp8888!
+      username: noreply@kclogix.com
+      password: Kclogix8888!
       secret: Qix8Q~PK3gBd-.9n2vu9_ip-Hz5nNwJKddk~LcJZ
       tenant: 11ca415f-abc6-4e73-8b2a-e16d6583a460
