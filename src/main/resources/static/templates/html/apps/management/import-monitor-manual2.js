@@ -1,10 +1,16 @@
 var tableName = '#port-table';
+var gridHeight = 700;
 $( document ).ready(function() {
    	portTableInit();
    	  searchPartnerAutocomplete();
    	  searchCargoAutocomplete();
    	  searchTerminalAutocomplete();
    	  searchCustomerAutocomplete();
+});
+
+var cleaveD = new Cleave('.datemask', {
+  date: true,
+  datePattern: ['Y', 'm', 'd']
 });
 
 var partnerList = [];
@@ -154,7 +160,7 @@ function portTableInit(){
 	       	{ name: 'depotInDate', 			width: 180, 	align:'center', editable: true, edittype: "date"},
 	       	{ name: 'repositionPrch', 		width: 120, 	align:'center', editable: true}
 	   	],
-		height: 650,
+		height: gridHeight,
 		width: '100%',
 		dblEdit : true,
 		frozen: true,
@@ -291,4 +297,14 @@ function frozenCelHide(){
 	$(tableName).hideCol(frozenCelVal);
 	$(tableName).showCol(frozenCelNotVal);
 	$(tableName).refreshFrozen();
+}
+
+function collapse(){
+	if ($('#collapseExample').hasClass('collapse show')) {
+		setTimeout(function() {
+			$(tableName).jqGrid("setGridHeight", gridHeight + 120);
+		}, 50); 
+	} else {
+	   $(tableName).jqGrid("setGridHeight", gridHeight);
+	}
 }

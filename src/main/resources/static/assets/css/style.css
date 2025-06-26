@@ -3592,3 +3592,16 @@ body:not(.sidebar-mini) .sidebar-style-2 .sidebar-menu li.active ul.dropdown-men
   animation-iteration-count: infinite;
   opacity: 1;
 }
+
+
+/* Chrome, Safari, Edge */
+.no-spinner::-webkit-outer-spin-button,
+.no-spinner::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+.no-spinner {
+  -moz-appearance: textfield;
+}
