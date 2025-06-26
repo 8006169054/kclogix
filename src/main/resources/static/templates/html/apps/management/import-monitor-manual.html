@@ -4,8 +4,6 @@
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{layouts/default/layout}" layout:fragment="Content">
 
-<!-- Page Specific JS File -->
-<script src="/templates/html/apps/management/import-monitor-manual.js"></script>
 <!-- Main Content -->
 <div class="main-content">
 	<section class="section">
@@ -24,24 +22,68 @@
 				<div class="col-100">
 					<div class="card">
 						<div class="card-header text-right">
-							<button class="btn btn-primary" onclick="search()" th:text="#{common.button.label.search}"></button>
+						<a class="btn btn-light" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="true" aria-controls="collapseExample" onclick="collapse()">
+                        	Search Box
+                      	</a>
+						<button class="btn btn-primary" onclick="search()" th:text="#{common.button.label.search}"></button>
 						</div>
 						<div class="card-body">
-							<div class="form-group row">
-<!-- 								<label th:text="#{basic.port.label.name}" class="col-form-label text-md-left col-md-10"></label> -->
-								<label class="col-form-label text-md-left col-md-5">HBL NO.</label>
-								<div class="col-md-15">
-									<input type="text" id="shblNo" name="shblNo" class="form-control" onkeydown="if (event.key == 'Enter'){ search(); }">
+							<div class="collapse" id="collapseExample">
+								<div class="form-group row">
+									<label class="col-form-label text-md-left" style="width: 90px;">HBL NO.</label>
+									<div style="width: 120px; margin-right: 15px;">
+										<input type="text" id="shblNo" name="shblNo" value="" class="form-control">
+									</div>
+									<label class="col-form-label text-md-left" style="width: 90px;">MBL NO.</label>
+									<div style="width: 120px; margin-right: 15px;">
+										<input type="text" id="smblNo" name="smblNo" value="" class="form-control">
+									</div>
+									<label class="col-form-label text-md-left" style="width: 70px;">Tank no.</label>
+									<div style="width: 120px; margin-right: 15px;">
+										<input type="text" id="stankNo" name="stankNo" value="" class="form-control">
+									</div>
+									<label class="col-form-label text-md-left" style="width: 60px;">POL</label>
+									<div style="width: 80px; margin-right: 15px;">
+										<input type="text" id="spol" name="spol" value="" class="form-control">
+									</div>
+									<label class="col-form-label text-md-left" style="width: 60px;">POD</label>
+									<div style="width: 80px; margin-right: 15px;">
+										<input type="text" id="spod" name="spod" value="" class="form-control">
+									</div>
+									<label class="col-form-label text-md-left" style="width: 100px;">Return Depot</label>
+									<div style="width: 150px; margin-right: 15px;">
+										<input type="text" id="sreturnDate" name="sreturnDate" class="form-control">
+									</div>
+								</div>	
+								<div class="form-group row">
+									<label class="col-form-label text-md-left" style="width: 90px;">Return Data</label>
+									<div style="width: 120px; margin-right: 15px;">
+										<input type="text" id="sreturnDate" name="sreturnDate" class="form-control datemask" placeholder="YYYY/MM/DD" >
+									</div>
+									<label class="col-form-label text-md-left" style="width: 90px;">PROFIT DATE</label>
+									<div style="width: 120px; margin-right: 15px;">
+										<input type="number" id="sprofitDate" name="sprofitDate" class="form-control no-spinner" oninput="limitLength(this, 2)" placeholder="MM" >
+									</div>
+									<label class="col-form-label text-md-left" style="width: 70px;">ATA</label>
+									<div style="width: 120px; margin-right: 15px;">
+										<input type="text" id="sata" name="sata" class="form-control datemask" placeholder="YYYY/MM/DD" >
+									</div>
+									<label class="col-form-label text-md-left" style="width: 175px;">ESTIMATE RETURN DATE</label>
+									<div style="width: 120px; margin-right: 15px;">
+										<input type="text" id="serd" name="serd" class="form-control datemask" placeholder="YYYY/MM/DD" >
+									</div>
 								</div>
-<!-- 								<label class="col-form-label text-md-left col-md-5">A/N Mail</label> -->
-<!-- 								<div class="col-md-12"> -->
-<!-- 									<select class="form-control selectric" id="sarrivalNotice" name="sarrivalNotice"> -->
-<!-- 										<option value="" selected>ALL</option> -->
-<!-- 				                        <option value="1">Sent Completed</option> -->
-<!-- 				                        <option value="0">Not Completed</option> -->
-<!-- 			                      	</select> -->
-<!-- 								</div> -->
-							</div>
+								<div class="form-group row">
+									<label class="col-form-label text-md-left" style="width: 90px;">Partner</label>
+									<div style="width: 345px; margin-right: 15px;">
+										<input type="text" id="spartner" name="spartner" value="" class="form-control">
+									</div>
+									<label class="col-form-label text-md-left" style="width: 70px;">Item</label>
+									<div style="width: 430px; margin-right: 15px;">
+										<input type="text" id="sitem" name="sitem" value="" class="form-control">
+									</div>
+								</div>
+							 </div>
 						</div>
 					</div>
 				</div>
@@ -82,9 +124,8 @@
 		</div>
 	</section>
 </div>
-
-<!-- 팝업 사용방법 -->
-<!-- <th:block th:replace="html/apps/popup/terminal-popup :: Popup"></th:block> -->
+<!-- Page Specific JS File -->
+<script src="/templates/html/apps/management/import-monitor-manual.js"></script>
 <!-- 팝업 사용방법 -->
 <th:block th:replace="html/apps/management/popup/import-monitor :: ImportMonitorPopup"></th:block>
 

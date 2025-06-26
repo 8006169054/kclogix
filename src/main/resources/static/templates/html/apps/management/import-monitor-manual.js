@@ -1,15 +1,22 @@
 var tableName = '#port-table';
+var gridHeight = 700;
 $( document ).ready(function() {
    	portTableInit();
    	  searchPartnerAutocomplete();
    	  searchCargoAutocomplete();
    	  searchTerminalAutocomplete();
+   	  searchCustomerAutocomplete();
+});
+
+var cleaveD = new Cleave('.datemask', {
+  date: true,
+  datePattern: ['Y', 'm', 'd']
 });
 
 var partnerList = [];
 var carGoList = [];
 var terminalList = [];
-
+var customerList = [];
 /**
  * 조회
  */
@@ -23,22 +30,46 @@ async function search() {
 function portTableInit(){
 	$(tableName).jqGrid({
 	   	datatype: "json",
-	   	colNames: ['','cargo','uuid','Seq', '매출', '이월 매출', 'A/N&EDI', 'INVOICE', 'CNEE', 'PROFIT DATE', '국내매출', '해외매출', "Q'ty", 'Partner', 'Tank no.', 'Term', 'Name', 'Date', 'Location', 'Vessel / Voyage', 'Carrier', 'MBL NO.', 'HBL NO.', 'POL', 'POD', 'terminalCode', 'Name', 'Link', 'ETD', 'ETA', 'ATA', '비고', 'F/T', 'DEM RATE', 'END OF F/T', 'ESTIMATE RETURN DATE', 'RETURN DATE', 'RETURN DEPOT', 'TOTAL DEM', 'DEM RECEIVED', 'DEM RCVD', 'COMMISSION DEM', 'DEM COMMISSION', 'DEPOT IN DATE(REPO ONLY)', 'REPOSITION 매입'],
+	   	colNames: ['','cargo','concine code', 'seq', 'uuid', 'HBL NO.', 'Tank no.', '매출', '이월 매출', 'A/N&EDI', 'INVOICE', 'CNEE', 'PIC', 'PROFIT DATE', '국내매출', '해외매출', "Q'ty", 'Partner', 'Term', 'Name', 'Date', 'Location', 'Vessel / Voyage', 'Carrier', 'MBL NO.', 'POL', 'POD', 'terminalCode', 'Name', 'Link', 'ETD', 'ETA', 'ATA', '비고', 'F/T', 'DEM RATE', 'END OF F/T', 'ESTIMATE RETURN DATE', 'RETURN DATE', 'RETURN DEPOT', 'TOTAL DEM', 'DEM RECEIVED', 'DEM RCVD', 'COMMISSION DEM', 'DEM COMMISSION', 'DEPOT IN DATE(REPO ONLY)', 'REPOSITION 매입'],
 	   	colModel: [
 	   		{ name: 'jqFlag',				width: 40,		align:'center', 	hidden : false,	frozen:true},
 	   		{ name: 'cargo',				width: 100,		align:'center', 	rowspan: true,	editable : true, hidden : true,	frozen:true},
-	   		{ name: 'uuid', 				width: 50, 		align:'center',		hidden : true,	frozen:true},
+	   		{ name: 'concine', 				width: 70, 		align:'center',		rowspan: true,	editable : true, hidden : true,	frozen:true},
 	   		{ name: 'seq', 					width: 50, 		align:'center',		hidden : true,	frozen:true},
-	       	{ name: 'sales', 				width: 50, 		align:'center',		rowspan: true,	frozen:true, editable: true},
-	       	{ name: 'carryoverSales', 		width: 50, 		align:'center',		rowspan: true,	frozen:true, editable: true},
-	       	{ name: 'arrivalNotice',		width: 70, 		align:'center',		rowspan: true,	frozen:true},
-	       	{ name: 'invoice', 				width: 70, 		align:'center',		rowspan: true,	frozen:true},
-	    	{ name: 'concine', 				width: 150, 	align:'center',		rowspan: true,	frozen:true, editable: true},
-	    	{ name: 'profitDate', 			width: 90, 		align:'center',		rowspan: true,	frozen:true, editable: true, edittype: "date"},
-	    	{ name: 'domesticSales', 		width: 80, 		align:'center',		rowspan: true,	frozen:true, editable: true},
-	    	{ name: 'foreignSales', 		width: 80, 		align:'center',		rowspan: true,	frozen:true, editable: true},
-	    	{ name: 'quantity', 			width: 50, 		align:'center',		rowspan: true,	frozen:true, editable: true},
-	    	{ name: 'partner',				width: 100, 	align:'center', 	rowspan: false,  frozen:true, editable : true, editable : true, edittype: 'text', editoptions: {
+	   		{ name: 'uuid', 				width: 50, 		align:'center',		hidden : true,	frozen:true},
+	       	{ name: 'hblNo', 				width: 140, 	align:'center',		rowspan: true,	frozen:true},
+	       	{ name: 'tankNo', 				width: 120, 	align:'center', 	editable: true,	frozen:true},
+	       	{ name: 'sales', 				width: 50, 		align:'center',		rowspan: true,	editable: true},
+	       	{ name: 'carryoverSales', 		width: 50, 		align:'center',		rowspan: true,	editable: true},
+	       	{ name: 'arrivalNotice',		width: 70, 		align:'center',		rowspan: true},
+	       	{ name: 'invoice', 				width: 70, 		align:'center',		rowspan: true},
+	    	{ name: 'concineName',			width: 150, 	align:'center',		rowspan: true, editable: true, edittype: 'text', editoptions: {
+				dataInit:function(elem) {
+					$(elem).autocomplete({
+						source: customerList,
+						delay: 100,
+						autoFocus: true,
+						minChars: 0,
+						minLength: 0,
+				        select: function (event, ui) {
+							ComSetCellData(tableName, ComSelectIndex(tableName), 'concine', ui.item.code, true);
+							ComSetCellData(tableName, ComSelectIndex(tableName), 'concinePic', ui.item.pic, true);
+				        },
+				        close : function (event, ui) {
+				            $(tableName).delay(2000).focus();
+				            return false;
+				        }
+					}).focus(function() {
+			            $(this).autocomplete("search", $(this).val());
+			        });
+				}
+			}},
+			{ name: 'concinePic', 			width: 80, 		align:'center',		rowspan: true},
+	    	{ name: 'profitDate', 			width: 90, 		align:'center',		rowspan: true, editable: true, edittype: "date"},
+	    	{ name: 'domesticSales', 		width: 80, 		align:'center',		rowspan: true, editable: true},
+	    	{ name: 'foreignSales', 		width: 80, 		align:'center',		rowspan: true, editable: true},
+	    	{ name: 'quantity', 			width: 50, 		align:'center',		rowspan: true, editable: true},
+	    	{ name: 'partner',				width: 100, 	align:'center', 	rowspan: false, editable : true, editable : true, edittype: 'text', editoptions: {
 				dataInit:function(elem) {
 					$(elem).autocomplete({
 						source: partnerList,
@@ -57,7 +88,6 @@ function portTableInit(){
 			        });
 				}
 			}},
-	    	{ name: 'tankNo', 				width: 120, 	align:'center',		frozen:true, editable: true},
 	    	{ name: 'term', 				width: 80, 		align:'center',		rowspan: true, editable: true},
 	    	{ name: 'item',					width: 220, 	align:'center', 	rowspan: true, editable : true, edittype: 'text', editoptions: {
 				dataInit:function(elem) {
@@ -86,7 +116,6 @@ function portTableInit(){
 	    	{ name: 'vesselVoyage', 		width: 200, 	align:'center',		rowspan: true, editable: true},
 	    	{ name: 'carrier', 				width: 80, 		align:'center',		rowspan: true, editable: true},
 	    	{ name: 'mblNo', 				width: 140, 	align:'center',		rowspan: true, editable: true},
-	    	{ name: 'hblNo', 				width: 140, 	align:'center',		rowspan: true},
 	    	{ name: 'pol', 					width: 100, 	align:'center',		rowspan: true, editable: true},
 	    	{ name: 'pod', 					width: 100, 	align:'center'},
 	    	{ name: 'terminalCode', 		width: 100, 	align:'center', 	hidden : true,},
@@ -131,7 +160,7 @@ function portTableInit(){
 	       	{ name: 'depotInDate', 			width: 180, 	align:'center', editable: true, edittype: "date"},
 	       	{ name: 'repositionPrch', 		width: 120, 	align:'center', editable: true}
 	   	],
-		height: 530, 
+		height: gridHeight,
 		width: '100%',
 		dblEdit : true,
 		frozen: true,
@@ -144,23 +173,21 @@ function portTableInit(){
 					ComSetCellData(tableName, iRow, 'terminalCode', '', true);
 					ComSetCellData(tableName, iRow, 'pod', '', true);
 					ComSetCellData(tableName, iRow, 'terminalHomepage', '', true);
+				}else{
+					for (let terminal of terminalList) {
+						if(terminal.value === value){
+							changeVal = true;
+							return false;
+						}
+					}
 				}
-//				else{
-//					for (let terminal of terminalList) {
-//						if(terminal.value === value){
-//							if(!changeVal) $(tableName).jqGrid('dataRecovery', rowid, cellname);
-//							return false;
-//						}
-//					}
-//				}
 			}else if('partner' === cellname){
 				if(value != ''){
 					for (let partner of partnerList) {
-//						if(partner.value === value){
-//							console.log(partner.value, value);
-//							if(!changeVal) $(tableName).jqGrid('dataRecovery', rowid, cellname);
-//							return false;
-//						}
+						if(partner.value === value){
+							changeVal = true;
+							return false;
+						}
 					}
 				}
 			}else if('item' === cellname){
@@ -168,16 +195,29 @@ function portTableInit(){
 					ComSetCellData(tableName, iRow, 'cargo', '', true);
 					ComSetCellData(tableName, iRow, 'cargoDate', '', true);
 					ComSetCellData(tableName, iRow, 'location', '', true);
+				}else{
+					for (let carGo of carGoList) {
+						if(carGo.value === value){
+							changeVal = true;
+							return false;
+						}
+					}
 				}
-//				else{
-//					for (let carGo of carGoList) {
-//						if(carGo.value === value){
-//							if(!changeVal) $(tableName).jqGrid('dataRecovery', rowid, cellname);
-//							return false;
-//						}
-//					}
-//				}
+			}else if('concineName' === cellname){
+				if(value === ''){
+					ComSetCellData(tableName, iRow, 'concine', '', true);
+					ComSetCellData(tableName, iRow, 'concinePic', '', true);
+				}else{
+					for (let customer of customerList) {
+						if(customer.value === value){
+							changeVal = true;
+							return false;
+						}
+					}
+				}
 			}
+			
+			if(!changeVal) $(tableName).jqGrid('dataRecovery', rowid, cellname);
 		}
 	});
 	
@@ -185,7 +225,8 @@ function portTableInit(){
 				useColSpanStyle: true,
 				groupHeaders: [
                                 {startColumnName:'item', numberOfColumns: 3, titleText: 'Item' },
-                                {startColumnName:'pod', numberOfColumns: 4, titleText: 'Terminal' }
+                                {startColumnName:'pod', numberOfColumns: 4, titleText: 'Terminal' },
+                                {startColumnName:'concineName', numberOfColumns: 2, titleText: 'Customer' }
                                 
                               ]
 		});
@@ -214,6 +255,15 @@ async function searchTerminalAutocomplete(){
 		terminalAutocompleteLoad();
 	}
 }
+
+async function searchCustomerAutocomplete(){
+	var response = await requestApi('GET', '/api/mdm/customer/autocomplete');
+	if(response.common.status === 'S'){
+		customerList = response.data;
+		customerAutocompleteLoad();
+	}
+}
+
 
 function terminalFn (cellvalue, options, rowObject ){
 	if(emptyChange(rowObject.terminalHomepage) === '')
@@ -247,4 +297,14 @@ function frozenCelHide(){
 	$(tableName).hideCol(frozenCelVal);
 	$(tableName).showCol(frozenCelNotVal);
 	$(tableName).refreshFrozen();
+}
+
+function collapse(){
+	if ($('#collapseExample').hasClass('collapse show')) {
+		setTimeout(function() {
+			$(tableName).jqGrid("setGridHeight", gridHeight + 120);
+		}, 50); 
+	} else {
+	   $(tableName).jqGrid("setGridHeight", gridHeight);
+	}
 }
