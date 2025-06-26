@@ -8,13 +8,15 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import kainos.framework.core.KainosKey;
-import kainos.framework.core.lang.KainosBusinessException;
-import kainos.framework.utils.KainosDateUtil;
 import com.kclogix.apps.management.website.dto.WebsiteDto;
+import com.kclogix.apps.management.website.dto.WebsiteSearchDto;
 import com.kclogix.apps.management.website.repository.WebsiteRepository;
 import com.kclogix.common.dto.SessionDto;
 import com.kclogix.common.util.JqFlag;
+
+import kainos.framework.core.KainosKey;
+import kainos.framework.core.lang.KainosBusinessException;
+import kainos.framework.utils.KainosDateUtil;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -24,6 +26,17 @@ public class WebsiteService {
 	private final WebsiteRepository repository;
 //	private final CargoRepository cargrepository;
 	
+	
+	/**
+	 * 
+	 * @param paramDto
+	 * @return
+	 * @throws Exception
+	 */
+	@Transactional(readOnly = true)
+	public List<WebsiteDto> selectWebsiteTerminalCodeNew(WebsiteSearchDto paramDto) throws Exception {
+		return repository.selectWebsiteTerminalCodeNew(paramDto);
+	}
 	
 	/**
 	 * 

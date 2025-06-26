@@ -28,62 +28,99 @@
 						<button class="btn btn-primary" onclick="search()" th:text="#{common.button.label.search}"></button>
 						</div>
 						<div class="card-body">
+						<form id="searchFrom" name="searchFrom">
 							<div class="collapse" id="collapseExample">
 								<div class="form-group row">
-									<label class="col-form-label text-md-left" style="width: 90px;">HBL NO.</label>
+									<label class="col-form-label text-md-left" style="width: 90px;">Profit Date</label>
+									<div style="width: 220px; margin-right: 15px;">
+										<div class="input-group">
+											<div class="input-group-prepend">
+												<div class="input-group-text">
+													<i class="fas fa-calendar"></i>
+												</div>
+											</div>
+											<input type="text" id="sprofitDate" name="sprofitDate" class="form-control daterange-cus">
+										</div>
+									</div>
+									<label class="col-form-label text-md-left" style="width: 90px;">Partner</label>
+									<div style="width: 315px; margin-right: 15px;">
+										<input type="text" id="spartner" name="spartner" value="" class="form-control">
+									</div>
+									<label class="col-form-label text-md-left" style="width: 100px;">Tank no.</label>
 									<div style="width: 120px; margin-right: 15px;">
+										<input type="text" id="stankNo" name="stankNo" value="" class="form-control">
+									</div>
+									<label class="col-form-label text-md-left" style="width: 80px;">Item</label>
+									<div style="width: 430px; margin-right: 15px;">
+										<input type="text" id="sitem" name="sitem" value="" class="form-control">
+										<input type="hidden" id="scargo" name="scargo">
+									</div>
+								</div>
+								<div class="form-group row">
+									<label class="col-form-label text-md-left" style="width: 90px;">HBL NO.</label>
+									<div style="width: 220px; margin-right: 15px;">
 										<input type="text" id="shblNo" name="shblNo" value="" class="form-control">
 									</div>
 									<label class="col-form-label text-md-left" style="width: 90px;">MBL NO.</label>
 									<div style="width: 120px; margin-right: 15px;">
 										<input type="text" id="smblNo" name="smblNo" value="" class="form-control">
 									</div>
-									<label class="col-form-label text-md-left" style="width: 70px;">Tank no.</label>
-									<div style="width: 120px; margin-right: 15px;">
-										<input type="text" id="stankNo" name="stankNo" value="" class="form-control">
-									</div>
 									<label class="col-form-label text-md-left" style="width: 60px;">POL</label>
-									<div style="width: 80px; margin-right: 15px;">
+									<div style="width: 120px; margin-right: 15px;">
 										<input type="text" id="spol" name="spol" value="" class="form-control">
 									</div>
-									<label class="col-form-label text-md-left" style="width: 60px;">POD</label>
-									<div style="width: 80px; margin-right: 15px;">
+									<label class="col-form-label text-md-left" style="width: 100px;">POD</label>
+									<div style="width: 120px; margin-right: 15px;">
 										<input type="text" id="spod" name="spod" value="" class="form-control">
 									</div>
-									<label class="col-form-label text-md-left" style="width: 100px;">Return Depot</label>
-									<div style="width: 150px; margin-right: 15px;">
-										<input type="text" id="sreturnDate" name="sreturnDate" class="form-control">
+									<label class="col-form-label text-md-left" style="width: 80px;">ATA</label>
+									<div style="width: 220px; margin-right: 15px;">
+										<div class="input-group">
+											<div class="input-group-prepend">
+												<div class="input-group-text">
+													<i class="fas fa-calendar"></i>
+												</div>
+											</div>
+											<input type="text" id="sata" name="sata" class="form-control daterange-cus">
+										</div>
 									</div>
 								</div>	
 								<div class="form-group row">
-									<label class="col-form-label text-md-left" style="width: 90px;">Return Data</label>
+									<label class="col-form-label text-md-left" style="width: 90px;">ER DATE</label>
+									<div style="width: 220px; margin-right: 15px;">
+										<div class="input-group">
+											<div class="input-group-prepend">
+												<div class="input-group-text">
+													<i class="fas fa-calendar"></i>
+												</div>
+											</div>
+											<input type="text" id="serd" name="serd" class="form-control daterange-cus">
+										</div>
+									</div>
+									<label class="col-form-label text-md-left" style="width: 90px;">Return Date</label>
+									<div style="width: 315px; margin-right: 15px;">
+										<div class="input-group">
+											<div class="input-group-prepend">
+												<div class="input-group-text">
+													<i class="fas fa-calendar"></i>
+												</div>
+											</div>
+											<input type="text" id="sreturnDate" name="sreturnDate" class="form-control daterange-cus">
+										</div>
+									</div>
+									
+									<label class="col-form-label text-md-left" style="width: 100px;">Return Depot</label>
 									<div style="width: 120px; margin-right: 15px;">
-										<input type="text" id="sreturnDate" name="sreturnDate" class="form-control datemask" placeholder="YYYY/MM/DD" >
+										<input type="text" id="sreturnDepot" name="sreturnDepot" class="form-control">
 									</div>
-									<label class="col-form-label text-md-left" style="width: 90px;">PROFIT DATE</label>
+									
+									<label class="col-form-label text-md-left" style="width: 80px;">DEM RCVD</label>
 									<div style="width: 120px; margin-right: 15px;">
-										<input type="number" id="sprofitDate" name="sprofitDate" class="form-control no-spinner" oninput="limitLength(this, 2)" placeholder="MM" >
-									</div>
-									<label class="col-form-label text-md-left" style="width: 70px;">ATA</label>
-									<div style="width: 120px; margin-right: 15px;">
-										<input type="text" id="sata" name="sata" class="form-control datemask" placeholder="YYYY/MM/DD" >
-									</div>
-									<label class="col-form-label text-md-left" style="width: 175px;">ESTIMATE RETURN DATE</label>
-									<div style="width: 120px; margin-right: 15px;">
-										<input type="text" id="serd" name="serd" class="form-control datemask" placeholder="YYYY/MM/DD" >
-									</div>
-								</div>
-								<div class="form-group row">
-									<label class="col-form-label text-md-left" style="width: 90px;">Partner</label>
-									<div style="width: 345px; margin-right: 15px;">
-										<input type="text" id="spartner" name="spartner" value="" class="form-control">
-									</div>
-									<label class="col-form-label text-md-left" style="width: 70px;">Item</label>
-									<div style="width: 430px; margin-right: 15px;">
-										<input type="text" id="sitem" name="sitem" value="" class="form-control">
+										<input type="text" id="sdemRcvd" name="sdemRcvd" class="form-control">
 									</div>
 								</div>
 							 </div>
+							 </form>
 						</div>
 					</div>
 				</div>

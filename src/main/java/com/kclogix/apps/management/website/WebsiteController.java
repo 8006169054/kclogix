@@ -18,13 +18,9 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import kainos.framework.core.lang.KainosBusinessException;
-import kainos.framework.core.model.KainosMailDto;
-import kainos.framework.core.servlet.KainosResponseEntity;
-import kainos.framework.core.session.annotation.KainosSession;
-import kainos.framework.utils.KainosStringUtils;
 import com.kclogix.apps.management.website.dto.WebsiteDto;
 import com.kclogix.apps.management.website.dto.WebsiteExcelReadDto;
+import com.kclogix.apps.management.website.dto.WebsiteSearchDto;
 import com.kclogix.apps.management.website.service.WebsiteService;
 import com.kclogix.common.dto.SessionDto;
 import com.kclogix.common.util.JqFlag;
@@ -33,6 +29,12 @@ import com.kclogix.common.util.MessageUtil;
 import com.kclogix.common.util.excel.GridRowSpenHandler;
 import com.kclogix.common.util.excel.KainosExcelReadHandler;
 import com.kclogix.common.util.mail.MicrosoftGraph;
+
+import kainos.framework.core.lang.KainosBusinessException;
+import kainos.framework.core.model.KainosMailDto;
+import kainos.framework.core.servlet.KainosResponseEntity;
+import kainos.framework.core.session.annotation.KainosSession;
+import kainos.framework.utils.KainosStringUtils;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -47,10 +49,40 @@ public class WebsiteController {
 	
 	@GetMapping(value = "/api/management/website-terminal-code")
 	public ResponseEntity<WebsiteDto> selectWebsiteTerminalCode(
-			@RequestParam(required = false) String hblNo, 
-			@RequestParam(required = false) String arrivalNotice
+			@RequestParam(required = false) String sprofitDate, 
+			@RequestParam(required = false) String spartner, 
+			@RequestParam(required = false) String stankNo, 
+			@RequestParam(required = false) String sitem, 
+			@RequestParam(required = false) String scargo, 
+			@RequestParam(required = false) String shblNo, 
+			@RequestParam(required = false) String smblNo, 
+			@RequestParam(required = false) String spol, 
+			@RequestParam(required = false) String spod, 
+			@RequestParam(required = false) String sata, 
+			@RequestParam(required = false) String serd, 
+			@RequestParam(required = false) String sreturnDate, 
+			@RequestParam(required = false) String sreturnDepot, 
+			@RequestParam(required = false) String sdemRcvd
 		) throws Exception {
-		List<WebsiteDto> PortList = service.selectWebsiteTerminalCode(WebsiteDto.builder().hblNo(hblNo).arrivalNotice(arrivalNotice).build());
+		
+		WebsiteSearchDto paramDto = WebsiteSearchDto.builder()
+		.profitDate(sprofitDate)
+		.partner(spartner)
+		.tankNo(stankNo)
+		.item(sitem)
+		.cargo(scargo)
+		.hblNo(shblNo)
+		.mblNo(smblNo)
+		.pol(spol)
+		.pod(spod)
+		.ata(sata)
+		.erd(serd)
+		.returnDate(sreturnDate)
+		.returnDepot(sreturnDepot)
+		.demRcvd(sdemRcvd)
+		.build();
+		List<WebsiteDto> PortList = service.selectWebsiteTerminalCodeNew(paramDto);
+//		List<WebsiteDto> PortList = service.selectWebsiteTerminalCode(WebsiteDto.builder().hblNo(hblNo).arrivalNotice(arrivalNotice).build());
 		return KainosResponseEntity.builder().build()
 				.addData(handler.GenerationRowSpen(PortList, WebsiteDto.class))
 //				.addData(PortList)

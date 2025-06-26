@@ -8,10 +8,35 @@ $( document ).ready(function() {
    	  searchCustomerAutocomplete();
 });
 
-var cleaveD = new Cleave('.datemask', {
-  date: true,
-  datePattern: ['Y', 'm', 'd']
+$('#sreturnDate').daterangepicker({
+  locale: {format: 'YYYY-MM-DD'},
+  startDate: moment().subtract(30, 'days').format('YYYY-MM-DD'),
+  drops: 'down',
+  opens: 'right'
 });
+
+$('#sata').daterangepicker({
+  locale: {format: 'YYYY-MM-DD'},
+  autoUpdateInput: false,
+  drops: 'down',
+  opens: 'right'
+});
+
+$('#serd').daterangepicker({
+  locale: {format: 'YYYY-MM-DD'},
+  startDate: moment().subtract(30, 'days').format('YYYY-MM-DD'),
+  drops: 'down',
+  opens: 'right'
+});
+
+$('#sprofitDate').daterangepicker({
+startDate: moment().subtract(30, 'days').format('YYYY-MM'),
+  locale: {format: 'YYYY-MM'},
+  drops: 'down',
+  opens: 'right'
+});
+
+
 
 var partnerList = [];
 var carGoList = [];
@@ -22,7 +47,7 @@ var customerList = [];
  */
 async function search() {
 	$(tableName).clearGridData();
-	let response = await requestApi('GET', '/api/management/website-terminal-code', {hblNo : $('#shblNo').val(), arrivalNotice : $('#sarrivalNotice').val()});
+	let response = await requestApi('GET', '/api/management/website-terminal-code', $('#searchFrom').serializeObject());
 	$(tableName).searchData(response.data, {editor: true});
 	response = null;
 }
@@ -230,6 +255,7 @@ function portTableInit(){
                                 
                               ]
 		});
+		
 }
 
 async function searchPartnerAutocomplete(){
@@ -237,6 +263,27 @@ async function searchPartnerAutocomplete(){
 	if(response.common.status === 'S'){
 		partnerList = response.data;
 		partnerAutocompleteLoad();
+		
+	$("#spartner").autocomplete({
+		source: partnerList,
+		delay: 100,
+		autoFocus: true,
+		minChars: 0,
+		minLength: 0,
+		open: function(){
+	        $(this).autocomplete('widget').css('z-index', 1100);
+	        return false;
+	    },
+	    select: function (event, ui) {
+	    },
+	    close : function (event, ui) {
+
+	        return false;
+	    }
+	}).focus(function() {
+	    $(this).autocomplete("search", $(this).val());
+	});
+	
 	}
 }
 
@@ -245,6 +292,27 @@ async function searchCargoAutocomplete(){
 	if(response.common.status === 'S'){
 		carGoList = response.data;
 		itemAutocompleteLoad();
+		
+		$("#sitem").autocomplete({
+		source: carGoList,
+		delay: 100,
+		autoFocus: true,
+		minChars: 0,
+		minLength: 0,
+		open: function(){
+	        $(this).autocomplete('widget').css('z-index', 1100);
+	        return false;
+	    },
+	    select: function (event, ui) {
+	    	$('#scargo').val(ui.item.code);
+	    },
+	    close : function (event, ui) {
+	        return false;
+	    }
+	}).focus(function() {
+	    $(this).autocomplete("search", $(this).val());
+	});
+		
 	}
 }
 
