@@ -154,7 +154,7 @@ function portTableInit(){
 	       	{ name: 'depotInDate', 			width: 180, 	align:'center', editable: true, edittype: "date"},
 	       	{ name: 'repositionPrch', 		width: 120, 	align:'center', editable: true}
 	   	],
-		height: 530, 
+		height: 650,
 		width: '100%',
 		dblEdit : true,
 		frozen: true,
