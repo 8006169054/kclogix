@@ -108,9 +108,10 @@
 		let response = await requestApi('GET', '/open/dblogin', {id: $('#id').val(), password: $('#password').val()});
 		if(response.common.status === 'S'){
 			sessionStorage.setItem("KC-USER", JSON.stringify(response.data));
-			if(response.data.type === 'M')
+			if(response.data.type === 'M'){
 				location.replace("/view/management/import-monitor-manual");
-			else
+				sessionStorage.setItem("active", "C,09");
+			}else
 				location.replace("/view/partner");
 		}else{
 			alertMessage(response.common.message, 'error');
