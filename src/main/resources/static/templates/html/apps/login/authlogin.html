@@ -109,8 +109,8 @@
 		if(response.common.status === 'S'){
 			sessionStorage.setItem("KC-USER", JSON.stringify(response.data));
 			if(response.data.type === 'M'){
-				location.replace("/view/management/import-monitor-manual");
 				sessionStorage.setItem("active", "C,09");
+				location.replace("/view/management/import-monitor-manual");
 			}else
 				location.replace("/view/partner");
 		}else{
