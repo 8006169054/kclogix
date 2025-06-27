@@ -90,6 +90,12 @@ public class WebsiteRepository extends KainosRepositorySupport {
 				where.and(websiteTerminalCode.estimateReturnDate.goe(tmp[0]).and(websiteTerminalCode.estimateReturnDate.loe(tmp[1])));
 			}
 			
+			if(!KainosStringUtils.isEmpty(paramDto.getAta())) {
+				log.error("Ata : {}", paramDto.getAta());
+				String[] tmp = paramDto.getAta().split(" - ");
+				where.and(websiteTerminalCode.ata.goe(tmp[0]).and(websiteTerminalCode.ata.loe(tmp[1])));
+			}
+			
 			if(!KainosStringUtils.isEmpty(paramDto.getReturnDate())) {
 				log.error("returnDate : {}", paramDto.getReturnDate());
 				String[] tmp = paramDto.getReturnDate().split(" - ");
