@@ -1,6 +1,6 @@
 var tableName = '#port-table';
-//var gridHeight = 700;
-var gridHeight = 580;
+var gridHeight = 700;
+//var gridHeight = 580;
 $( document ).ready(function() {
    	portTableInit();
 	searchPartnerAutocomplete();
