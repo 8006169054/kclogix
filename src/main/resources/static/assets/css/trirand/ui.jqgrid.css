@@ -4,7 +4,7 @@
 	-moz-box-sizing: content-box; 
 	-webkit-box-sizing: content-box; 
 	box-sizing: content-box;
-	font-size:10px;
+	font-size:8px; /* 정인선 10 */
 }
 .ui-jqgrid .ui-jqgrid-view {
 	position: relative;
@@ -74,7 +74,7 @@
 {	font-weight: normal; 
 	overflow: hidden; 
 	white-space: pre; 
-	height: 32px; /* 정인선 25 */
+	height: 20px; /* 정인선 32 */
 	padding: 1px 1px 1px 3px;
 	border-bottom-width: 1px; 
 	border-bottom-color: inherit; 
@@ -430,7 +430,7 @@ a.g-menu-item, a.soptclass, a.clearsearchclass { cursor: pointer; }
 	display:inline-block;
 }
 .ui-jqgrid .ui-jqgrid-htable .ui-th-div {
-	height:17px; /* 정인선 17 */
+/* 	height:17px; 정인선 17 */
 	margin-top:5px; /* 정인선 5 */
 }
 th.jqgrid-multibox .ui-th-div {
