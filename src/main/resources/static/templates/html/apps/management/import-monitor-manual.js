@@ -1,12 +1,12 @@
 var tableName = '#port-table';
-var gridHeight = 700;
-//var gridHeight = 580;
+//var gridHeight = 700;
+var gridHeight = 580;
 $( document ).ready(function() {
    	portTableInit();
-   	  searchPartnerAutocomplete();
-   	  searchCargoAutocomplete();
-   	  searchTerminalAutocomplete();
-   	  searchCustomerAutocomplete();
+	searchPartnerAutocomplete();
+   	searchCargoAutocomplete();
+   	searchTerminalAutocomplete();
+   	searchCustomerAutocomplete();
 });
 
 $('#sreturnDate').daterangepicker({
@@ -37,7 +37,12 @@ startDate: moment().subtract(30, 'days').format('YYYY-MM'),
   opens: 'right'
 });
 
-
+//$('#sdemRcvd').daterangepicker({
+//  locale: {format: 'YYYY-MM-DD'},
+//  autoUpdateInput: false,
+//  drops: 'down',
+//  opens: 'right'
+//});
 
 var partnerList = [];
 var carGoList = [];
@@ -53,8 +58,10 @@ async function search() {
 	response = null;
 }
 
-function portTableInit(){
+async function portTableInit(){
 	$(tableName).jqGrid({
+		url: '/api/management/website-terminal-code-init',  
+		mtype: 'GET',
 	   	datatype: "json",
 	   	colNames: ['','cargo','concine code', 'seq', 'uuid', 'HBL NO.', 'Tank no.', '매출', '이월 매출', 'A/N&EDI', 'INVOICE', 'CNEE', 'PIC', 'PROFIT DATE', '국내매출', '해외매출', "Q'ty", 'Partner', 'Term', 'Name', 'Date', 'Location', 'Vessel / Voyage', 'Carrier', 'MBL NO.', 'POL', 'POD', 'terminalCode', 'Name', 'Link', 'ETD', 'ETA', 'ATA', '비고', 'F/T', 'DEM RATE', 'END OF F/T', 'ESTIMATE RETURN DATE', 'RETURN DATE', 'RETURN DEPOT', 'TOTAL DEM', 'DEM RECEIVED', 'DEM RCVD', 'COMMISSION DEM', 'DEM COMMISSION', 'DEPOT IN DATE(REPO ONLY)', 'REPOSITION 매입'],
 	   	colModel: [
@@ -257,6 +264,9 @@ function portTableInit(){
                               ]
 		});
 		
+//	let response = await requestApi('GET', '/api/management/website-terminal-code-init');
+//	$(tableName).searchData(response.data, {editor: true});
+//	response = null;
 }
 
 async function searchPartnerAutocomplete(){
@@ -370,10 +380,26 @@ function frozenCelHide(){
 
 function collapse(){
 	if ($('#collapseExample').hasClass('collapse show')) {
-		setTimeout(function() {
-			$(tableName).jqGrid("setGridHeight", gridHeight + 120);
-		}, 50); 
+//		setTimeout(function() {
+			$(tableName).jqGrid("setGridHeight", gridHeight);
+//		}, 50); 
 	} else {
-	   $(tableName).jqGrid("setGridHeight", gridHeight);
+		$(tableName).jqGrid("setGridHeight", gridHeight - 125);
+	}
+}
+
+function demRcvdSelectOnchange(){
+	if($('#sdemRcvdSelect').val() === '1'){
+		$('#sdemRcvd1').hide();
+		$('#sdemRcvd').show();
+		$('#sdemRcvd').data('daterangepicker').setStartDate(toDate());
+	}else if($('#sdemRcvdSelect').val() === '2'){
+		$('#sdemRcvd1').show();
+		$('#sdemRcvd').hide();
+		$('#sdemRcvd1').val('N/A');
+	}else if($('#sdemRcvdSelect').val() === '3' || $('#sdemRcvdSelect').val() === '0'){
+		$('#sdemRcvd1').show();
+		$('#sdemRcvd').hide();
+		$('#sdemRcvd1').val('');
 	}
 }

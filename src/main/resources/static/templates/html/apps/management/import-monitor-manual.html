@@ -116,7 +116,16 @@
 									
 									<label class="col-form-label text-md-left" style="width: 80px;">DEM RCVD</label>
 									<div style="width: 120px; margin-right: 15px;">
-										<input type="text" id="sdemRcvd" name="sdemRcvd" class="form-control">
+										<input type="text" id="sdemRcvd" name="sdemRcvd" class="form-control datepicker" style="display: none;">
+										<input type="text" id="sdemRcvd1" name="sdemRcvd1" class="form-control" readonly="readonly">
+									</div> 
+									<div style="width: 120px; margin-right: 15px;">
+										<select id="sdemRcvdSelect" name="sdemRcvdSelect" class="form-control select2" data-minimum-results-for-search="Infinity" onchange="demRcvdSelectOnchange()">
+											<option value="0" selected="selected">All</option>
+											<option value="1">Date</option>
+											<option value="2">N/A</option>
+											<option value="3">Empty</option>
+										</select>
 									</div>
 								</div>
 							 </div>

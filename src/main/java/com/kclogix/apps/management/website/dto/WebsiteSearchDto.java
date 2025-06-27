@@ -27,4 +27,6 @@ public class WebsiteSearchDto {
 	private String returnDate; 
 	private String returnDepot; 
 	private String demRcvd;
+	private String demRcvdSelect;
+	
 }

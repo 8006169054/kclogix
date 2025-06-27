@@ -58,8 +58,101 @@ public class WebsiteRepository extends KainosRepositorySupport {
 	 * @return
 	 * @throws Exception
 	 */
-	public List<WebsiteDto> selectWebsiteTerminalCodeNew(WebsiteSearchDto paramDto) throws Exception {
+	public List<WebsiteDto> selectWebsiteTerminalCodeNew(WebsiteSearchDto paramDto, boolean init) throws Exception {
 		BooleanBuilder where = new BooleanBuilder();
+		if(init)
+			initWhere(where);
+		else
+			searchWhere(paramDto, where);
+		
+		return select(Projections.bean(WebsiteDto.class,
+					websiteTerminalCode.uuid,
+					websiteTerminalCode.seq,
+					websiteTerminalCode.sales,
+					websiteTerminalCode.carryoverSales,
+					new CaseBuilder().when(websiteTerminalCode.arrivalNotice.eq("1")).then(Expressions.constant("SEND")).otherwise(Expressions.constant("")).as("arrivalNotice"),
+					new CaseBuilder().when(websiteTerminalCode.invoice.eq("1")).then(Expressions.constant("SEND")).otherwise(Expressions.constant("")).as("invoice"),
+					new CaseBuilder().when(mdmCustomer.name.isNull()).then(websiteTerminalCode.concine).otherwise(mdmCustomer.name).as("concineName"),
+					mdmCustomer.code.as("concine"),
+					mdmCustomer.pic.as("concinePic"),
+					mdmCustomer.email.as("concineEmail"),
+//					 new CaseBuilder()
+//			            .when(websiteTerminalCode.profitDate.length().goe(10)).then(websiteTerminalCode.profitDate)
+//			            .otherwise("9999-99-99")
+//			            .as("profitDate"),
+			         websiteTerminalCode.profitDate,
+					websiteTerminalCode.domesticSales,
+					websiteTerminalCode.foreignSales,
+					websiteTerminalCode.quantity,
+					websiteTerminalCode.partner,
+					websiteTerminalCode.tankNo,
+					websiteTerminalCode.term,
+					websiteTerminalCode.item,
+					websiteTerminalCode.vesselVoyage,
+					websiteTerminalCode.carrier,
+					websiteTerminalCode.mblNo,
+					websiteTerminalCode.hblNo,
+					websiteTerminalCode.pol,
+//					websiteTerminalCode.pod,
+					new CaseBuilder().when(mdmTerminal.region.isNull()).then(websiteTerminalCode.pod.upper()).otherwise(mdmTerminal.region.upper()).as("pod"),
+					mdmTerminal.code.as("terminalCode"),
+					mdmTerminal.name.as("terminalName"),
+//					mdmTerminal.region.upper().as("region"),
+					mdmTerminal.homepage.as("terminalHomepage"),
+					mdmCargo.code.as("cargo"),
+					mdmCargo.cargoDate.upper().as("cargoDate"),
+					mdmCargo.location.upper().as("location"),
+					new CaseBuilder().when(mdmCargo.name.isNull()).then(websiteTerminalCode.item.upper()).otherwise(mdmCargo.name.upper()).as("item"),
+//					ExpressionUtils.as(JPAExpressions.select(terminal.homepage).from(terminal).where(websiteTerminalCode.pod.eq(terminal.region)), "homepage"),
+					websiteTerminalCode.etd,
+					websiteTerminalCode.eta,
+					websiteTerminalCode.ata,
+					websiteTerminalCode.remark,
+					websiteTerminalCode.ft,
+					websiteTerminalCode.demRate,
+					websiteTerminalCode.endOfFt,
+					websiteTerminalCode.estimateReturnDate,
+					websiteTerminalCode.returnDate,
+					websiteTerminalCode.demReceived,
+					websiteTerminalCode.totalDem,
+					websiteTerminalCode.returnDepot,
+					websiteTerminalCode.demRcvd,
+					websiteTerminalCode.demPrch,
+					websiteTerminalCode.demSales,
+					websiteTerminalCode.depotInDate,
+					websiteTerminalCode.repositionPrch,
+					websiteTerminalCode.createUserId,
+					Expressions.stringTemplate("to_char({0}, {1})", websiteTerminalCode.createDate, "YYYY-MM-DD").as("createDate"),
+					websiteTerminalCode.updateUserId,
+					Expressions.stringTemplate("to_char({0}, {1})", websiteTerminalCode.updateDate, "YYYY-MM-DD").as("updateDate")
+				)).from(websiteTerminalCode)
+				.leftJoin(mdmCargo).on(websiteTerminalCode.item.eq(mdmCargo.code))
+				.leftJoin(mdmTerminal).on(websiteTerminalCode.terminal.eq(mdmTerminal.code))
+				.leftJoin(mdmCustomer).on(websiteTerminalCode.concine.eq(mdmCustomer.code))
+				.where(where)
+				.orderBy(websiteTerminalCode.profitDate.asc())
+				.fetch();
+	}
+
+	/**
+	 * 
+	 * @param paramDto
+	 * @param where
+	 */
+	private void initWhere(BooleanBuilder where) {
+		where.and(websiteTerminalCode.profitDate.length().ne(10));
+		where.and(websiteTerminalCode.demRcvd.length().ne(10));
+		where.and(websiteTerminalCode.demRcvd.ne("N/A"));
+		where.and(websiteTerminalCode.demRcvd.ne("NA"));
+//		where.and(websiteTerminalCode.demRcvd.isNull().or(websiteTerminalCode.demRcvd.eq("")));
+	}
+	
+	/**
+	 * 
+	 * @param paramDto
+	 * @param where
+	 */
+	private void searchWhere(WebsiteSearchDto paramDto, BooleanBuilder where) {
 		if(!KainosStringUtils.isEmpty(paramDto.getHblNo()))
 			where.and(websiteTerminalCode.hblNo.contains(paramDto.getHblNo()));
 		else if(!KainosStringUtils.isEmpty(paramDto.getHblNo()))
@@ -113,71 +206,15 @@ public class WebsiteRepository extends KainosRepositorySupport {
 			if(!KainosStringUtils.isEmpty(paramDto.getReturnDepot())) {
 				where.and(websiteTerminalCode.returnDepot.eq(paramDto.getReturnDepot()));
 			}
+			
+			if(paramDto.getDemRcvdSelect().equalsIgnoreCase("1")) {
+				where.and(websiteTerminalCode.demRcvd.eq(paramDto.getDemRcvd()));
+			}else if(paramDto.getDemRcvdSelect().equalsIgnoreCase("2")) {
+				where.and(websiteTerminalCode.demRcvd.eq("N/A").or(websiteTerminalCode.demRcvd.eq("NA")));
+			}else if(paramDto.getDemRcvdSelect().equalsIgnoreCase("3")) {
+				where.and(websiteTerminalCode.demRcvd.isNull().or(websiteTerminalCode.demRcvd.eq("")));
+			}
 		}
-		
-		return select(Projections.bean(WebsiteDto.class,
-					websiteTerminalCode.uuid,
-					websiteTerminalCode.seq,
-					websiteTerminalCode.sales,
-					websiteTerminalCode.carryoverSales,
-					new CaseBuilder().when(websiteTerminalCode.arrivalNotice.eq("1")).then(Expressions.constant("SEND")).otherwise(Expressions.constant("")).as("arrivalNotice"),
-					new CaseBuilder().when(websiteTerminalCode.invoice.eq("1")).then(Expressions.constant("SEND")).otherwise(Expressions.constant("")).as("invoice"),
-					new CaseBuilder().when(mdmCustomer.name.isNull()).then(websiteTerminalCode.concine).otherwise(mdmCustomer.name).as("concineName"),
-					mdmCustomer.code.as("concine"),
-					mdmCustomer.pic.as("concinePic"),
-					mdmCustomer.email.as("concineEmail"),
-					websiteTerminalCode.profitDate,
-					websiteTerminalCode.domesticSales,
-					websiteTerminalCode.foreignSales,
-					websiteTerminalCode.quantity,
-					websiteTerminalCode.partner,
-					websiteTerminalCode.tankNo,
-					websiteTerminalCode.term,
-					websiteTerminalCode.item,
-					websiteTerminalCode.vesselVoyage,
-					websiteTerminalCode.carrier,
-					websiteTerminalCode.mblNo,
-					websiteTerminalCode.hblNo,
-					websiteTerminalCode.pol,
-//					websiteTerminalCode.pod,
-					new CaseBuilder().when(mdmTerminal.region.isNull()).then(websiteTerminalCode.pod.upper()).otherwise(mdmTerminal.region.upper()).as("pod"),
-					mdmTerminal.code.as("terminalCode"),
-					mdmTerminal.name.as("terminalName"),
-//					mdmTerminal.region.upper().as("region"),
-					mdmTerminal.homepage.as("terminalHomepage"),
-					mdmCargo.code.as("cargo"),
-					mdmCargo.cargoDate.upper().as("cargoDate"),
-					mdmCargo.location.upper().as("location"),
-					new CaseBuilder().when(mdmCargo.name.isNull()).then(websiteTerminalCode.item.upper()).otherwise(mdmCargo.name.upper()).as("item"),
-//					ExpressionUtils.as(JPAExpressions.select(terminal.homepage).from(terminal).where(websiteTerminalCode.pod.eq(terminal.region)), "homepage"),
-					websiteTerminalCode.etd,
-					websiteTerminalCode.eta,
-					websiteTerminalCode.ata,
-					websiteTerminalCode.remark,
-					websiteTerminalCode.ft,
-					websiteTerminalCode.demRate,
-					websiteTerminalCode.endOfFt,
-					websiteTerminalCode.estimateReturnDate,
-					websiteTerminalCode.returnDate,
-					websiteTerminalCode.demReceived,
-					websiteTerminalCode.totalDem,
-					websiteTerminalCode.returnDepot,
-					websiteTerminalCode.demRcvd,
-					websiteTerminalCode.demPrch,
-					websiteTerminalCode.demSales,
-					websiteTerminalCode.depotInDate,
-					websiteTerminalCode.repositionPrch,
-					websiteTerminalCode.createUserId,
-					Expressions.stringTemplate("to_char({0}, {1})", websiteTerminalCode.createDate, "YYYY-MM-DD").as("createDate"),
-					websiteTerminalCode.updateUserId,
-					Expressions.stringTemplate("to_char({0}, {1})", websiteTerminalCode.updateDate, "YYYY-MM-DD").as("updateDate")
-				)).from(websiteTerminalCode)
-				.leftJoin(mdmCargo).on(websiteTerminalCode.item.eq(mdmCargo.code))
-				.leftJoin(mdmTerminal).on(websiteTerminalCode.terminal.eq(mdmTerminal.code))
-				.leftJoin(mdmCustomer).on(websiteTerminalCode.concine.eq(mdmCustomer.code))
-				.where(where)
-				.orderBy(websiteTerminalCode.uuid.asc(), websiteTerminalCode.seq.asc())
-				.fetch();
 	}
 	
 	

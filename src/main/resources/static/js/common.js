@@ -147,3 +147,12 @@ $( document ).ready(function() {
 		$(this).val($(this).val().replace(/[^0-9]/gi, ""));
 	});
 });
+
+/** 
+ * 현재 날짜
+*/
+function toDate() {
+  	const today = new Date();
+	const thirtyDaysAgo = new Date();
+	return thirtyDaysAgo.toISOString().slice(0, 10);
+}

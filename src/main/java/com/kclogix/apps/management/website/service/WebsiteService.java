@@ -34,8 +34,8 @@ public class WebsiteService {
 	 * @throws Exception
 	 */
 	@Transactional(readOnly = true)
-	public List<WebsiteDto> selectWebsiteTerminalCodeNew(WebsiteSearchDto paramDto) throws Exception {
-		return repository.selectWebsiteTerminalCodeNew(paramDto);
+	public List<WebsiteDto> selectWebsiteTerminalCodeNew(WebsiteSearchDto paramDto, boolean init) throws Exception {
+		return repository.selectWebsiteTerminalCodeNew(paramDto, init);
 	}
 	
 	/**

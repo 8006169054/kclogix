@@ -47,6 +47,14 @@ public class WebsiteController {
 	private final MailUtil mailutil;
 	private final MicrosoftGraph mg; // Microsoft Graph
 	
+	@GetMapping(value = "/api/management/website-terminal-code-init")
+	public ResponseEntity<WebsiteDto> selectWebsiteTerminalCodeInit() throws Exception {
+		List<WebsiteDto> PortList = service.selectWebsiteTerminalCodeNew(null, true);
+		return KainosResponseEntity.builder().build()
+				.addData(handler.GenerationRowSpen(PortList, WebsiteDto.class))
+				.close();
+	}
+	
 	@GetMapping(value = "/api/management/website-terminal-code")
 	public ResponseEntity<WebsiteDto> selectWebsiteTerminalCode(
 			@RequestParam(required = false) String sprofitDate, 
@@ -62,7 +70,8 @@ public class WebsiteController {
 			@RequestParam(required = false) String serd, 
 			@RequestParam(required = false) String sreturnDate, 
 			@RequestParam(required = false) String sreturnDepot, 
-			@RequestParam(required = false) String sdemRcvd
+			@RequestParam(required = false) String sdemRcvd,
+			@RequestParam(required = false) String sdemRcvdSelect
 		) throws Exception {
 		
 		WebsiteSearchDto paramDto = WebsiteSearchDto.builder()
@@ -80,12 +89,11 @@ public class WebsiteController {
 		.returnDate(sreturnDate)
 		.returnDepot(sreturnDepot)
 		.demRcvd(sdemRcvd)
+		.demRcvdSelect(sdemRcvdSelect)
 		.build();
-		List<WebsiteDto> PortList = service.selectWebsiteTerminalCodeNew(paramDto);
-//		List<WebsiteDto> PortList = service.selectWebsiteTerminalCode(WebsiteDto.builder().hblNo(hblNo).arrivalNotice(arrivalNotice).build());
+		List<WebsiteDto> PortList = service.selectWebsiteTerminalCodeNew(paramDto, false);
 		return KainosResponseEntity.builder().build()
 				.addData(handler.GenerationRowSpen(PortList, WebsiteDto.class))
-//				.addData(PortList)
 				.close();
 	}
 	

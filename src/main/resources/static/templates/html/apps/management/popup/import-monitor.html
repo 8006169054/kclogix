@@ -57,7 +57,7 @@
 									</div>
 									<div class="form-group col-md-20">
 										<label for="name">PROFIT DATE</label>
-										<input type="text" class="form-control dateFormat" id="profitDate" name="profitDate">
+										<input type="text" class="form-control datepicker" id="profitDate" name="profitDate">
 									</div>
 								</div>
 								<div class="form-row">
@@ -82,7 +82,6 @@
 										<label for="name">Carrier</label>
 										<input type="text" class="form-control" id="carrier" name="carrier">
 									</div>
-
 								</div>
 								<div class="form-row">
 									<div class="form-group col-md-10">
@@ -91,7 +90,7 @@
 									</div>
 									<div class="form-group col-md-10">
 										<label for="name">POD</label>
-										<input type="text" class="form-control" id="pod" name="pod" readonly="readonly">
+										<input type="text" class="form-control" id="pod" name="pod">
 									</div>
 									<div class="form-group col-md-47">
 										<label for="name">TERMINAL</label>
@@ -101,11 +100,11 @@
 									</div>
 									<div class="form-group col-md-10">
 										<label for="name">ETD</label>
-										<input type="text" class="form-control dateFormat" id="etd" name="etd" >
+										<input type="text" class="form-control datepicker" id="etd" name="etd" >
 									</div>
 									<div class="form-group col-md-10">
 										<label for="name">ETA</label>
-										<input type="text" class="form-control dateFormat" id="eta" name="eta" >
+										<input type="text" class="form-control datepicker" id="eta" name="eta" >
 									</div>
 								</div>
 								<div class="form-row">
@@ -271,6 +270,8 @@ async function customerAutocompleteLoad(){
 
 $("#importMonitorPopup").on("show.bs.modal", function(e) {
 // 	dataBinding(testData);
+	$('#etd').data('daterangepicker').setStartDate(toDate());
+	$('#eta').data('daterangepicker').setStartDate(toDate());
 });
   
 $("#importMonitorPopup").on("hide.bs.modal", function(e) {
@@ -307,6 +308,41 @@ async function importMonitorPopupSave(){
  		$('#importMonitorPopupClose').click();
  	}
 }
+
+const inputs = document.querySelectorAll('input');
+
+inputs.forEach((input, index) => {
+  input.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter') {
+      e.preventDefault(); // 폼 제출 방지
+      var nextId = null;
+      if(this.id === 'hblNo') nextId = 'mblNo';
+      else if(this.id === 'mblNo') nextId = 'tankNo';
+      else if(this.id === 'mblNo') nextId = 'tankNo';
+      else if(this.id === 'tankNo') nextId = 'quantity';
+      else if(this.id === 'quantity') nextId = 'term';
+      else if(this.id === 'term') nextId = 'concineName';
+      else if(this.id === 'concineName') nextId = 'partner';
+      else if(this.id === 'partner') nextId = 'profitDate';
+      else if(this.id === 'profitDate') nextId = 'itemName';
+      else if(this.id === 'itemName') nextId = 'vesselVoyage';
+      else if(this.id === 'vesselVoyage') nextId = 'carrier';
+      else if(this.id === 'carrier') nextId = 'pol';
+      else if(this.id === 'pol') nextId = 'pod';
+      else if(this.id === 'pod') nextId = 'terminal';
+      else if(this.id === 'terminal') nextId = 'etd';
+      else if(this.id === 'etd') nextId = 'eta';
+      else if(this.id === 'eta') nextId = 'ft';
+      else if(this.id === 'ft') nextId = 'demRate';
+      else if(this.id === 'demRate') nextId = 'endOfFt';
+      else if(this.id === 'endOfFt') nextId = 'remark';
+      
+      if(nextId != null){
+    	  $('#' + nextId).focus();
+      }
+    }
+  });
+});
 
 </script>
 </html>
