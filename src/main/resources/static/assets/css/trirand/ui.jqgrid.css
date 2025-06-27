@@ -575,3 +575,11 @@ td.menu_text {
 	overflow: auto;
 	height: 17em;
 }
+
+.ui-jqgrid .ui-jqgrid-htable th {
+  background-color: #f8f9fa; /* 기본 색상 */
+}
+
+.ui-jqgrid .ui-jqgrid-htable th.sticky-highlight {
+  background-color: #d4edda !important;
+}

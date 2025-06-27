@@ -6928,6 +6928,10 @@ $.jgrid.extend({
 	// 정인선 신규 함수 추가
 	searchData : function(rdata, options) {
 		var t = this;	
+		
+		if(options.nodatamsg && rdata.length === 0)
+			alertMessage('No data found.', 'info');
+		
 		$.each(rdata, function(index, data){
 			if(data.jqFlag === undefined || data.jqFlag === null)
 				data.jqFlag = "";

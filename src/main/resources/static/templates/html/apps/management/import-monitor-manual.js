@@ -1,4 +1,6 @@
 var tableName = '#port-table';
+let prevColIndex = null;
+let prevRowId = null;
 var gridHeight = 700;
 //var gridHeight = 580;
 $( document ).ready(function() {
@@ -23,6 +25,11 @@ $('#sata').daterangepicker({
   opens: 'right'
 });
 
+// 날짜 선택 시 input 값 수동으로 설정
+$('#sata').on('apply.daterangepicker', function (ev, picker) {
+  $(this).val(picker.startDate.format('YYYY-MM-DD') + ' ~ ' + picker.endDate.format('YYYY-MM-DD'));
+});
+
 $('#serd').daterangepicker({
   locale: {format: 'YYYY-MM-DD'},
   startDate: moment().subtract(30, 'days').format('YYYY-MM-DD'),
@@ -36,6 +43,13 @@ startDate: moment().subtract(30, 'days').format('YYYY-MM'),
   drops: 'down',
   opens: 'right'
 });
+
+//$('#sdemRcvd').daterangepicker({
+//  locale: {format: 'YYYY-MM-DD'},
+//  startDate: moment().subtract(30, 'days').format('YYYY-MM-DD'),
+//  drops: 'down',
+//  opens: 'right'
+//});
 
 //$('#sdemRcvd').daterangepicker({
 //  locale: {format: 'YYYY-MM-DD'},
@@ -54,7 +68,7 @@ var customerList = [];
 async function search() {
 	$(tableName).clearGridData();
 	let response = await requestApi('GET', '/api/management/website-terminal-code', $('#searchFrom').serializeObject());
-	$(tableName).searchData(response.data, {editor: true});
+	$(tableName).searchData(response.data, {editor: true, nodatamsg: true});
 	response = null;
 }
 
@@ -199,6 +213,41 @@ async function portTableInit(){
 		frozen: true,
 		delselect: true,
 //		multiselect: true,
+		onCellSelect: function (rowId, iCol, cellContent, event) {
+    		const grid = $(tableName);
+	    	const colModel = grid.jqGrid("getGridParam", "colModel");
+	    	const colName = colModel[iCol].name;
+	    	// 모든 행 ID 가져오기
+	    	const rowIds = grid.getDataIDs();
+	
+			// 이전 컬럼 색상 원복
+		    if (prevColIndex !== null) {
+		      const prevColName = colModel[prevColIndex].name;
+		      rowIds.forEach(id => {
+		        	grid.jqGrid("setCell", id, prevColName, "", { background: "" });
+		      });
+		    }
+		    $("#" + prevRowId).css("background-color", "");
+		    
+	    	// 현재 선택된 컬럼 색상 적용
+		    rowIds.forEach(id => {
+		      grid.jqGrid("setCell", id, colName, "", {
+		        background: "#d4edda" // 연한 녹색
+		      });
+		    });
+		       
+		    // 현재 행 전체 색상 적용
+    		$("#" + rowId).css("background-color", "#d4edda");
+
+			// 고정 컬럼 영역도 함께 강조
+			$(tableName).closest(".ui-jqgrid").find(".frozen-bdiv")
+			  .find("tr[id='" + rowId + "']")
+			  .css("background-color", "#d4edda");
+  
+		    // 📌 현재 선택 상태 저장
+		    prevColIndex = iCol;
+		    prevRowId = rowId;
+		},
 		afterSaveCell : function(rowid, cellname, value, iRow, iCol) {
 			var changeVal = false;
 			if('terminalName' === cellname){
@@ -392,14 +441,16 @@ function demRcvdSelectOnchange(){
 	if($('#sdemRcvdSelect').val() === '1'){
 		$('#sdemRcvd1').hide();
 		$('#sdemRcvd').show();
-		$('#sdemRcvd').data('daterangepicker').setStartDate(toDate());
+		$('#sdemRcvd-calendar').show();
 	}else if($('#sdemRcvdSelect').val() === '2'){
 		$('#sdemRcvd1').show();
 		$('#sdemRcvd').hide();
+		$('#sdemRcvd-calendar').hide();
 		$('#sdemRcvd1').val('N/A');
 	}else if($('#sdemRcvdSelect').val() === '3' || $('#sdemRcvdSelect').val() === '0'){
 		$('#sdemRcvd1').show();
 		$('#sdemRcvd').hide();
+		$('#sdemRcvd-calendar').hide();
 		$('#sdemRcvd1').val('');
 	}
 }
