@@ -246,7 +246,7 @@ public class WebsiteRepository extends KainosRepositorySupport {
 	 */
 	public List<WebsiteDto> selectArrivalnotice(WebsiteSearchDto paramDto) throws Exception {
 		BooleanBuilder where = new BooleanBuilder();
-		
+		where.and(websiteTerminalCode.shipmentStatus.eq("Y"));
 		searchWhere(paramDto, where);
 		
 		return select(Projections.bean(WebsiteDto.class,
