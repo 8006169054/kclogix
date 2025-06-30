@@ -48,101 +48,107 @@ public class WebsiteDto {
 	private String concine; //CNEE
 	
 	@Field(value = "F", merge = true)
-	private String profitDate; //PROFIT DATE
+	private String shipmentStatus; //SHIPMENT STATUS
 	
 	@Field(value = "G", merge = true)
-	private String domesticSales; //국내매출
+	private String profitDate; //PROFIT DATE
 	
 	@Field(value = "H", merge = true)
-	private String foreignSales; //해외매출
+	private String domesticSales; //국내매출
 	
 	@Field(value = "I", merge = true)
+	private String foreignSales; //해외매출
+	
+	@Field(value = "J", merge = true)
 	private String quantity; //Q'ty
 	
-	@Field(value = "J")
+	@Field(value = "K")
 	private String partner; //Partner
 	
-	@Field(value = "K")
+	@Field(value = "L")
 	private String tankNo; //Tank no.
 	
-	@Field(value = "L", merge = true)
+	@Field(value = "M", merge = true)
 	private String term; //Term
 	
-	@Field(value = "M", merge = true)
+	@Field(value = "N", merge = true)
 	private String item; //ITEM
 	
-	@Field(value = "N", merge = true)
+	@Field(value = "O", merge = true)
 	private String vesselVoyage; //Vessel / Voyage
 	
-	@Field(value = "O", merge = true)
+	@Field(value = "P", merge = true)
 	private String carrier; //Carrier
 	
-	@Field(value = "P", merge = true)
+	@Field(value = "Q", merge = true)
 	private String mblNo; //MBL NO
 	
-	@Field(value = "Q", mergeOrder = 0, merge = true)
+	@Field(value = "R", mergeOrder = 0, merge = true)
 	private String hblNo; //HBL NO.
 	
-	@Field(value = "R", merge = true)
+	@Field(value = "S", merge = true)
 	private String pol; //POL
 	
-	@Field(value = "S")
+	@Field(value = "T")
 	private String pod; //POD
 	
-	@Field(value = "T")
+	@Field(value = "U")
 	private String terminalCode; //TERMINAL code
 	private String terminalName; //TERMINAL code
 	private String terminalHomepage; //TERMINAL code
 	
-	@Field(value = "U")
+	@Field(value = "V")
 	private String etd; //ETD
 	
-	@Field(value = "V")
+	@Field(value = "W")
 	private String eta; //ETA
 	
-	@Field(value = "W")
+	@Field(value = "X")
 	private String ata; //ATA
 	
-	@Field(value = "X", merge = true)
+	@Field(value = "Y", merge = true)
 	private String remark; //비고
 	
-	@Field(value = "Y")
+	@Field(value = "Z")
 	private String ft; //F/T
 	
-	@Field(value = "Z")
+	@Field(value = "AA")
 	private String demRate; //DEM RATE
 	
-	@Field(value = "AA")
+	@Field(value = "AB")
 	private String endOfFt; //END OF F/T
 	
-	@Field(value = "AB")
+	@Field(value = "AC")
 	private String estimateReturnDate; //ESTIMATE RETURN DATE
 	
-	@Field(value = "AC")
+	@Field(value = "AD")
 	private String returnDate; //RETURN DATE
 	
-	@Field(value = "AD")
+	@Field(value = "AE")
 	private String returnDepot; //RETURN DEPOT
 	
-	@Field(value = "AE")
-	private String totalDem; //TOTAL DEM
-	
 	@Field(value = "AF")
-	private String demReceived; //DEM RECEIVED
+	private String demStatus;
 	
 	@Field(value = "AG")
-	private String demRcvd; //DEM RCVD
+	private String totalDem; //TOTAL DEM
 	
 	@Field(value = "AH")
-	private String demPrch; //DEM(USD)-매입
+	private String demReceived; //DEM RECEIVED
 	
 	@Field(value = "AI")
-	private String demSales; //DEM 매출
+	private String demRcvd; //DEM RCVD
 	
 	@Field(value = "AJ")
-	private String depotInDate; //DEPOT IN DATE
+	private String demPrch; //DEM(USD)-매입
 	
 	@Field(value = "AK")
+	private String demSales; //DEM 매출
+	
+	@Field(value = "AL")
+	private String depotInDate; //DEPOT IN DATE
+	
+	@Field(value = "AM")
 	private String repositionPrch; //REPOSITION 매입
 	
 	private String homepage;
@@ -171,7 +177,6 @@ public class WebsiteDto {
 		private RowSpan concinePic = RowSpan.builder().build();
 		@Builder.Default
 		private RowSpan concineEmail = RowSpan.builder().build();
-		
 		@Builder.Default
 		private RowSpan sales = RowSpan.builder().build();
 		@Builder.Default
@@ -182,6 +187,8 @@ public class WebsiteDto {
 		private RowSpan invoice = RowSpan.builder().build();
 		@Builder.Default
 		private RowSpan concine = RowSpan.builder().build();
+		@Builder.Default
+		private RowSpan shipmentStatus = RowSpan.builder().build();
 		@Builder.Default
 		private RowSpan profitDate = RowSpan.builder().build();
 		@Builder.Default

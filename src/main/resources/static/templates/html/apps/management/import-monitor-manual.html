@@ -51,7 +51,7 @@
 										<input type="text" id="stankNo" name="stankNo" value="" class="form-control">
 									</div>
 									<label class="col-form-label text-md-left" style="width: 80px;">Item</label>
-									<div style="width: 430px; margin-right: 15px;">
+									<div style="width: 410px; margin-right: 15px;">
 										<input type="text" id="sitem" name="sitem" value="" class="form-control">
 										<input type="hidden" id="scargo" name="scargo">
 									</div>
@@ -74,7 +74,7 @@
 										<input type="text" id="spod" name="spod" value="" class="form-control">
 									</div>
 									<label class="col-form-label text-md-left" style="width: 80px;">ATA</label>
-									<div style="width: 220px; margin-right: 15px;">
+									<div style="width: 235px; margin-right: 15px;">
 										<div class="input-group">
 											<div class="input-group-prepend">
 												<div class="input-group-text">
@@ -130,12 +130,20 @@
 										<input type="text" id="sdemRcvd" name="sdemRcvd" class="form-control datepicker" style="display: none;">
 										<input type="text" id="sdemRcvd1" name="sdemRcvd1" class="form-control" readonly="readonly">
 									</div> 
-									<div style="width: 120px; margin-right: 15px;">
+									<div style="width: 100px; margin-right: 15px;">
 										<select id="sdemRcvdSelect" name="sdemRcvdSelect" class="form-control select2" data-minimum-results-for-search="Infinity" onchange="demRcvdSelectOnchange()">
 											<option value="0" selected="selected">All</option>
 											<option value="1">Date</option>
 											<option value="2">N/A</option>
 											<option value="3">Empty</option>
+										</select>
+									</div>
+									<label class="col-form-label text-md-left" style="width: 80px;">SHIPMENT</label>
+									<div style="width: 80px; margin-right: 15px;">
+										<select id="sshipmentStatus" name="sshipmentStatus" class="form-control select2" data-minimum-results-for-search="Infinity">
+											<option value="" selected="selected">All</option>
+											<option value="Y">ON</option>
+											<option value="N">OFF</option>
 										</select>
 									</div>
 								</div>

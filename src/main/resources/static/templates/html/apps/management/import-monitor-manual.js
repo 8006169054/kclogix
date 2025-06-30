@@ -38,8 +38,8 @@ $('#serd').daterangepicker({
 });
 
 $('#sprofitDate').daterangepicker({
-startDate: moment().subtract(30, 'days').format('YYYY-MM'),
-  locale: {format: 'YYYY-MM'},
+	startDate: moment().subtract(30, 'days').format('YYYY-MM-DD'),
+  locale: {format: 'YYYY-MM-DD'},
   drops: 'down',
   opens: 'right'
 });
@@ -77,7 +77,7 @@ async function portTableInit(){
 		url: '/api/management/website-terminal-code-init',  
 		mtype: 'GET',
 	   	datatype: "json",
-	   	colNames: ['','cargo','concine code', 'seq', 'uuid', 'HBL NO.', 'Tank no.', '매출', '이월 매출', 'A/N&EDI', 'INVOICE', 'CNEE', 'PIC', 'PROFIT DATE', '국내매출', '해외매출', "Q'ty", 'Partner', 'Term', 'Name', 'Date', 'Location', 'Vessel / Voyage', 'Carrier', 'MBL NO.', 'POL', 'POD', 'terminalCode', 'Name', 'Link', 'ETD', 'ETA', 'ATA', '비고', 'F/T', 'DEM RATE', 'END OF F/T', 'ESTIMATE RETURN DATE', 'RETURN DATE', 'RETURN DEPOT', 'TOTAL DEM', 'DEM RECEIVED', 'DEM RCVD', 'COMMISSION DEM', 'DEM COMMISSION', 'DEPOT IN DATE(REPO ONLY)', 'REPOSITION 매입'],
+	   	colNames: ['','cargo','concine code', 'seq', 'uuid', 'HBL NO.', 'Tank no.', '매출', '이월 매출', 'A/N&EDI', 'INVOICE', 'CNEE', 'PIC', 'SHIPMENT STATUS', 'PROFIT DATE', '국내매출', '해외매출', "Q'ty", 'Partner', 'Term', 'Name', 'Date', 'Location', 'Vessel / Voyage', 'Carrier', 'MBL NO.', 'POL', 'POD', 'terminalCode', 'Name', 'Link', 'ETD', 'ETA', 'ATA', '비고', 'F/T', 'DEM RATE', 'END OF F/T', 'ESTIMATE RETURN DATE', 'RETURN DATE', 'RETURN DEPOT', 'DEM STATUS', 'TOTAL DEM', 'DEM BILLING', 'DEM RCVD', 'COMMISSION DEM', 'DEM COMMISSION', 'DEPOT IN DATE(REPO ONLY)', 'REPOSITION 매입'],
 	   	colModel: [
 	   		{ name: 'jqFlag',				width: 40,		align:'center', 	hidden : false,	frozen:true},
 	   		{ name: 'cargo',				width: 100,		align:'center', 	rowspan: true,	editable : true, hidden : true,	frozen:true},
@@ -112,6 +112,7 @@ async function portTableInit(){
 				}
 			}},
 			{ name: 'concinePic', 			width: 80, 		align:'center',		rowspan: true},
+			{ name: 'shipmentStatus', 		width: 80, 		align:'center',		rowspan: true, editable: true, formatter:'select', edittype:'select', editoptions : {value: 'Y:ON;N:OFF'}},
 	    	{ name: 'profitDate', 			width: 90, 		align:'center',		rowspan: true, editable: true, edittype: "date"},
 	    	{ name: 'domesticSales', 		width: 80, 		align:'center',		rowspan: true, editable: true},
 	    	{ name: 'foreignSales', 		width: 80, 		align:'center',		rowspan: true, editable: true},
@@ -199,6 +200,7 @@ async function portTableInit(){
 	       	{ name: 'estimateReturnDate', 	width: 160, 	align:'center', editable: true, edittype: "date"},
 	       	{ name: 'returnDate', 			width: 100, 	align:'center', editable: true, edittype: "date"},
 	       	{ name: 'returnDepot', 			width: 100, 	align:'center', editable: true},
+	       	{ name: 'demStatus', 			width: 100, 	align:'center', editable: true, formatter:'select', edittype:'select', editoptions : {value: 'Y:Y;N:N'}},
 	       	{ name: 'totalDem', 			width: 100, 	align:'center', editable: true},
 	       	{ name: 'demReceived', 			width: 80, 		align:'center', editable: true},
 	       	{ name: 'demRcvd', 				width: 90, 		align:'center', editable: true},
@@ -214,39 +216,42 @@ async function portTableInit(){
 		delselect: true,
 //		multiselect: true,
 		onCellSelect: function (rowId, iCol, cellContent, event) {
-    		const grid = $(tableName);
-	    	const colModel = grid.jqGrid("getGridParam", "colModel");
-	    	const colName = colModel[iCol].name;
-	    	// 모든 행 ID 가져오기
-	    	const rowIds = grid.getDataIDs();
-	
-			// 이전 컬럼 색상 원복
-		    if (prevColIndex !== null) {
-		      const prevColName = colModel[prevColIndex].name;
-		      rowIds.forEach(id => {
-		        	grid.jqGrid("setCell", id, prevColName, "", { background: "" });
-		      });
-		    }
-		    $("#" + prevRowId).css("background-color", "");
+//    		const grid = $(tableName);
+//	    	const colModel = grid.jqGrid("getGridParam", "colModel");
+//	    	const colName = colModel[iCol].name;
+//	    	// 모든 행 ID 가져오기
+//	    	const rowIds = grid.getDataIDs();
+//	
+//			// 이전 컬럼 색상 원복
+//		    if (prevColIndex !== null) {
+//		      const prevColName = colModel[prevColIndex].name;
+//		      rowIds.forEach(id => {
+//		        	grid.jqGrid("setCell", id, prevColName, "", { background: "" });
+//		      });
+//		    }
+//		    $("#" + prevRowId).css("background-color", "");
+//		    
+//	    	// 현재 선택된 컬럼 색상 적용
+//		    rowIds.forEach(id => {
+//		      grid.jqGrid("setCell", id, colName, "", {
+//		        background: "#d4edda" // 연한 녹색
+//		      });
+//		    });
+//		       
+//		    // 현재 행 전체 색상 적용
+//    		$("#" + rowId).css("background-color", "#d4edda");
+//
+//			// 고정 컬럼 영역도 함께 강조
+//			$(tableName).closest(".ui-jqgrid").find(".frozen-bdiv")
+//			  .find("tr[id='" + rowId + "']")
+//			  .css("background-color", "#d4edda");
+//  
+//		    // 📌 현재 선택 상태 저장
+//		    prevColIndex = iCol;
+//		    prevRowId = rowId;
+//		    
+//		    console.log($(tableName));
 		    
-	    	// 현재 선택된 컬럼 색상 적용
-		    rowIds.forEach(id => {
-		      grid.jqGrid("setCell", id, colName, "", {
-		        background: "#d4edda" // 연한 녹색
-		      });
-		    });
-		       
-		    // 현재 행 전체 색상 적용
-    		$("#" + rowId).css("background-color", "#d4edda");
-
-			// 고정 컬럼 영역도 함께 강조
-			$(tableName).closest(".ui-jqgrid").find(".frozen-bdiv")
-			  .find("tr[id='" + rowId + "']")
-			  .css("background-color", "#d4edda");
-  
-		    // 📌 현재 선택 상태 저장
-		    prevColIndex = iCol;
-		    prevRowId = rowId;
 		},
 		afterSaveCell : function(rowid, cellname, value, iRow, iCol) {
 			var changeVal = false;

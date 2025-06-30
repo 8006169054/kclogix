@@ -62,4 +62,6 @@ public class WebsiteTerminalCode {
 	private Date createDate;
 	private String updateUserId;
 	private Date updateDate;
+	private String shipmentStatus;
+	private String demStatus;
 }

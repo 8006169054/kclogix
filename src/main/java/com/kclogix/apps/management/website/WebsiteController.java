@@ -71,7 +71,9 @@ public class WebsiteController {
 			@RequestParam(required = false) String sreturnDate, 
 			@RequestParam(required = false) String sreturnDepot, 
 			@RequestParam(required = false) String sdemRcvd,
-			@RequestParam(required = false) String sdemRcvdSelect
+			@RequestParam(required = false) String sdemRcvdSelect,
+			@RequestParam(required = false) String sshipmentStatus
+			
 		) throws Exception {
 		
 		WebsiteSearchDto paramDto = WebsiteSearchDto.builder()
@@ -90,6 +92,7 @@ public class WebsiteController {
 		.returnDepot(sreturnDepot)
 		.demRcvd(sdemRcvd)
 		.demRcvdSelect(sdemRcvdSelect)
+		.shipmentStatus(sshipmentStatus)
 		.build();
 		List<WebsiteDto> PortList = service.selectWebsiteTerminalCodeNew(paramDto, false);
 		return KainosResponseEntity.builder().build()

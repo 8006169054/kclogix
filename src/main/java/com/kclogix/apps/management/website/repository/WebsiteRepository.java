@@ -122,6 +122,8 @@ public class WebsiteRepository extends KainosRepositorySupport {
 					websiteTerminalCode.depotInDate,
 					websiteTerminalCode.repositionPrch,
 					websiteTerminalCode.createUserId,
+					websiteTerminalCode.shipmentStatus,
+					websiteTerminalCode.demStatus,
 					Expressions.stringTemplate("to_char({0}, {1})", websiteTerminalCode.createDate, "YYYY-MM-DD").as("createDate"),
 					websiteTerminalCode.updateUserId,
 					Expressions.stringTemplate("to_char({0}, {1})", websiteTerminalCode.updateDate, "YYYY-MM-DD").as("updateDate")
@@ -213,6 +215,10 @@ public class WebsiteRepository extends KainosRepositorySupport {
 				where.and(websiteTerminalCode.demRcvd.eq("N/A").or(websiteTerminalCode.demRcvd.eq("NA")));
 			}else if(paramDto.getDemRcvdSelect().equalsIgnoreCase("3")) {
 				where.and(websiteTerminalCode.demRcvd.isNull().or(websiteTerminalCode.demRcvd.eq("")));
+			}
+			
+			if(!KainosStringUtils.isEmpty(paramDto.getShipmentStatus())) {
+				where.and(websiteTerminalCode.shipmentStatus.eq(paramDto.getShipmentStatus()));
 			}
 		}
 	}
@@ -360,7 +366,9 @@ public class WebsiteRepository extends KainosRepositorySupport {
 			websiteTerminalCode.createUserId,
 			websiteTerminalCode.createDate,
 			websiteTerminalCode.updateUserId,
-			websiteTerminalCode.updateDate
+			websiteTerminalCode.updateDate,
+			websiteTerminalCode.shipmentStatus,
+			websiteTerminalCode.demStatus
 		).values(
 			paramDto.getUuid(),
 			paramDto.getSeq(),
@@ -404,7 +412,9 @@ public class WebsiteRepository extends KainosRepositorySupport {
 			paramDto.getCreateUserId(),
 			new Date(),
 			paramDto.getCreateUserId(),
-			new Date()
+			new Date(),
+			!KainosStringUtils.isEmpty(paramDto.getShipmentStatus()) ? (paramDto.getShipmentStatus()) : "Y",
+			!KainosStringUtils.isEmpty(paramDto.getDemStatus()) ? (paramDto.getDemStatus()) : "Y"
 		).execute();
 	}
 	
@@ -454,6 +464,8 @@ public class WebsiteRepository extends KainosRepositorySupport {
 			.set(websiteTerminalCode.repositionPrch, 	  paramDto.getRepositionPrch())
 			.set(websiteTerminalCode.updateUserId, 		  paramDto.getUpdateUserId())
 			.set(websiteTerminalCode.updateDate, 			new Date())
+			.set(websiteTerminalCode.shipmentStatus, 		paramDto.getShipmentStatus())
+			.set(websiteTerminalCode.demStatus, 			paramDto.getDemStatus())
 		.where(websiteTerminalCode.uuid.eq(paramDto.getUuid()).and(websiteTerminalCode.seq.eq(paramDto.getSeq())))
 		.execute();
 	}

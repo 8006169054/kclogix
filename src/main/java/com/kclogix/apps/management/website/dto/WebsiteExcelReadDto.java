@@ -36,99 +36,105 @@ public class WebsiteExcelReadDto {
 	private String concine; //CNEE
 	
 	@Field(value = "F", merge = true)
+	private String shipmentStatus; //SHIPMENT STATUS
+	
+	@Field(value = "G", merge = true)
 	private String profitDate; //PROFIT DATE
 	
-	@Field(value = "G", merge = true, function = "domesticSalesFn")
+	@Field(value = "H", merge = true, function = "domesticSalesFn")
 	private String domesticSales; //국내매출
 	
-	@Field(value = "H", merge = true, function = "foreignSalesFn")
+	@Field(value = "I", merge = true, function = "foreignSalesFn")
 	private String foreignSales; //해외매출
 	
-	@Field(value = "I", merge = true)
+	@Field(value = "J", merge = true)
 	private String quantity; //Q'ty
 	
-	@Field(value = "J")
+	@Field(value = "K")
 	private String partner; //Partner
 	
-	@Field(value = "K")
+	@Field(value = "L")
 	private String tankNo; //Tank no.
 	
-	@Field(value = "L", merge = true)
+	@Field(value = "M", merge = true)
 	private String term; //Term
 	
-	@Field(value = "M", merge = true)
+	@Field(value = "N", merge = true)
 	private String item; //ITEM
 	
-	@Field(value = "N", merge = true)
+	@Field(value = "O", merge = true)
 	private String vesselVoyage; //Vessel / Voyage
 	
-	@Field(value = "O", merge = true)
+	@Field(value = "P", merge = true)
 	private String carrier; //Carrier
 	
-	@Field(value = "P", merge = true)
+	@Field(value = "Q", merge = true)
 	private String mblNo; //MBL NO
 	
-	@Field(value = "Q", mergeOrder = 0, merge = true)
+	@Field(value = "R", mergeOrder = 0, merge = true)
 	private String hblNo; //HBL NO.
 	
-	@Field(value = "R", merge = true)
+	@Field(value = "S", merge = true)
 	private String pol; //POL
 	
-	@Field(value = "S")
+	@Field(value = "T")
 	private String pod; //POD
 	
-	@Field(value = "T")
+	@Field(value = "U")
 	private String terminal; //TERMINAL
 	
-	@Field(value = "U")
+	@Field(value = "V")
 	private String etd; //ETD
 	
-	@Field(value = "V")
+	@Field(value = "W")
 	private String eta; //ETA
 	
-	@Field(value = "W")
+	@Field(value = "X")
 	private String ata; //ATA
 	
-	@Field(value = "X", merge = true)
+	@Field(value = "Y", merge = true)
 	private String remark; //비고
 	
-	@Field(value = "Y", function = "ftFn")
+	@Field(value = "Z", function = "ftFn")
 	private String ft; //F/T
 	
-	@Field(value = "Z", function = "demRateFn")
+	@Field(value = "AA", function = "demRateFn")
 	private String demRate; //DEM RATE
 	
-	@Field(value = "AA", function = "endOfFtFn")
+	@Field(value = "AB", function = "endOfFtFn")
 	private String endOfFt; //END OF F/T
 	
-	@Field(value = "AB")
+	@Field(value = "AC")
 	private String estimateReturnDate; //ESTIMATE RETURN DATE
 	
-	@Field(value = "AC")
+	@Field(value = "AD")
 	private String returnDate; //RETURN DATE
 	
-	@Field(value = "AD")
+	@Field(value = "AE")
 	private String returnDepot; //RETURN DEPOT
 	
-	@Field(value = "AE", function = "totalDemFn")
+	@Field(value = "AF")
+	private String demStatus; //DEM STATUS
+	
+	@Field(value = "AG", function = "totalDemFn")
 	private String totalDem; //TOTAL DEM
 	
-	@Field(value = "AF")
+	@Field(value = "AH")
 	private String demReceived; //DEM RECEIVED
 	
-	@Field(value = "AG")
+	@Field(value = "AI")
 	private String demRcvd; //DEM RCVD
 	
-	@Field(value = "AH", function = "demPrchFn")
+	@Field(value = "AJ", function = "demPrchFn")
 	private String demPrch; //COMMISSION DEDUCTED
 	
-	@Field(value = "AI", function = "demSalesFn")
+	@Field(value = "AK", function = "demSalesFn")
 	private String demSales; //DEM COMMISSION
 	
-	@Field(value = "AJ")
+	@Field(value = "AL")
 	private String depotInDate; //DEPOT IN DATE
 	
-	@Field(value = "AK")
+	@Field(value = "AM")
 	private String repositionPrch; //REPOSITION 매입
 	
 	@Builder.Default /* 필드명을 rowspan 해야 함 필수 */
@@ -297,6 +303,8 @@ public class WebsiteExcelReadDto {
 		private RowSpan invoice = RowSpan.builder().build();
 		@Builder.Default
 		private RowSpan concine = RowSpan.builder().build();
+		@Builder.Default
+		private RowSpan shipmentStatus = RowSpan.builder().build();
 		@Builder.Default
 		private RowSpan profitDate = RowSpan.builder().build();
 		@Builder.Default
