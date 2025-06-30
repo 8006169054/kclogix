@@ -3,19 +3,14 @@ let prevColIndex = null;
 let prevRowId = null;
 var gridHeight = 700;
 //var gridHeight = 580;
-$( document ).ready(function() {
-   	portTableInit();
-	searchPartnerAutocomplete();
-   	searchCargoAutocomplete();
-   	searchTerminalAutocomplete();
-   	searchCustomerAutocomplete();
-});
 
 $('#sreturnDate').daterangepicker({
-  locale: {format: 'YYYY-MM-DD'},
-  startDate: moment().subtract(30, 'days').format('YYYY-MM-DD'),
-  drops: 'down',
-  opens: 'right'
+  	locale: {format: 'YYYY-MM-DD'},
+	autoUpdateInput: false,
+  	drops: 'down',
+  	opens: 'right'
+}).on('apply.daterangepicker', function (ev, picker) {
+  $(this).val(picker.startDate.format('YYYY-MM-DD') + ' ~ ' + picker.endDate.format('YYYY-MM-DD'));
 });
 
 $('#sata').daterangepicker({
@@ -23,40 +18,27 @@ $('#sata').daterangepicker({
   autoUpdateInput: false,
   drops: 'down',
   opens: 'right'
-});
-
-// 날짜 선택 시 input 값 수동으로 설정
-$('#sata').on('apply.daterangepicker', function (ev, picker) {
+}).on('apply.daterangepicker', function (ev, picker) {
   $(this).val(picker.startDate.format('YYYY-MM-DD') + ' ~ ' + picker.endDate.format('YYYY-MM-DD'));
 });
 
 $('#serd').daterangepicker({
   locale: {format: 'YYYY-MM-DD'},
-  startDate: moment().subtract(30, 'days').format('YYYY-MM-DD'),
+  autoUpdateInput: false,
   drops: 'down',
   opens: 'right'
+}).on('apply.daterangepicker', function (ev, picker) {
+  $(this).val(picker.startDate.format('YYYY-MM-DD') + ' ~ ' + picker.endDate.format('YYYY-MM-DD'));
 });
 
 $('#sprofitDate').daterangepicker({
-	startDate: moment().subtract(30, 'days').format('YYYY-MM-DD'),
   locale: {format: 'YYYY-MM-DD'},
+  autoUpdateInput: false,
   drops: 'down',
   opens: 'right'
+}).on('apply.daterangepicker', function (ev, picker) {
+  $(this).val(picker.startDate.format('YYYY-MM-DD') + ' ~ ' + picker.endDate.format('YYYY-MM-DD'));
 });
-
-//$('#sdemRcvd').daterangepicker({
-//  locale: {format: 'YYYY-MM-DD'},
-//  startDate: moment().subtract(30, 'days').format('YYYY-MM-DD'),
-//  drops: 'down',
-//  opens: 'right'
-//});
-
-//$('#sdemRcvd').daterangepicker({
-//  locale: {format: 'YYYY-MM-DD'},
-//  autoUpdateInput: false,
-//  drops: 'down',
-//  opens: 'right'
-//});
 
 var partnerList = [];
 var carGoList = [];
@@ -479,3 +461,26 @@ function demRcvdSelectOnchange(){
 		$('#sdemRcvd1').val('');
 	}
 }
+
+$( document ).ready(function() {
+   	portTableInit();
+	searchPartnerAutocomplete();
+   	searchCargoAutocomplete();
+   	searchTerminalAutocomplete();
+   	searchCustomerAutocomplete();
+   	
+   	let sreturnDate = $('#sreturnDate').data('daterangepicker');
+   	sreturnDate.setStartDate(moment().subtract(30, 'days').format('YYYY-MM-DD'));
+	sreturnDate.setEndDate(moment().format('YYYY-MM-DD'));
+	sreturnDate.element.trigger('apply.daterangepicker', sreturnDate);
+	
+	let serd = $('#serd').data('daterangepicker');
+   	serd.setStartDate(moment().subtract(30, 'days').format('YYYY-MM-DD'));
+	serd.setEndDate(moment().format('YYYY-MM-DD'));
+	serd.element.trigger('apply.daterangepicker', serd);
+	
+	let sprofitDate = $('#sprofitDate').data('daterangepicker');
+   	sprofitDate.setStartDate(moment().subtract(30, 'days').format('YYYY-MM-DD'));
+	sprofitDate.setEndDate(moment().format('YYYY-MM-DD'));
+	sprofitDate.element.trigger('apply.daterangepicker', sprofitDate);
+});

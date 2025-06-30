@@ -175,26 +175,26 @@ public class WebsiteRepository extends KainosRepositorySupport {
 			
 			if(!KainosStringUtils.isEmpty(paramDto.getProfitDate())) {
 				log.error("ProfitDate : {}", paramDto.getProfitDate());
-				String[] tmp = paramDto.getProfitDate().split(" - ");
-				where.and(websiteTerminalCode.profitDate.goe(tmp[0]).and(websiteTerminalCode.profitDate.loe(tmp[1])));
+				String[] tmp = paramDto.getProfitDate().split("~");
+				where.and(websiteTerminalCode.profitDate.goe(tmp[0].trim()).and(websiteTerminalCode.profitDate.loe(tmp[1].trim())));
 			}
 			
 			if(!KainosStringUtils.isEmpty(paramDto.getErd())) {
 				log.error("erd : {}", paramDto.getErd());
-				String[] tmp = paramDto.getErd().split(" - ");
-				where.and(websiteTerminalCode.estimateReturnDate.goe(tmp[0]).and(websiteTerminalCode.estimateReturnDate.loe(tmp[1])));
+				String[] tmp = paramDto.getErd().split("~");
+				where.and(websiteTerminalCode.estimateReturnDate.goe(tmp[0].trim()).and(websiteTerminalCode.estimateReturnDate.loe(tmp[1].trim())));
 			}
 			
 			if(!KainosStringUtils.isEmpty(paramDto.getAta())) {
 				log.error("Ata : {}", paramDto.getAta());
-				String[] tmp = paramDto.getAta().split(" - ");
-				where.and(websiteTerminalCode.ata.goe(tmp[0]).and(websiteTerminalCode.ata.loe(tmp[1])));
+				String[] tmp = paramDto.getAta().split("~");
+				where.and(websiteTerminalCode.ata.goe(tmp[0].trim()).and(websiteTerminalCode.ata.loe(tmp[1].trim())));
 			}
 			
 			if(!KainosStringUtils.isEmpty(paramDto.getReturnDate())) {
 				log.error("returnDate : {}", paramDto.getReturnDate());
-				String[] tmp = paramDto.getReturnDate().split(" - ");
-				where.and(websiteTerminalCode.returnDate.goe(tmp[0]).and(websiteTerminalCode.returnDate.loe(tmp[1])));
+				String[] tmp = paramDto.getReturnDate().split("~");
+				where.and(websiteTerminalCode.returnDate.goe(tmp[0].trim()).and(websiteTerminalCode.returnDate.loe(tmp[1].trim())));
 			}
 			
 			if(!KainosStringUtils.isEmpty(paramDto.getPol())) {
