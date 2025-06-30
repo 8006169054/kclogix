@@ -34,8 +34,8 @@ public class WebsiteService {
 	 * @throws Exception
 	 */
 	@Transactional(readOnly = true)
-	public List<WebsiteDto> selectWebsiteTerminalCodeNew(WebsiteSearchDto paramDto, boolean init) throws Exception {
-		return repository.selectWebsiteTerminalCodeNew(paramDto, init);
+	public List<WebsiteDto> selectWebsiteTerminalCode(WebsiteSearchDto paramDto, boolean init) throws Exception {
+		return repository.selectWebsiteTerminalCode(paramDto, init);
 	}
 	
 	/**
@@ -45,8 +45,8 @@ public class WebsiteService {
 	 * @throws Exception
 	 */
 	@Transactional(readOnly = true)
-	public List<WebsiteDto> selectWebsiteTerminalCode(WebsiteDto paramDto) throws Exception {
-		return repository.selectWebsiteTerminalCode(paramDto);
+	public List<WebsiteDto> selectArrivalnotice(WebsiteSearchDto paramDto, boolean init) throws Exception {
+		return repository.selectArrivalnotice(paramDto);
 	}
 	
 	@Transactional(transactionManager = KainosKey.DBConfig.TransactionManager.Default, rollbackFor = Exception.class)
@@ -114,7 +114,7 @@ public class WebsiteService {
 	}
 	
 	@Transactional(transactionManager = KainosKey.DBConfig.TransactionManager.Default, rollbackFor = Exception.class)
-	public void arrivalNoticeSendMail(WebsiteDto paramDto)throws Exception {
+	public void arrivalNoticeSendMail(WebsiteSearchDto paramDto)throws Exception {
 		repository.arrivalNoticeSendMail(paramDto);
 	}
 	

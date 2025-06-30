@@ -49,7 +49,7 @@ public class WebsiteController {
 	
 	@GetMapping(value = "/api/management/website-terminal-code-init")
 	public ResponseEntity<WebsiteDto> selectWebsiteTerminalCodeInit() throws Exception {
-		List<WebsiteDto> PortList = service.selectWebsiteTerminalCodeNew(null, true);
+		List<WebsiteDto> PortList = service.selectWebsiteTerminalCode(null, true);
 		return KainosResponseEntity.builder().build()
 				.addData(handler.GenerationRowSpen(PortList, WebsiteDto.class))
 				.close();
@@ -94,17 +94,40 @@ public class WebsiteController {
 		.demRcvdSelect(sdemRcvdSelect)
 		.shipmentStatus(sshipmentStatus)
 		.build();
-		List<WebsiteDto> PortList = service.selectWebsiteTerminalCodeNew(paramDto, false);
+		List<WebsiteDto> PortList = service.selectWebsiteTerminalCode(paramDto, false);
 		return KainosResponseEntity.builder().build()
 				.addData(handler.GenerationRowSpen(PortList, WebsiteDto.class))
 				.close();
 	}
 	
-	@GetMapping(value = "/api/management/website-terminal-code1")
-	public ResponseEntity<WebsiteDto> selectWebsiteTerminalCode1(@RequestParam(required = false) String hblNo) throws Exception {
-		List<WebsiteDto> PortList = service.selectWebsiteTerminalCode(WebsiteDto.builder().hblNo(hblNo).build());
+	@GetMapping(value = "/api/management/arrivalnotice")
+	public ResponseEntity<WebsiteDto> selectArrivalnotice(
+			@RequestParam(required = false) String shblNo, 
+			@RequestParam(required = false) String sarrivalNotice, 
+			@RequestParam(required = false) String stankNo, 
+			@RequestParam(required = false) String sitem, 
+			@RequestParam(required = false) String scargo, 
+			@RequestParam(required = false) String smblNo, 
+			@RequestParam(required = false) String spol, 
+			@RequestParam(required = false) String spod, 
+			@RequestParam(required = false) String seta
+			) throws Exception {
+		
+		WebsiteSearchDto paramDto = WebsiteSearchDto.builder()
+				.tankNo(stankNo)
+				.item(sitem)
+				.cargo(scargo)
+				.hblNo(shblNo)
+				.mblNo(smblNo)
+				.pol(spol)
+				.pod(spod)
+				.arrivalNotice(sarrivalNotice)
+				.eta(seta)
+				.build();
+		
+		List<WebsiteDto> PortList = service.selectArrivalnotice(paramDto, false);
 		return KainosResponseEntity.builder().build()
-				.addData(PortList)
+				.addData(handler.GenerationRowSpen(PortList, WebsiteDto.class))
 				.close();
 	}
 	
@@ -149,11 +172,11 @@ public class WebsiteController {
 	}
 	
 	@PostMapping(value = "/api/management/arrival-notice-send-mail-template")
-	public ResponseEntity<InputStreamResource> arrivalNoticeSendMailTemplate(@RequestBody WebsiteDto paramDto, @KainosSession SessionDto session) throws Exception {
+	public ResponseEntity<InputStreamResource> arrivalNoticeSendMailTemplate(@RequestBody WebsiteSearchDto paramDto, @KainosSession SessionDto session) throws Exception {
 		HttpHeaders headers = new HttpHeaders();
 		byte[] eml = null;
 		try {
-			List<WebsiteDto> portList = service.selectWebsiteTerminalCode(paramDto);
+			List<WebsiteDto> portList = service.selectWebsiteTerminalCode(paramDto, false);
 			KainosMailDto mailDto = KainosMailDto.builder().build();
 			mailDto.from("KCL", "noreply@kclogix.com"); //보내는사람
 			mailDto.addCc("kcl@kclogix.com");
@@ -174,9 +197,9 @@ public class WebsiteController {
 	}
 
 	@PostMapping(value = "/api/management/arrival-notice-send-mail")
-	public ResponseEntity<Void> arrivalNoticeSendMail(@RequestBody WebsiteDto paramDto, @KainosSession SessionDto session) throws Exception {
+	public ResponseEntity<Void> arrivalNoticeSendMail(@RequestBody WebsiteSearchDto paramDto, @KainosSession SessionDto session) throws Exception {
 		try {
-			List<WebsiteDto> portList = service.selectWebsiteTerminalCode(paramDto);
+			List<WebsiteDto> portList = service.selectWebsiteTerminalCode(paramDto, false);
 			KainosMailDto mailDto = KainosMailDto.builder().build();
 //			mailDto.from("KCL", "noreply@kclogix.com"); //보내는사람
 			mailDto.addCc("kcl@kclogix.com");
@@ -192,7 +215,7 @@ public class WebsiteController {
 		return KainosResponseEntity.noneData();
 	}
 	
-	private String anMailTemplate(WebsiteDto paramDto, SessionDto session, List<WebsiteDto> portList) {
+	private String anMailTemplate(WebsiteSearchDto paramDto, SessionDto session, List<WebsiteDto> portList) {
 		StringBuffer sb = new StringBuffer();
 		sb.append("<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>");
 		sb.append("<html>");

@@ -29,4 +29,10 @@ public class WebsiteSearchDto {
 	private String demRcvd;
 	private String demRcvdSelect;
 	private String shipmentStatus;
+	private String eta;
+	private String arrivalNotice;
+	private String concinePic;
+	private String concineEmail;
+	private String concineName;
+	
 }

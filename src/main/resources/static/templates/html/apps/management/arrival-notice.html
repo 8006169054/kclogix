@@ -4,8 +4,6 @@
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{layouts/default/layout}" layout:fragment="Content">
 
-<!-- Page Specific JS File -->
-<script src="/templates/html/apps/management/arrival-notice.js"></script>
 <!-- Main Content -->
 <div class="main-content">
 	<section class="section">
@@ -27,21 +25,57 @@
 							<button class="btn btn-primary" onclick="search()" th:text="#{common.button.label.search}"></button>
 						</div>
 						<div class="card-body">
-							<div class="form-group row">
-<!-- 								<label th:text="#{basic.port.label.name}" class="col-form-label text-md-left col-md-10"></label> -->
-								<label class="col-form-label text-md-left col-md-5">HBL NO.</label>
-								<div class="col-md-15">
-									<input type="text" id="hblNo" name="hblNo" class="form-control" onkeydown="if (event.key == 'Enter'){ search(); }">
+							<form id="searchFrom" name="searchFrom">
+								<div class="form-group row">
+									<label class="col-form-label text-md-left" style="width: 90px;">HBL NO.</label>
+									<div style="width: 230px; margin-right: 15px;">
+										<input type="text" id="shblNo" name="shblNo" value="" class="form-control">
+									</div>
+									<label class="col-form-label text-md-left" style="width: 80px;">A/N Mail</label>
+									<div style="width: 160px; margin-right: 15px;">
+										<select class="form-control selectric" id="sarrivalNotice" name="sarrivalNotice">
+											<option value="" selected>ALL</option>
+					                        <option value="1">Sent Completed</option>
+					                        <option value="0" selected>Not Completed</option>
+				                      	</select>
+									</div>
+									<label class="col-form-label text-md-left" style="width: 80px;">Tank no.</label>
+									<div style="width: 160px; margin-right: 15px;">
+										<input type="text" id="stankNo" name="stankNo" value="" class="form-control">
+									</div>
+									<label class="col-form-label text-md-left" style="width: 60px;">Item</label>
+									<div style="width: 400px; margin-right: 15px;">
+										<input type="text" id="sitem" name="sitem" value="" class="form-control">
+										<input type="hidden" id="scargo" name="scargo">
+									</div>
 								</div>
-								<label class="col-form-label text-md-left col-md-5">A/N Mail</label>
-								<div class="col-md-12">
-									<select class="form-control selectric" id="arrivalNotice" name="arrivalNotice">
-										<option value="" selected>ALL</option>
-				                        <option value="1">Sent Completed</option>
-				                        <option value="0" selected>Not Completed</option>
-			                      	</select>
+								
+								<div class="form-group row">
+									<label class="col-form-label text-md-left" style="width: 90px;">MBL NO.</label>
+									<div style="width: 230px; margin-right: 15px;">
+										<input type="text" id="smblNo" name="smblNo" value="" class="form-control">
+									</div>
+									<label class="col-form-label text-md-left" style="width: 80px;">POL</label>
+									<div style="width: 160px; margin-right: 15px;">
+										<input type="text" id="spol" name="spol" value="" class="form-control">
+									</div>
+									<label class="col-form-label text-md-left" style="width: 80px;">POD</label>
+									<div style="width: 160px; margin-right: 15px;">
+										<input type="text" id="spod" name="spod" value="" class="form-control">
+									</div>
+									<label class="col-form-label text-md-left" style="width: 60px;">ETA</label>
+									<div style="width: 400px; margin-right: 15px;">
+										<div class="input-group">
+											<div class="input-group-prepend">
+												<div class="input-group-text">
+													<i class="fas fa-calendar"></i>
+												</div>
+											</div>
+											<input type="text" id="seta" name="seta" class="form-control daterange-cus">
+										</div>
+									</div>
 								</div>
-							</div>
+							</form>
 						</div>
 					</div>
 				</div>
@@ -64,4 +98,8 @@
 		</div>
 	</section>
 </div>
+
+<!-- Page Specific JS File -->
+<script src="/templates/html/apps/management/arrival-notice.js"></script>
+
 </html>

@@ -1,14 +1,11 @@
 var tableName = '#an-table';
-$( document ).ready(function() {
-   	portTableInit();
-});
 
 /**
  * 조회
  */
 async function search() {
 	$(tableName).clearGridData();
-	let response = await requestApi('GET', '/api/management/website-terminal-code', {hblNo : $('#hblNo').val(), arrivalNotice : $('#arrivalNotice').val()});
+	let response = await requestApi('GET', '/api/management/arrivalnotice', $('#searchFrom').serializeObject());
 	$(tableName).searchData(response.data, {editor: true});
 	response = null;
 }
@@ -84,3 +81,48 @@ async function anSend(type){
 	 	}
 	}
 }
+
+async function searchCargoAutocomplete(){
+	var response = await requestApi('GET', '/api/mdm/cargo/autocomplete');
+	if(response.common.status === 'S'){
+		carGoList = response.data;
+		$("#sitem").autocomplete({
+			source: carGoList,
+			delay: 100,
+			autoFocus: true,
+			minChars: 0,
+			minLength: 0,
+			open: function(){
+		        $(this).autocomplete('widget').css('z-index', 1100);
+		        return false;
+		    },
+		    select: function (event, ui) {
+		    	$('#scargo').val(ui.item.code);
+		    },
+		    close : function (event, ui) {
+		        return false;
+		    }
+		}).focus(function() {
+		    $(this).autocomplete("search", $(this).val());
+		});
+	}
+}
+
+$('#seta').daterangepicker({
+  locale: {format: 'YYYY-MM-DD'},
+  autoUpdateInput: false,
+  drops: 'down',
+  opens: 'right'
+}).on('apply.daterangepicker', function (ev, picker) {
+  $(this).val(picker.startDate.format('YYYY-MM-DD') + ' ~ ' + picker.endDate.format('YYYY-MM-DD'));
+});
+
+$( document ).ready(function() {
+   	portTableInit();
+   	searchCargoAutocomplete();
+   	
+   	let seta = $('#seta').data('daterangepicker');
+   	seta.setStartDate(moment().subtract(30, 'days').format('YYYY-MM-DD'));
+	seta.setEndDate(moment().format('YYYY-MM-DD'));
+	seta.element.trigger('apply.daterangepicker', seta);
+});

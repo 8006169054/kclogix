@@ -45,7 +45,7 @@ public class WebsiteRepository extends KainosRepositorySupport {
 	 * @return
 	 * @throws Exception
 	 */
-	public void arrivalNoticeSendMail(WebsiteDto paramDto) throws Exception {
+	public void arrivalNoticeSendMail(WebsiteSearchDto paramDto) throws Exception {
 		update(websiteTerminalCode)
 		 .set(websiteTerminalCode.arrivalNotice, "1")
 		 .where(websiteTerminalCode.hblNo.eq(paramDto.getHblNo()))
@@ -58,7 +58,7 @@ public class WebsiteRepository extends KainosRepositorySupport {
 	 * @return
 	 * @throws Exception
 	 */
-	public List<WebsiteDto> selectWebsiteTerminalCodeNew(WebsiteSearchDto paramDto, boolean init) throws Exception {
+	public List<WebsiteDto> selectWebsiteTerminalCode(WebsiteSearchDto paramDto, boolean init) throws Exception {
 		BooleanBuilder where = new BooleanBuilder();
 		if(init)
 			initWhere(where);
@@ -209,16 +209,30 @@ public class WebsiteRepository extends KainosRepositorySupport {
 				where.and(websiteTerminalCode.returnDepot.eq(paramDto.getReturnDepot()));
 			}
 			
-			if(paramDto.getDemRcvdSelect().equalsIgnoreCase("1")) {
-				where.and(websiteTerminalCode.demRcvd.eq(paramDto.getDemRcvd()));
-			}else if(paramDto.getDemRcvdSelect().equalsIgnoreCase("2")) {
-				where.and(websiteTerminalCode.demRcvd.eq("N/A").or(websiteTerminalCode.demRcvd.eq("NA")));
-			}else if(paramDto.getDemRcvdSelect().equalsIgnoreCase("3")) {
-				where.and(websiteTerminalCode.demRcvd.isNull().or(websiteTerminalCode.demRcvd.eq("")));
+			if(!KainosStringUtils.isEmpty(paramDto.getDemRcvdSelect())) {
+				if(paramDto.getDemRcvdSelect().equalsIgnoreCase("1")) {
+					where.and(websiteTerminalCode.demRcvd.eq(paramDto.getDemRcvd()));
+				}else if(paramDto.getDemRcvdSelect().equalsIgnoreCase("2")) {
+					where.and(websiteTerminalCode.demRcvd.eq("N/A").or(websiteTerminalCode.demRcvd.eq("NA")));
+				}else if(paramDto.getDemRcvdSelect().equalsIgnoreCase("3")) {
+					where.and(websiteTerminalCode.demRcvd.isNull().or(websiteTerminalCode.demRcvd.eq("")));
+				}
 			}
 			
 			if(!KainosStringUtils.isEmpty(paramDto.getShipmentStatus())) {
 				where.and(websiteTerminalCode.shipmentStatus.eq(paramDto.getShipmentStatus()));
+			}
+			
+			
+			if(!KainosStringUtils.isEmpty(paramDto.getArrivalNotice())) {
+				where.and(websiteTerminalCode.arrivalNotice.eq(paramDto.getArrivalNotice()));
+			}
+			
+			
+			if(!KainosStringUtils.isEmpty(paramDto.getEta())) {
+				log.error("Eta : {}", paramDto.getEta());
+				String[] tmp = paramDto.getEta().split("~");
+				where.and(websiteTerminalCode.eta.goe(tmp[0].trim()).and(websiteTerminalCode.eta.loe(tmp[1].trim())));
 			}
 		}
 	}
@@ -230,13 +244,10 @@ public class WebsiteRepository extends KainosRepositorySupport {
 	 * @return
 	 * @throws Exception
 	 */
-	public List<WebsiteDto> selectWebsiteTerminalCode(WebsiteDto paramDto) throws Exception {
+	public List<WebsiteDto> selectArrivalnotice(WebsiteSearchDto paramDto) throws Exception {
 		BooleanBuilder where = new BooleanBuilder();
-		if(!KainosStringUtils.isEmpty(paramDto.getHblNo()))
-			where.and(websiteTerminalCode.hblNo.contains(paramDto.getHblNo()));
 		
-		if(!KainosStringUtils.isEmpty(paramDto.getArrivalNotice()) && (paramDto.getArrivalNotice().equals("1") || paramDto.getArrivalNotice().equals("0")))
-			where.and(websiteTerminalCode.arrivalNotice.contains(paramDto.getArrivalNotice()));
+		searchWhere(paramDto, where);
 		
 		return select(Projections.bean(WebsiteDto.class,
 					websiteTerminalCode.uuid,
