@@ -77,7 +77,7 @@ async function portTableInit(){
 		url: '/api/management/website-terminal-code-init',  
 		mtype: 'GET',
 	   	datatype: "json",
-	   	colNames: ['','cargo','concine code', 'seq', 'uuid', 'HBL NO.', 'Tank no.', '매출', '이월 매출', 'A/N&EDI', 'INVOICE', 'CNEE', 'PIC', 'SHIPMENT STATUS', 'PROFIT DATE', '국내매출', '해외매출', "Q'ty", 'Partner', 'Term', 'Name', 'Date', 'Location', 'Vessel / Voyage', 'Carrier', 'MBL NO.', 'POL', 'POD', 'terminalCode', 'Name', 'Link', 'ETD', 'ETA', 'ATA', '비고', 'F/T', 'DEM RATE', 'END OF F/T', 'ESTIMATE RETURN DATE', 'RETURN DATE', 'RETURN DEPOT', 'DEM STATUS', 'TOTAL DEM', 'DEM BILLING', 'DEM RCVD', 'COMMISSION DEM', 'DEM COMMISSION', 'DEPOT IN DATE(REPO ONLY)', 'REPOSITION 매입'],
+	   	colNames: ['','cargo','concine code', 'seq', 'uuid', 'HBL NO.', 'Tank no.', '매출', '이월 매출', 'A/N&EDI', 'INVOICE', 'CNEE', 'PIC', 'SHIPMENT STATUS', 'PROFIT DATE', '국내매출', '해외매출', "Q'ty", 'Partner', 'Term', 'Name', 'Date', 'Location', 'Vessel / Voyage', 'Carrier', 'MBL NO.', 'POL', 'POD', 'terminalCode', 'Name', 'Link', 'ETD', 'ETA', 'ATA', '비고', 'F/T', 'DEM RATE', 'END OF F/T', 'ESTIMATE RETURN DATE', 'RETURN DATE', 'RETURN DEPOT', 'DEM STATUS', 'TOTAL DEM', 'DEM BILLING', 'DEM RCVD', 'DEM(USD) COMMISSION', 'DEM COMMISSION', 'DEPOT IN DATE(REPO ONLY)', 'REPOSITION 매입'],
 	   	colModel: [
 	   		{ name: 'jqFlag',				width: 40,		align:'center', 	hidden : false,	frozen:true},
 	   		{ name: 'cargo',				width: 100,		align:'center', 	rowspan: true,	editable : true, hidden : true,	frozen:true},
@@ -216,95 +216,108 @@ async function portTableInit(){
 		delselect: true,
 //		multiselect: true,
 		onCellSelect: function (rowId, iCol, cellContent, event) {
-//    		const grid = $(tableName);
-//	    	const colModel = grid.jqGrid("getGridParam", "colModel");
-//	    	const colName = colModel[iCol].name;
-//	    	// 모든 행 ID 가져오기
-//	    	const rowIds = grid.getDataIDs();
-//	
-//			// 이전 컬럼 색상 원복
-//		    if (prevColIndex !== null) {
-//		      const prevColName = colModel[prevColIndex].name;
-//		      rowIds.forEach(id => {
-//		        	grid.jqGrid("setCell", id, prevColName, "", { background: "" });
-//		      });
-//		    }
-//		    $("#" + prevRowId).css("background-color", "");
-//		    
-//	    	// 현재 선택된 컬럼 색상 적용
-//		    rowIds.forEach(id => {
-//		      grid.jqGrid("setCell", id, colName, "", {
-//		        background: "#d4edda" // 연한 녹색
-//		      });
-//		    });
-//		       
-//		    // 현재 행 전체 색상 적용
-//    		$("#" + rowId).css("background-color", "#d4edda");
-//
-//			// 고정 컬럼 영역도 함께 강조
-//			$(tableName).closest(".ui-jqgrid").find(".frozen-bdiv")
-//			  .find("tr[id='" + rowId + "']")
-//			  .css("background-color", "#d4edda");
-//  
-//		    // 📌 현재 선택 상태 저장
-//		    prevColIndex = iCol;
-//		    prevRowId = rowId;
+    		const grid = $(tableName);
+	    	const colModel = grid.jqGrid("getGridParam", "colModel");
+	    	const colName = colModel[iCol].name;
+	    	// 모든 행 ID 가져오기
+	    	const rowIds = grid.getDataIDs();
+	
+			// 이전 컬럼 색상 원복
+		    if (prevColIndex !== null) {
+		      const prevColName = colModel[prevColIndex].name;
+		      rowIds.forEach(id => {
+		        	grid.jqGrid("setCell", id, prevColName, "", { background: "" });
+		      });
+		    }
+		    $("#" + prevRowId).css("background-color", "");
+		    
+	    	// 현재 선택된 컬럼 색상 적용
+		    rowIds.forEach(id => {
+		      grid.jqGrid("setCell", id, colName, "", {
+		        background: "#d4edda" // 연한 녹색
+		      });
+		    });
+		       
+		    // 현재 행 전체 색상 적용
+    		$("#" + rowId).css("background-color", "#d4edda");
+
+			// 고정 컬럼 영역도 함께 강조
+			$(tableName).closest(".ui-jqgrid").find(".frozen-bdiv")
+			  .find("tr[id='" + rowId + "']")
+			  .css("background-color", "#d4edda");
+  
+		    // 현재 선택 상태 저장
+		    prevColIndex = iCol;
+		    prevRowId = rowId;
 //		    
 //		    console.log($(tableName));
 		    
 		},
 		afterSaveCell : function(rowid, cellname, value, iRow, iCol) {
-			var changeVal = false;
-			if('terminalName' === cellname){
-				if(value === ''){
-					ComSetCellData(tableName, iRow, 'terminalCode', '', true);
-					ComSetCellData(tableName, iRow, 'pod', '', true);
-					ComSetCellData(tableName, iRow, 'terminalHomepage', '', true);
-				}else{
-					for (let terminal of terminalList) {
-						if(terminal.value === value){
-							changeVal = true;
-							return false;
+			if('terminalName' === cellname || 'partner' === cellname || 'item' === cellname || 'concineName' === cellname){
+				var changeVal = false;
+				if('terminalName' === cellname){
+					if(value === ''){
+						ComSetCellData(tableName, iRow, 'terminalCode', '', true);
+						ComSetCellData(tableName, iRow, 'pod', '', true);
+						ComSetCellData(tableName, iRow, 'terminalHomepage', '', true);
+					}else{
+						for (let terminal of terminalList) {
+							if(terminal.value === value){
+								changeVal = true;
+								return false;
+							}
+						}
+					}
+				}else if('partner' === cellname){
+					if(value != ''){
+						for (let partner of partnerList) {
+							if(partner.value === value){
+								changeVal = true;
+								return false;
+							}
+						}
+					}
+				}else if('item' === cellname){
+					if(value === ''){
+						ComSetCellData(tableName, iRow, 'cargo', '', true);
+						ComSetCellData(tableName, iRow, 'cargoDate', '', true);
+						ComSetCellData(tableName, iRow, 'location', '', true);
+					}else{
+						for (let carGo of carGoList) {
+							if(carGo.value === value){
+								changeVal = true;
+								return false;
+							}
+						}
+					}
+				}else if('concineName' === cellname){
+					if(value === ''){
+						ComSetCellData(tableName, iRow, 'concine', '', true);
+						ComSetCellData(tableName, iRow, 'concinePic', '', true);
+					}else{
+						for (let customer of customerList) {
+							if(customer.value === value){
+								changeVal = true;
+								return false;
+							}
 						}
 					}
 				}
-			}else if('partner' === cellname){
-				if(value != ''){
-					for (let partner of partnerList) {
-						if(partner.value === value){
-							changeVal = true;
-							return false;
-						}
-					}
-				}
-			}else if('item' === cellname){
-				if(value === ''){
-					ComSetCellData(tableName, iRow, 'cargo', '', true);
-					ComSetCellData(tableName, iRow, 'cargoDate', '', true);
-					ComSetCellData(tableName, iRow, 'location', '', true);
-				}else{
-					for (let carGo of carGoList) {
-						if(carGo.value === value){
-							changeVal = true;
-							return false;
-						}
-					}
-				}
-			}else if('concineName' === cellname){
-				if(value === ''){
-					ComSetCellData(tableName, iRow, 'concine', '', true);
-					ComSetCellData(tableName, iRow, 'concinePic', '', true);
-				}else{
-					for (let customer of customerList) {
-						if(customer.value === value){
-							changeVal = true;
-							return false;
-						}
-					}
+				if(!changeVal) $(tableName).jqGrid('dataRecovery', rowid, cellname);
+			}else if('demStatus' === cellname && value === 'N'){
+				confirmMessage('TOTAL DEM, DEM BILLING, DEM RCVD, DEM(USD) COMMISSION, DEM COMMISSION 5개 컬럼 값이 N/A 변경됩니다.', 'info', '', demStatusChang);
+			}else if('shipmentStatus' === cellname && value === 'N'){
+				var cellValue = $(tableName).jqGrid('getCell', iRow, 'profitDate');
+				if(isEmpty(cellValue)){
+					alertMessage('Please enter the PROFIT DATE before setting SHIPMENT STATUS to OFF.', 'warning');
+					$(tableName).jqGrid('dataRecovery', rowid, cellname);
+//					setTimeout(function() {
+//					  $(tableName).find("tr[id='" + rowid + "'] input[name='profitDate']").focus();
+//					}, 100);
+//					$(tableName).jqGrid("editCell", rowid, 'profitDate', true);
 				}
 			}
-			
-			if(!changeVal) $(tableName).jqGrid('dataRecovery', rowid, cellname);
 		}
 	});
 	
@@ -321,6 +334,17 @@ async function portTableInit(){
 //	let response = await requestApi('GET', '/api/management/website-terminal-code-init');
 //	$(tableName).searchData(response.data, {editor: true});
 //	response = null;
+}
+
+async function demStatusChang(selection){
+	if(selection){
+		var iRow = ComSelectIndex(tableName);
+		ComSetCellData(tableName, iRow, 'totalDem', 'N/A');
+		ComSetCellData(tableName, iRow, 'demReceived', 'N/A');
+		ComSetCellData(tableName, iRow, 'demRcvd', 'N/A');
+		ComSetCellData(tableName, iRow, 'demPrch', 'N/A');
+		ComSetCellData(tableName, iRow, 'demSales', 'N/A');
+	}
 }
 
 async function searchPartnerAutocomplete(){

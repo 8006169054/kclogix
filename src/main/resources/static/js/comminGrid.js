@@ -38,8 +38,11 @@ function ComSetCellData(gridName, rowId, col, value, rowspan){
 	}
 }
 
+function ComGetCellData(gridName, rowId, col){
+	 $(gridName).getCell(rowId, col);
+}
+
 function ComSaveCell(gridName, rowId, col){
-	console.log('ComSaveCell', rowId, col);
 	$(gridName).jqGrid("saveCell", rowid, col); 
 }
 
