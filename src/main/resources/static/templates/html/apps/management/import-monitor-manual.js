@@ -174,7 +174,7 @@ async function portTableInit(){
 	    	{ name: 'terminalHomepage', 	width: 60, 	align:'center', formatter: terminalFn},
 	    	{ name: 'etd', 					width: 90, 		align:'center', editable: true, edittype: "date"},
 	    	{ name: 'eta', 					width: 90, 		align:'center', editable: true, edittype: "date"},
-	       	{ name: 'ata', 					width: 90, 		align:'center', editable: true},
+	       	{ name: 'ata', 					width: 90, 		align:'center', editable: true, edittype: "date"},
 	       	{ name: 'remark', 				width: 250, 	align:'center', editable: true,	rowspan: true, edittype: 'textarea'},
 	       	{ name: 'ft', 					width: 70, 		align:'center', editable: true},
 	       	{ name: 'demRate', 				width: 80, 		align:'center', editable: true},
@@ -290,11 +290,35 @@ async function portTableInit(){
 				if(isEmpty(cellValue)){
 					alertMessage('Please enter the PROFIT DATE before setting SHIPMENT STATUS to OFF.', 'warning');
 					$(tableName).jqGrid('dataRecovery', rowid, cellname);
-//					setTimeout(function() {
-//					  $(tableName).find("tr[id='" + rowid + "'] input[name='profitDate']").focus();
-//					}, 100);
-//					$(tableName).jqGrid("editCell", rowid, 'profitDate', true);
 				}
+			}else if('returnDate' === cellname || 'ata' === cellname){
+				var greturnDate = $(tableName).jqGrid('getCell', iRow, 'returnDate');
+				var gendOfFt = $(tableName).jqGrid('getCell', iRow, 'endOfFt');
+				var demRate = $(tableName).jqGrid('getCell', iRow, 'demRate');
+				
+				var totalDem = 'N/A';
+				var demStatus = 'N';
+				try{
+					const returnDate = new Date(greturnDate);
+					const endOfFT = new Date(gendOfFt); 
+					if (isNaN(returnDate) || isNaN(endOfFT)) {
+						throw new Error('One or both dates are invalid');
+					}
+
+					if (returnDate > endOfFT) {
+					  	const msPerDay = 24 * 60 * 60 * 1000;
+  						const daysOverdue = Math.max(0, Math.ceil((returnDate - endOfFT) / msPerDay));
+  						const totalCharge = daysOverdue * demRate;
+	  					if (totalCharge > 0) {
+							totalDem = totalCharge;
+							demStatus = 'Y';
+						}
+					}
+				} catch (error) {
+					console.log(error);
+				}
+				ComSetCellData(tableName, iRow, 'totalDem', totalDem);
+				ComSetCellData(tableName, iRow, 'demStatus', demStatus);
 			}
 		}
 	});
@@ -309,9 +333,6 @@ async function portTableInit(){
                               ]
 		});
 		
-//	let response = await requestApi('GET', '/api/management/website-terminal-code-init');
-//	$(tableName).searchData(response.data, {editor: true});
-//	response = null;
 }
 
 async function demStatusChang(selection){
@@ -399,12 +420,15 @@ async function searchCustomerAutocomplete(){
 	}
 }
 
-
 function terminalFn (cellvalue, options, rowObject ){
 	if(emptyChange(rowObject.terminalHomepage) === '')
 		return '';
 	else
 		return '<a href="' + rowObject.terminalHomepage + '" target="_blank"><img src="/assets/img/popup.png" height="22px"></a>';
+}
+
+function totalDemFn(cellvalue, options, rowObject){
+	console.log(cellvalue, options, rowObject);
 }
 
 async function save(){
