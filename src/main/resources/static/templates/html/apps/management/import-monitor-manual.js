@@ -214,45 +214,41 @@ async function portTableInit(){
 		dblEdit : true,
 		frozen: true,
 		delselect: true,
-//		multiselect: true,
-		onCellSelect: function (rowId, iCol, cellContent, event) {
-    		const grid = $(tableName);
-	    	const colModel = grid.jqGrid("getGridParam", "colModel");
-	    	const colName = colModel[iCol].name;
-	    	// 모든 행 ID 가져오기
-	    	const rowIds = grid.getDataIDs();
-	
-			// 이전 컬럼 색상 원복
-		    if (prevColIndex !== null) {
-		      const prevColName = colModel[prevColIndex].name;
-		      rowIds.forEach(id => {
-		        	grid.jqGrid("setCell", id, prevColName, "", { background: "" });
-		      });
-		    }
-		    $("#" + prevRowId).css("background-color", "");
-		    
-	    	// 현재 선택된 컬럼 색상 적용
-		    rowIds.forEach(id => {
-		      grid.jqGrid("setCell", id, colName, "", {
-		        background: "#d4edda" // 연한 녹색
-		      });
-		    });
-		       
-		    // 현재 행 전체 색상 적용
-    		$("#" + rowId).css("background-color", "#d4edda");
-
-			// 고정 컬럼 영역도 함께 강조
-			$(tableName).closest(".ui-jqgrid").find(".frozen-bdiv")
-			  .find("tr[id='" + rowId + "']")
-			  .css("background-color", "#d4edda");
-  
-		    // 현재 선택 상태 저장
-		    prevColIndex = iCol;
-		    prevRowId = rowId;
+//		onCellSelect: function (rowId, iCol, cellContent, event) {
+//    		const grid = $(tableName);
+//	    	const colModel = grid.jqGrid("getGridParam", "colModel");
+//	    	const colName = colModel[iCol].name;
+//	    	// 모든 행 ID 가져오기
+//	    	const rowIds = grid.getDataIDs();
+//	
+//			// 이전 컬럼 색상 원복
+//		    if (prevColIndex !== null) {
+//		      const prevColName = colModel[prevColIndex].name;
+//		      rowIds.forEach(id => {
+//		        	grid.jqGrid("setCell", id, prevColName, "", { background: "" });
+//		      });
+//		    }
+//		    $("#" + prevRowId).css("background-color", "");
 //		    
-//		    console.log($(tableName));
-		    
-		},
+//	    	// 현재 선택된 컬럼 색상 적용
+//		    rowIds.forEach(id => {
+//		      grid.jqGrid("setCell", id, colName, "", {
+//		        background: "#d4edda" // 연한 녹색
+//		      });
+//		    });
+//		       
+//		    // 현재 행 전체 색상 적용
+//    		$("#" + rowId).css("background-color", "#d4edda");
+//
+//			// 고정 컬럼 영역도 함께 강조
+//			$(tableName).closest(".ui-jqgrid").find(".frozen-bdiv")
+//			  .find("tr[id='" + rowId + "']")
+//			  .css("background-color", "#d4edda");
+//  
+//		    // 현재 선택 상태 저장
+//		    prevColIndex = iCol;
+//		    prevRowId = rowId;
+//		},
 		afterSaveCell : function(rowid, cellname, value, iRow, iCol) {
 			if('terminalName' === cellname || 'partner' === cellname || 'item' === cellname || 'concineName' === cellname){
 				var changeVal = false;
