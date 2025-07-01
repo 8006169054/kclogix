@@ -156,3 +156,18 @@ function toDate() {
 	const thirtyDaysAgo = new Date();
 	return thirtyDaysAgo.toISOString().slice(0, 10);
 }
+
+function formatDateToYYYYMMDD(date) {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0'); // 월은 0부터 시작하니 +1 필요
+  const day = String(date.getDate()).padStart(2, '0');
+
+  return `${year}-${month}-${day}`;
+}
+
+function formatToTwoDecimalPlaces(value) {
+	if(value === 'N/A') return value;
+  const num = parseFloat(value);
+  if (isNaN(num)) return "0.00"; // 숫자가 아니면 기본값 처리
+  return num.toFixed(2);
+}

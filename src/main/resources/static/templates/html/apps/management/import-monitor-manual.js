@@ -62,17 +62,17 @@ async function portTableInit(){
 	   	colNames: ['','cargo','concine code', 'seq', 'uuid', 'HBL NO.', 'Tank no.', '매출', '이월 매출', 'A/N&EDI', 'INVOICE', 'CNEE', 'PIC', 'SHIPMENT STATUS', 'PROFIT DATE', '국내매출', '해외매출', "Q'ty", 'Partner', 'Term', 'Name', 'Date', 'Location', 'Vessel / Voyage', 'Carrier', 'MBL NO.', 'POL', 'POD', 'terminalCode', 'Name', 'Link', 'ETD', 'ETA', 'ATA', '비고', 'F/T', 'DEM RATE', 'END OF F/T', 'ESTIMATE RETURN DATE', 'RETURN DATE', 'RETURN DEPOT', 'DEM STATUS', 'TOTAL DEM', 'DEM BILLING', 'DEM RCVD', 'DEM(USD) COMMISSION', 'DEM COMMISSION', 'DEPOT IN DATE(REPO ONLY)', 'REPOSITION 매입'],
 	   	colModel: [
 	   		{ name: 'jqFlag',				width: 40,		align:'center', 	hidden : false,	frozen:true},
-	   		{ name: 'cargo',				width: 100,		align:'center', 	rowspan: true,	editable : true, hidden : true,	frozen:true},
-	   		{ name: 'concine', 				width: 70, 		align:'center',		rowspan: true,	editable : true, hidden : true,	frozen:true},
+	   		{ name: 'cargo',				width: 100,		align:'center', 	hidden : false, rowspan: true,	editable : true, hidden : true,	frozen:true},
+	   		{ name: 'concine', 				width: 70, 		align:'center',		hidden : false, rowspan: true,	editable : true, hidden : true,	frozen:true},
 	   		{ name: 'seq', 					width: 50, 		align:'center',		hidden : true,	frozen:true},
 	   		{ name: 'uuid', 				width: 50, 		align:'center',		hidden : true,	frozen:true},
-	       	{ name: 'hblNo', 				width: 140, 	align:'center',		rowspan: true,	frozen:true},
-	       	{ name: 'tankNo', 				width: 120, 	align:'center', 	editable: true,	frozen:true},
-	       	{ name: 'sales', 				width: 50, 		align:'center',		rowspan: true,	editable: true},
-	       	{ name: 'carryoverSales', 		width: 50, 		align:'center',		rowspan: true,	editable: true},
-	       	{ name: 'arrivalNotice',		width: 70, 		align:'center',		rowspan: true},
-	       	{ name: 'invoice', 				width: 70, 		align:'center',		rowspan: true},
-	    	{ name: 'concineName',			width: 150, 	align:'center',		rowspan: true, editable: true, edittype: 'text', editoptions: {
+	       	{ name: 'hblNo', 				width: 140, 	align:'center',		hidden : true, rowspan: true,	frozen:true}, /**여기서부터 히든처리 */
+	       	{ name: 'tankNo', 				width: 120, 	align:'center', 	hidden : true, editable: true,	frozen:true},
+	       	{ name: 'sales', 				width: 50, 		align:'center',		hidden : true, rowspan: true,	editable: true},
+	       	{ name: 'carryoverSales', 		width: 50, 		align:'center',		hidden : true, rowspan: true,	editable: true},
+	       	{ name: 'arrivalNotice',		width: 70, 		align:'center',		hidden : true, rowspan: true},
+	       	{ name: 'invoice', 				width: 70, 		align:'center',		hidden : true, rowspan: true},
+	    	{ name: 'concineName',			width: 150, 	align:'center',		hidden : true, rowspan: true, editable: true, edittype: 'text', editoptions: {
 				dataInit:function(elem) {
 					$(elem).autocomplete({
 						source: customerList,
@@ -93,13 +93,13 @@ async function portTableInit(){
 			        });
 				}
 			}},
-			{ name: 'concinePic', 			width: 80, 		align:'center',		rowspan: true},
-			{ name: 'shipmentStatus', 		width: 80, 		align:'center',		rowspan: true, editable: true, formatter:'select', edittype:'select', editoptions : {value: 'Y:ON;N:OFF'}},
-	    	{ name: 'profitDate', 			width: 90, 		align:'center',		rowspan: true, editable: true, edittype: "date"},
-	    	{ name: 'domesticSales', 		width: 80, 		align:'center',		rowspan: true, editable: true},
-	    	{ name: 'foreignSales', 		width: 80, 		align:'center',		rowspan: true, editable: true},
-	    	{ name: 'quantity', 			width: 50, 		align:'center',		rowspan: true, editable: true},
-	    	{ name: 'partner',				width: 100, 	align:'center', 	rowspan: false, editable : true, editable : true, edittype: 'text', editoptions: {
+			{ name: 'concinePic', 			width: 80, 		align:'center',		hidden : true, rowspan: true},
+			{ name: 'shipmentStatus', 		width: 80, 		align:'center',		hidden : true, rowspan: true, editable: true, formatter:'select', edittype:'select', editoptions : {value: 'Y:ON;N:OFF'}},
+	    	{ name: 'profitDate', 			width: 90, 		align:'center',		hidden : true, rowspan: true, editable: true, edittype: "date"},
+	    	{ name: 'domesticSales', 		width: 80, 		align:'center',		hidden : true, rowspan: true, editable: true},
+	    	{ name: 'foreignSales', 		width: 80, 		align:'center',		hidden : true, rowspan: true, editable: true},
+	    	{ name: 'quantity', 			width: 50, 		align:'center',		hidden : true, rowspan: true, editable: true},
+	    	{ name: 'partner',				width: 100, 	align:'center', 	hidden : true, rowspan: false, editable : true, editable : true, edittype: 'text', editoptions: {
 				dataInit:function(elem) {
 					$(elem).autocomplete({
 						source: partnerList,
@@ -118,8 +118,8 @@ async function portTableInit(){
 			        });
 				}
 			}},
-	    	{ name: 'term', 				width: 80, 		align:'center',		rowspan: true, editable: true},
-	    	{ name: 'item',					width: 220, 	align:'center', 	rowspan: true, editable : true, edittype: 'text', editoptions: {
+	    	{ name: 'term', 				width: 80, 		align:'center',		hidden : true, rowspan: true, editable: true},
+	    	{ name: 'item',					width: 220, 	align:'center', 	hidden : true, rowspan: true, editable : true, edittype: 'text', editoptions: {
 				dataInit:function(elem) {
 					$(elem).autocomplete({
 						source: carGoList,
@@ -141,15 +141,15 @@ async function portTableInit(){
 			        });
 				}
 			}},
-			{ name: 'cargoDate', 			width: 80, 		align:'center',		rowspan: true},
-			{ name: 'location', 			width: 100, 	align:'center',		rowspan: true},
-	    	{ name: 'vesselVoyage', 		width: 200, 	align:'center',		rowspan: true, editable: true},
-	    	{ name: 'carrier', 				width: 80, 		align:'center',		rowspan: true, editable: true},
-	    	{ name: 'mblNo', 				width: 140, 	align:'center',		rowspan: true, editable: true},
-	    	{ name: 'pol', 					width: 100, 	align:'center',		rowspan: true, editable: true},
+			{ name: 'cargoDate', 			width: 80, 		align:'center',		hidden : true, rowspan: true},
+			{ name: 'location', 			width: 100, 	align:'center',		hidden : true, rowspan: true},
+	    	{ name: 'vesselVoyage', 		width: 200, 	align:'center',		hidden : true, rowspan: true, editable: true},
+	    	{ name: 'carrier', 				width: 80, 		align:'center',		hidden : true, rowspan: true, editable: true},
+	    	{ name: 'mblNo', 				width: 140, 	align:'center',		hidden : true, rowspan: true, editable: true},
+	    	{ name: 'pol', 					width: 100, 	align:'center',		hidden : true, rowspan: true, editable: true},
 	    	{ name: 'pod', 					width: 100, 	align:'center'},
-	    	{ name: 'terminalCode', 		width: 100, 	align:'center', 	hidden : true,},
-	    	{ name: 'terminalName', 		width: 150, 	align:'center',		editable : true, edittype: 'text', editoptions: {
+	    	{ name: 'terminalCode', 		width: 100, 	align:'center', 	hidden : true,}, /**히든 */
+	    	{ name: 'terminalName', 		width: 150, 	align:'center',		hidden : true, editable : true, edittype: 'text', editoptions: {
 				dataInit:function(elem) {
 					$(elem).autocomplete({
 						source: terminalList,
@@ -171,23 +171,23 @@ async function portTableInit(){
 			        });
 				}
 			}},
-	    	{ name: 'terminalHomepage', 	width: 60, 	align:'center', formatter: terminalFn},
+	    	{ name: 'terminalHomepage', 	width: 60, 		align:'center', hidden : true, formatter: terminalFn},
 	    	{ name: 'etd', 					width: 90, 		align:'center', editable: true, edittype: "date"},
 	    	{ name: 'eta', 					width: 90, 		align:'center', editable: true, edittype: "date"},
 	       	{ name: 'ata', 					width: 90, 		align:'center', editable: true, edittype: "date"},
 	       	{ name: 'remark', 				width: 250, 	align:'center', editable: true,	rowspan: true, edittype: 'textarea'},
 	       	{ name: 'ft', 					width: 70, 		align:'center', editable: true},
 	       	{ name: 'demRate', 				width: 80, 		align:'center', editable: true},
-	       	{ name: 'endOfFt', 				width: 90, 		align:'center', editable: true, edittype: "date"},
+	       	{ name: 'endOfFt', 				width: 90, 		align:'center', editable: true, editoptions : {pk:true}, edittype: "date"},
 	       	{ name: 'estimateReturnDate', 	width: 160, 	align:'center', editable: true, edittype: "date"},
 	       	{ name: 'returnDate', 			width: 100, 	align:'center', editable: true, edittype: "date"},
 	       	{ name: 'returnDepot', 			width: 100, 	align:'center', editable: true},
-	       	{ name: 'demStatus', 			width: 100, 	align:'center', editable: true, formatter:'select', edittype:'select', editoptions : {value: 'Y:Y;N:N'}},
-	       	{ name: 'totalDem', 			width: 100, 	align:'center', editable: true},
+	       	{ name: 'demStatus', 			width: 100, 	align:'center', editable: false, formatter:'select', edittype:'select', editoptions : {value: 'Y:Y;N:N'}},
+	       	{ name: 'totalDem', 			width: 100, 	align:'center', editable: true, editoptions : {pk:true}},
 	       	{ name: 'demReceived', 			width: 80, 		align:'center', editable: true},
 	       	{ name: 'demRcvd', 				width: 90, 		align:'center', editable: true},
-	       	{ name: 'demPrch', 				width: 100, 	align:'center', editable: true},
-	       	{ name: 'demSales', 			width: 100, 	align:'center', editable: true},
+	       	{ name: 'demPrch', 				width: 100, 	align:'center', editable: true, editoptions : {pk:true}},
+	       	{ name: 'demSales', 			width: 100, 	align:'center', editable: true, editoptions : {pk:true}},
 	       	{ name: 'depotInDate', 			width: 180, 	align:'center', editable: true, edittype: "date"},
 	       	{ name: 'repositionPrch', 		width: 120, 	align:'center', editable: true}
 	   	],
@@ -196,41 +196,41 @@ async function portTableInit(){
 		dblEdit : true,
 		frozen: true,
 		delselect: true,
-//		onCellSelect: function (rowId, iCol, cellContent, event) {
-//    		const grid = $(tableName);
-//	    	const colModel = grid.jqGrid("getGridParam", "colModel");
-//	    	const colName = colModel[iCol].name;
-//	    	// 모든 행 ID 가져오기
-//	    	const rowIds = grid.getDataIDs();
-//	
-//			// 이전 컬럼 색상 원복
-//		    if (prevColIndex !== null) {
-//		      const prevColName = colModel[prevColIndex].name;
-//		      rowIds.forEach(id => {
-//		        	grid.jqGrid("setCell", id, prevColName, "", { background: "" });
-//		      });
-//		    }
-//		    $("#" + prevRowId).css("background-color", "");
-//		    
-//	    	// 현재 선택된 컬럼 색상 적용
-//		    rowIds.forEach(id => {
-//		      grid.jqGrid("setCell", id, colName, "", {
-//		        background: "#d4edda" // 연한 녹색
-//		      });
-//		    });
-//		       
-//		    // 현재 행 전체 색상 적용
-//    		$("#" + rowId).css("background-color", "#d4edda");
-//
-//			// 고정 컬럼 영역도 함께 강조
-//			$(tableName).closest(".ui-jqgrid").find(".frozen-bdiv")
-//			  .find("tr[id='" + rowId + "']")
-//			  .css("background-color", "#d4edda");
-//  
-//		    // 현재 선택 상태 저장
-//		    prevColIndex = iCol;
-//		    prevRowId = rowId;
-//		},
+		onCellSelect: function (rowId, iCol, cellContent, event) {
+    		const grid = $(tableName);
+	    	const colModel = grid.jqGrid("getGridParam", "colModel");
+	    	const colName = colModel[iCol].name;
+	    	// 모든 행 ID 가져오기
+	    	const rowIds = grid.getDataIDs();
+	
+			// 이전 컬럼 색상 원복
+		    if (prevColIndex !== null) {
+		      const prevColName = colModel[prevColIndex].name;
+		      rowIds.forEach(id => {
+		        	grid.jqGrid("setCell", id, prevColName, "", { background: "" });
+		      });
+		    }
+		    $("#" + prevRowId).css("background-color", "");
+		    
+	    	// 현재 선택된 컬럼 색상 적용
+		    rowIds.forEach(id => {
+		      grid.jqGrid("setCell", id, colName, "", {
+		        background: "#d4edda" // 연한 녹색
+		      });
+		    });
+		       
+		    // 현재 행 전체 색상 적용
+    		$("#" + rowId).css("background-color", "#d4edda");
+
+			// 고정 컬럼 영역도 함께 강조
+			$(tableName).closest(".ui-jqgrid").find(".frozen-bdiv")
+			  .find("tr[id='" + rowId + "']")
+			  .css("background-color", "#d4edda");
+  
+		    // 현재 선택 상태 저장
+		    prevColIndex = iCol;
+		    prevRowId = rowId;
+		},
 		afterSaveCell : function(rowid, cellname, value, iRow, iCol) {
 			if('terminalName' === cellname || 'partner' === cellname || 'item' === cellname || 'concineName' === cellname){
 				var changeVal = false;
@@ -291,35 +291,45 @@ async function portTableInit(){
 					alertMessage('Please enter the PROFIT DATE before setting SHIPMENT STATUS to OFF.', 'warning');
 					$(tableName).jqGrid('dataRecovery', rowid, cellname);
 				}
-			}else if('returnDate' === cellname || 'ata' === cellname){
-				var greturnDate = $(tableName).jqGrid('getCell', iRow, 'returnDate');
-				var gendOfFt = $(tableName).jqGrid('getCell', iRow, 'endOfFt');
-				var demRate = $(tableName).jqGrid('getCell', iRow, 'demRate');
-				
-				var totalDem = 'N/A';
-				var demStatus = 'N';
-				try{
-					const returnDate = new Date(greturnDate);
-					const endOfFT = new Date(gendOfFt); 
-					if (isNaN(returnDate) || isNaN(endOfFT)) {
-						throw new Error('One or both dates are invalid');
-					}
-
-					if (returnDate > endOfFT) {
-					  	const msPerDay = 24 * 60 * 60 * 1000;
-  						const daysOverdue = Math.max(0, Math.ceil((returnDate - endOfFT) / msPerDay));
-  						const totalCharge = daysOverdue * demRate;
-	  					if (totalCharge > 0) {
-							totalDem = totalCharge;
-							demStatus = 'Y';
-						}
-					}
-				} catch (error) {
-					console.log(error);
-				}
-				ComSetCellData(tableName, iRow, 'totalDem', totalDem);
-				ComSetCellData(tableName, iRow, 'demStatus', demStatus);
 			}
+			else if('returnDate' === cellname || 'ata' === cellname || 'ft' === cellname){
+				if('ata' === cellname || 'ft' === cellname){
+					var ata = $(tableName).jqGrid('getCell', iRow, 'ata');
+					var ft = $(tableName).jqGrid('getCell', iRow, 'ft');
+					ComSetCellData(tableName, iRow, 'endOfFt', endOfFt(ata, ft));
+				}
+				
+				multiFn(iRow);
+			}
+//			else if('returnDate' === cellname || 'ata' === cellname){
+//				var greturnDate = $(tableName).jqGrid('getCell', iRow, 'returnDate');
+//				var gendOfFt = $(tableName).jqGrid('getCell', iRow, 'endOfFt');
+//				var demRate = $(tableName).jqGrid('getCell', iRow, 'demRate');
+//				
+//				var totalDem = 'N/A';
+//				var demStatus = 'N';
+//				try{
+//					const returnDate = new Date(greturnDate);
+//					const endOfFT = new Date(gendOfFt); 
+//					if (isNaN(returnDate) || isNaN(endOfFT)) {
+//						throw new Error('One or both dates are invalid');
+//					}
+//
+//					if (returnDate > endOfFT) {
+//					  	const msPerDay = 24 * 60 * 60 * 1000;
+//  						const daysOverdue = Math.max(0, Math.ceil((returnDate - endOfFT) / msPerDay));
+//  						const totalCharge = daysOverdue * demRate;
+//	  					if (totalCharge > 0) {
+//							totalDem = totalCharge;
+//							demStatus = 'Y';
+//						}
+//					}
+//				} catch (error) {
+//					console.log(error);
+//				}
+//				ComSetCellData(tableName, iRow, 'totalDem', totalDem);
+//				ComSetCellData(tableName, iRow, 'demStatus', demStatus);
+//			}
 		}
 	});
 	
@@ -427,10 +437,6 @@ function terminalFn (cellvalue, options, rowObject ){
 		return '<a href="' + rowObject.terminalHomepage + '" target="_blank"><img src="/assets/img/popup.png" height="22px"></a>';
 }
 
-function totalDemFn(cellvalue, options, rowObject){
-	console.log(cellvalue, options, rowObject);
-}
-
 async function save(){
 	var saveData = $(tableName).saveGridData();
 	if(saveData.length === 0)
@@ -508,3 +514,92 @@ $( document ).ready(function() {
 	sprofitDate.setEndDate(moment().format('YYYY-MM-DD'));
 	sprofitDate.element.trigger('apply.daterangepicker', sprofitDate);
 });
+
+function calculate(){
+	if(prevRowId === null) alertMessage(getMessage('0000'), 'info');
+	multiFn(prevRowId);
+}
+
+/**
+ * 
+ */
+function multiFn(iRow){
+	var returnDate = $(tableName).jqGrid('getCell', iRow, 'returnDate');
+	var endOfFt = $(tableName).jqGrid('getCell', iRow, 'endOfFt');
+	var demRate = $(tableName).jqGrid('getCell', iRow, 'demRate');
+	var totalDem = calculateDemurrage(returnDate, endOfFt, demRate);
+	
+	ComSetCellData(tableName, iRow, 'totalDem', formatToTwoDecimalPlaces(totalDem));
+	
+	var demPrch = calculateTotalUsdDem(totalDem);
+	ComSetCellData(tableName, iRow, 'demPrch', formatToTwoDecimalPlaces(demPrch));
+	
+	var demSales = 	calculateTotalDem(totalDem);
+	ComSetCellData(tableName, iRow, 'demSales', formatToTwoDecimalPlaces(demSales));
+	$(tableName).saveGridData();
+}
+
+/**
+ * 
+ */
+function calculateDemurrage(returnDate, endOfFT, demRate) {
+  	var returnData = "N/A";
+  	const returnDt = new Date(returnDate);
+  	const endFT = new Date(endOfFT);
+  	if (returnDt > endFT) {
+   	 	const diffTime = returnDt - endFT; // 밀리초 차이
+    	const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); // 일 수로 변환
+    	return diffDays * demRate;
+  	}
+  	return returnData;
+}
+
+function calculateTotalUsdDem(totalDem) {
+  try {
+    if (totalDem > 0) {
+      return totalDem * 0.9;
+    } else {
+      return "N/A";
+    }
+  } catch (error) {
+    return "N/A";
+  }
+}
+
+function calculateTotalDem(totalDem) {
+  try {
+    if (totalDem > 0) {
+      return totalDem * 0.1;
+    } else {
+      return "N/A";
+    }
+  } catch (error) {
+    return "N/A";
+  }
+}
+
+/**
+ * 수식 ETA or F/T 데이터 변경 시 실행한다.
+ * ETA , F/T 데이터 변경 시  ((ETA+F/T)-1,"N/A") = END OF F/T
+ */
+function endOfFt(etaOrAtadate, ft){
+	var returnData = "N/A";
+	try{
+		if(parseInt(ft) > -1){
+			// 현재 날짜를 가져옵니다
+			const toDay = new Date(etaOrAtadate);
+			// ft 일을 더합니다
+			const plusThree = new Date(toDay);
+			plusThree.setDate(toDay.getDate() + parseInt(ft));
+			const result = new Date(plusThree);
+			result.setDate(plusThree.getDate() - 1);
+			returnData = result;
+		}
+	} catch (error) {
+		console.log(error);
+	}
+	if(returnData != 'N/A')
+		return formatDateToYYYYMMDD(returnData);
+	else
+		return returnData;
+}
