@@ -92,7 +92,11 @@
 										<label for="name">POD</label>
 										<input type="text" class="form-control" id="pod" name="pod">
 									</div>
-									<div class="form-group" style="width: 290px; margin-right: 15px;">
+									<div class="form-group" style="width: 80px; margin-right: 1px;">
+										<label for="name">Code</label>
+										<input type="text" class="form-control" id="parkingLotCode" name="parkingLotCode" readonly="readonly">
+									</div>
+									<div class="form-group" style="width: 210px; margin-right: 15px;">
 										<label for="name">TERMINAL</label>
 										<input type="text" class="form-control" id="terminal" name="terminal">
 										<input type="hidden" class="form-control" id="terminalCode" name="terminalCode" readonly="readonly">
@@ -120,7 +124,15 @@
 									</div>
 								</div>
 								<div class="form-group row">
-									<div class="form-group col-md-96">
+									<div class="form-group" style="width: 130px; margin-right: 15px;">
+										<label for="name">STATUS</label>
+										<select id="shipmentStatus" name="shipmentStatus" class="form-control select2" data-minimum-results-for-search="Infinity">
+											<option value="Y" selected="selected">IN PROGRES</option>
+											<option value="N">CLOSED</option>
+											<option value="">All</option>
+										</select>
+									</div>
+									<div class="form-group col-md-70">
 										<label for="name">비고</label>
 										<input type="text" class="form-control" id="remark" name="remark">
 									</div>
@@ -206,6 +218,7 @@ async function terminalAutocompleteLoad(){
 	    select: function (event, ui) {
 	    	$('#terminalCode').val(ui.item.code);
 	    	$('#pod').val(ui.item.region);
+	    	$('#parkingLotCode').val(ui.item.parkingLotCode);
 	    },
 	    close : function (event, ui) {
 	        return false;

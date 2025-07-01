@@ -124,6 +124,7 @@ public class TerminalRepository extends KainosRepositorySupport {
 				mdmTerminal.code,
 				mdmTerminal.region,
 				mdmTerminal.homepage,
+				mdmTerminal.parkingLotCode,
 				mdmTerminal.name.upper().as("value"),
 				mdmTerminal.name.upper().as("label")
 				))

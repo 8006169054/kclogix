@@ -41,6 +41,7 @@ public class SelectBoxDto {
 		private String label;
 		private String code;
 		private String region;
+		private String parkingLotCode;
 		private String homepage;
 		
 	}

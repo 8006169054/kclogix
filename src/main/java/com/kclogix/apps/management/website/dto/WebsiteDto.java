@@ -156,6 +156,7 @@ public class WebsiteDto {
 	private String createDate;
 	private String updateUserId;
 	private String updateDate;
+	private String parkingLotCode;
 	
 	@Builder.Default /* 필드명을 rowspan 해야 함 필수 */
 	private RowSpanOtion rowspan = RowSpanOtion.builder().build();

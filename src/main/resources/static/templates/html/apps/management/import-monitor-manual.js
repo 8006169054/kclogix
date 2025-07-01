@@ -59,7 +59,7 @@ async function portTableInit(){
 		url: '/api/management/website-terminal-code-init',  
 		mtype: 'GET',
 	   	datatype: "json",
-	   	colNames: ['','cargo','concine code', 'seq', 'uuid', 'HBL NO.', 'Tank no.', '매출', '이월 매출', 'A/N&EDI', 'INVOICE', 'CNEE', 'PIC', 'SHIPMENT STATUS', 'PROFIT DATE', '국내매출', '해외매출', "Q'ty", 'Partner', 'Term', 'Name', 'Date', 'Location', 'Vessel / Voyage', 'Carrier', 'MBL NO.', 'POL', 'POD', 'terminalCode', 'Name', 'Link', 'ETD', 'ETA', 'ATA', '비고', 'F/T', 'DEM RATE', 'END OF F/T', 'ESTIMATE RETURN DATE', 'RETURN DATE', 'RETURN DEPOT', 'DEM STATUS', 'TOTAL DEM', 'DEM BILLING', 'DEM RCVD', 'DEM(USD) COMMISSION', 'DEM COMMISSION', 'DEPOT IN DATE(REPO ONLY)', 'REPOSITION 매입'],
+	   	colNames: ['','cargo','concine code', 'seq', 'uuid', 'HBL NO.', 'Tank no.', '매출', '이월 매출', 'A/N&EDI', 'INVOICE', 'CNEE', 'PIC', 'SHIPMENT STATUS', 'PROFIT DATE', '국내매출', '해외매출', "Q'ty", 'Partner', 'Term', 'Name', 'Date', 'Location', 'Vessel / Voyage', 'Carrier', 'MBL NO.', 'POL', 'POD', 'Code', 'Code', 'Name', 'Link', 'ETD', 'ETA', 'ATA', '비고', 'F/T', 'DEM RATE', 'END OF F/T', 'ESTIMATE RETURN DATE', 'RETURN DATE', 'RETURN DEPOT', 'DEM STATUS', 'TOTAL DEM', 'DEM BILLING', 'DEM RCVD', 'DEM(USD) COMMISSION', 'DEM COMMISSION', 'DEPOT IN DATE(REPO ONLY)', 'REPOSITION 매입'],
 	   	colModel: [
 	   		{ name: 'jqFlag',				width: 40,		align:'center', 	hidden : false,	frozen:true},
 	   		{ name: 'cargo',				width: 100,		align:'center', 	hidden : false, rowspan: true,	editable : true, hidden : true,	frozen:true},
@@ -148,7 +148,8 @@ async function portTableInit(){
 	    	{ name: 'mblNo', 				width: 140, 	align:'center',		hidden : false, rowspan: true, editable: true},
 	    	{ name: 'pol', 					width: 100, 	align:'center',		hidden : false, rowspan: true, editable: true},
 	    	{ name: 'pod', 					width: 100, 	align:'center'},
-	    	{ name: 'terminalCode', 		width: 100, 	align:'center', 	hidden : true,}, /**히든 */
+	    	{ name: 'terminalCode', 		width: 100, 	align:'center', 	hidden : true},
+	    	{ name: 'parkingLotCode', 		width: 80, 	align:'center', 	hidden : false},
 	    	{ name: 'terminalName', 		width: 150, 	align:'center',		hidden : false, editable : true, edittype: 'text', editoptions: {
 				dataInit:function(elem) {
 					$(elem).autocomplete({
@@ -161,6 +162,7 @@ async function portTableInit(){
 							ComSetCellData(tableName, ComSelectIndex(tableName), 'terminalCode', ui.item.code, true);
 							ComSetCellData(tableName, ComSelectIndex(tableName), 'pod', ui.item.region, true);
 							ComSetCellData(tableName, ComSelectIndex(tableName), 'terminalHomepage', ui.item.homepage, true);
+							ComSetCellData(tableName, ComSelectIndex(tableName), 'parkingLotCode', ui.item.parkingLotCode, true);
 				        },
 				        close : function (event, ui) {
 				            $(tableName).delay(2000).focus();
@@ -337,7 +339,7 @@ async function portTableInit(){
 				useColSpanStyle: true,
 				groupHeaders: [
                                 {startColumnName:'item', numberOfColumns: 3, titleText: 'Item' },
-                                {startColumnName:'pod', numberOfColumns: 4, titleText: 'Terminal' },
+                                {startColumnName:'pod', numberOfColumns: 5, titleText: 'Terminal' },
                                 {startColumnName:'concineName', numberOfColumns: 2, titleText: 'Customer' }
                                 
                               ]
@@ -490,6 +492,27 @@ function demRcvdSelectOnchange(){
 		$('#sdemRcvd-calendar').hide();
 		$('#sdemRcvd1').val('');
 	}
+}
+
+function clearSearchBox(){
+	$('#searchFrom')[0].reset();
+	let sreturnDate = $('#sreturnDate').data('daterangepicker');
+   	sreturnDate.setStartDate(moment().subtract(30, 'days').format('YYYY-MM-DD'));
+	sreturnDate.setEndDate(moment().format('YYYY-MM-DD'));
+	sreturnDate.element.trigger('apply.daterangepicker', sreturnDate);
+	
+	let serd = $('#serd').data('daterangepicker');
+   	serd.setStartDate(moment().subtract(30, 'days').format('YYYY-MM-DD'));
+	serd.setEndDate(moment().format('YYYY-MM-DD'));
+	serd.element.trigger('apply.daterangepicker', serd);
+	
+	let sprofitDate = $('#sprofitDate').data('daterangepicker');
+   	sprofitDate.setStartDate(moment().subtract(30, 'days').format('YYYY-MM-DD'));
+	sprofitDate.setEndDate(moment().format('YYYY-MM-DD'));
+	sprofitDate.element.trigger('apply.daterangepicker', sprofitDate);
+	
+	$('#sshipmentStatus').val('Y').trigger('change');
+	$('#sdemRcvdSelect').val('0').trigger('change');
 }
 
 $( document ).ready(function() {
