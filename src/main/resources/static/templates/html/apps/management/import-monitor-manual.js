@@ -66,13 +66,13 @@ async function portTableInit(){
 	   		{ name: 'concine', 				width: 70, 		align:'center',		hidden : false, rowspan: true,	editable : true, hidden : true,	frozen:true},
 	   		{ name: 'seq', 					width: 50, 		align:'center',		hidden : true,	frozen:true},
 	   		{ name: 'uuid', 				width: 50, 		align:'center',		hidden : true,	frozen:true},
-	       	{ name: 'hblNo', 				width: 140, 	align:'center',		hidden : true, rowspan: true,	frozen:true}, /**여기서부터 히든처리 */
-	       	{ name: 'tankNo', 				width: 120, 	align:'center', 	hidden : true, editable: true,	frozen:true},
-	       	{ name: 'sales', 				width: 50, 		align:'center',		hidden : true, rowspan: true,	editable: true},
-	       	{ name: 'carryoverSales', 		width: 50, 		align:'center',		hidden : true, rowspan: true,	editable: true},
-	       	{ name: 'arrivalNotice',		width: 70, 		align:'center',		hidden : true, rowspan: true},
-	       	{ name: 'invoice', 				width: 70, 		align:'center',		hidden : true, rowspan: true},
-	    	{ name: 'concineName',			width: 150, 	align:'center',		hidden : true, rowspan: true, editable: true, edittype: 'text', editoptions: {
+	       	{ name: 'hblNo', 				width: 140, 	align:'center',		hidden : false, rowspan: true,	frozen:true}, /**여기서부터 히든처리 */
+	       	{ name: 'tankNo', 				width: 120, 	align:'center', 	hidden : false, editable: true,	frozen:true},
+	       	{ name: 'sales', 				width: 50, 		align:'center',		hidden : false, rowspan: true,	editable: true},
+	       	{ name: 'carryoverSales', 		width: 50, 		align:'center',		hidden : false, rowspan: true,	editable: true},
+	       	{ name: 'arrivalNotice',		width: 70, 		align:'center',		hidden : false, rowspan: true},
+	       	{ name: 'invoice', 				width: 70, 		align:'center',		hidden : false, rowspan: true},
+	    	{ name: 'concineName',			width: 150, 	align:'center',		hidden : false, rowspan: true, editable: true, edittype: 'text', editoptions: {
 				dataInit:function(elem) {
 					$(elem).autocomplete({
 						source: customerList,
@@ -93,13 +93,13 @@ async function portTableInit(){
 			        });
 				}
 			}},
-			{ name: 'concinePic', 			width: 80, 		align:'center',		hidden : true, rowspan: true},
-			{ name: 'shipmentStatus', 		width: 80, 		align:'center',		hidden : true, rowspan: true, editable: true, formatter:'select', edittype:'select', editoptions : {value: 'Y:ON;N:OFF'}},
-	    	{ name: 'profitDate', 			width: 90, 		align:'center',		hidden : true, rowspan: true, editable: true, edittype: "date"},
-	    	{ name: 'domesticSales', 		width: 80, 		align:'center',		hidden : true, rowspan: true, editable: true},
-	    	{ name: 'foreignSales', 		width: 80, 		align:'center',		hidden : true, rowspan: true, editable: true},
-	    	{ name: 'quantity', 			width: 50, 		align:'center',		hidden : true, rowspan: true, editable: true},
-	    	{ name: 'partner',				width: 100, 	align:'center', 	hidden : true, rowspan: false, editable : true, editable : true, edittype: 'text', editoptions: {
+			{ name: 'concinePic', 			width: 80, 		align:'center',		hidden : false, rowspan: true},
+			{ name: 'shipmentStatus', 		width: 80, 		align:'center',		hidden : false, rowspan: true, editable: true, formatter:'select', edittype:'select', editoptions : {value: 'Y:ON;N:OFF'}},
+	    	{ name: 'profitDate', 			width: 90, 		align:'center',		hidden : false, rowspan: true, editable: true, edittype: "date"},
+	    	{ name: 'domesticSales', 		width: 80, 		align:'center',		hidden : false, rowspan: true, editable: true},
+	    	{ name: 'foreignSales', 		width: 80, 		align:'center',		hidden : false, rowspan: true, editable: true},
+	    	{ name: 'quantity', 			width: 50, 		align:'center',		hidden : false, rowspan: true, editable: true},
+	    	{ name: 'partner',				width: 100, 	align:'center', 	hidden : false, rowspan: false, editable : true, editable : true, edittype: 'text', editoptions: {
 				dataInit:function(elem) {
 					$(elem).autocomplete({
 						source: partnerList,
@@ -118,8 +118,8 @@ async function portTableInit(){
 			        });
 				}
 			}},
-	    	{ name: 'term', 				width: 80, 		align:'center',		hidden : true, rowspan: true, editable: true},
-	    	{ name: 'item',					width: 220, 	align:'center', 	hidden : true, rowspan: true, editable : true, edittype: 'text', editoptions: {
+	    	{ name: 'term', 				width: 80, 		align:'center',		hidden : false, rowspan: true, editable: true},
+	    	{ name: 'item',					width: 220, 	align:'center', 	hidden : false, rowspan: true, editable : true, edittype: 'text', editoptions: {
 				dataInit:function(elem) {
 					$(elem).autocomplete({
 						source: carGoList,
@@ -141,15 +141,15 @@ async function portTableInit(){
 			        });
 				}
 			}},
-			{ name: 'cargoDate', 			width: 80, 		align:'center',		hidden : true, rowspan: true},
-			{ name: 'location', 			width: 100, 	align:'center',		hidden : true, rowspan: true},
-	    	{ name: 'vesselVoyage', 		width: 200, 	align:'center',		hidden : true, rowspan: true, editable: true},
-	    	{ name: 'carrier', 				width: 80, 		align:'center',		hidden : true, rowspan: true, editable: true},
-	    	{ name: 'mblNo', 				width: 140, 	align:'center',		hidden : true, rowspan: true, editable: true},
-	    	{ name: 'pol', 					width: 100, 	align:'center',		hidden : true, rowspan: true, editable: true},
+			{ name: 'cargoDate', 			width: 80, 		align:'center',		hidden : false, rowspan: true},
+			{ name: 'location', 			width: 100, 	align:'center',		hidden : false, rowspan: true},
+	    	{ name: 'vesselVoyage', 		width: 200, 	align:'center',		hidden : false, rowspan: true, editable: true},
+	    	{ name: 'carrier', 				width: 80, 		align:'center',		hidden : false, rowspan: true, editable: true},
+	    	{ name: 'mblNo', 				width: 140, 	align:'center',		hidden : false, rowspan: true, editable: true},
+	    	{ name: 'pol', 					width: 100, 	align:'center',		hidden : false, rowspan: true, editable: true},
 	    	{ name: 'pod', 					width: 100, 	align:'center'},
 	    	{ name: 'terminalCode', 		width: 100, 	align:'center', 	hidden : true,}, /**히든 */
-	    	{ name: 'terminalName', 		width: 150, 	align:'center',		hidden : true, editable : true, edittype: 'text', editoptions: {
+	    	{ name: 'terminalName', 		width: 150, 	align:'center',		hidden : false, editable : true, edittype: 'text', editoptions: {
 				dataInit:function(elem) {
 					$(elem).autocomplete({
 						source: terminalList,
@@ -171,7 +171,7 @@ async function portTableInit(){
 			        });
 				}
 			}},
-	    	{ name: 'terminalHomepage', 	width: 60, 		align:'center', hidden : true, formatter: terminalFn},
+	    	{ name: 'terminalHomepage', 	width: 60, 		align:'center', hidden : false, formatter: terminalFn},
 	    	{ name: 'etd', 					width: 90, 		align:'center', editable: true, edittype: "date"},
 	    	{ name: 'eta', 					width: 90, 		align:'center', editable: true, edittype: "date"},
 	       	{ name: 'ata', 					width: 90, 		align:'center', editable: true, edittype: "date"},
