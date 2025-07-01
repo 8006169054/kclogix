@@ -14,6 +14,7 @@ import com.kclogix.apps.management.website.dto.WebsiteDto;
 import com.kclogix.apps.management.website.dto.WebsiteSearchDto;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.CaseBuilder;
 import com.querydsl.core.types.dsl.Expressions;
 
@@ -143,10 +144,15 @@ public class WebsiteRepository extends KainosRepositorySupport {
 	 * @param where
 	 */
 	private void initWhere(BooleanBuilder where) {
-		where.and(websiteTerminalCode.profitDate.length().ne(10));
-		where.and(websiteTerminalCode.demRcvd.length().ne(10));
-		where.and(websiteTerminalCode.demRcvd.ne("N/A"));
-		where.and(websiteTerminalCode.demRcvd.ne("NA"));
+		
+		BooleanExpression condition1 = websiteTerminalCode.shipmentStatus.ne("N").and(websiteTerminalCode.demStatus.ne("N"));
+		BooleanExpression condition2 = websiteTerminalCode.shipmentStatus.eq("N").and(websiteTerminalCode.demStatus.eq("Y"));
+		BooleanExpression condition3 = websiteTerminalCode.shipmentStatus.eq("Y").and(websiteTerminalCode.demStatus.eq("Y"));
+		where.and(condition1.or(condition2).or(condition3));
+//		where.and(websiteTerminalCode.profitDate.length().ne(10));
+//		where.and(websiteTerminalCode.demRcvd.length().ne(10));
+//		where.and(websiteTerminalCode.demRcvd.ne("N/A"));
+//		where.and(websiteTerminalCode.demRcvd.ne("NA"));
 //		where.and(websiteTerminalCode.demRcvd.isNull().or(websiteTerminalCode.demRcvd.eq("")));
 	}
 	
@@ -226,7 +232,12 @@ public class WebsiteRepository extends KainosRepositorySupport {
 			
 			
 			if(!KainosStringUtils.isEmpty(paramDto.getArrivalNotice())) {
-				where.and(websiteTerminalCode.arrivalNotice.eq(paramDto.getArrivalNotice()));
+				if(paramDto.getArrivalNotice().equalsIgnoreCase("0")) {
+					where.and(websiteTerminalCode.arrivalNotice.eq(paramDto.getArrivalNotice()).or(websiteTerminalCode.arrivalNotice.eq("")));
+				}else {
+					where.and(websiteTerminalCode.arrivalNotice.eq(paramDto.getArrivalNotice()));
+				}
+				
 			}
 			
 			
@@ -396,7 +407,7 @@ public class WebsiteRepository extends KainosRepositorySupport {
 			paramDto.getPartner(),
 			paramDto.getTankNo(),
 			paramDto.getTerm(),
-			paramDto.getItem(),
+			paramDto.getCargo(),
 			paramDto.getVesselVoyage(),
 			paramDto.getCarrier(),
 			paramDto.getMblNo(),

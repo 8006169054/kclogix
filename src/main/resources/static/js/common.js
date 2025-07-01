@@ -171,3 +171,15 @@ function formatToTwoDecimalPlaces(value) {
   if (isNaN(num)) return "0.00"; // 숫자가 아니면 기본값 처리
   return num.toFixed(2);
 }
+
+//$('.dateInput').addEventListener('input', function (e) {
+//  let value = e.target.value.replace(/\D/g, ''); // 숫자만 추출
+//
+//  if (value.length >= 5 && value.length <= 6) {
+//    value = value.replace(/(\d{4})(\d{1,2})/, '$1-$2');
+//  } else if (value.length > 6) {
+//    value = value.replace(/(\d{4})(\d{2})(\d{1,2})/, '$1-$2-$3');
+//  }
+//
+//  e.target.value = value;
+//});

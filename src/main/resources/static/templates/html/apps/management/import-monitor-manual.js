@@ -94,7 +94,7 @@ async function portTableInit(){
 				}
 			}},
 			{ name: 'concinePic', 			width: 80, 		align:'center',		hidden : false, rowspan: true},
-			{ name: 'shipmentStatus', 		width: 80, 		align:'center',		hidden : false, rowspan: true, editable: true, formatter:'select', edittype:'select', editoptions : {value: 'Y:ON;N:OFF'}},
+			{ name: 'shipmentStatus', 		width: 80, 		align:'center',		hidden : false, rowspan: true, editable: true, formatter:'select', edittype:'select', editoptions : {value: 'Y:IN PROGRES;N:CLOSED'}},
 	    	{ name: 'profitDate', 			width: 90, 		align:'center',		hidden : false, rowspan: true, editable: true, edittype: "date"},
 	    	{ name: 'domesticSales', 		width: 80, 		align:'center',		hidden : false, rowspan: true, editable: true},
 	    	{ name: 'foreignSales', 		width: 80, 		align:'center',		hidden : false, rowspan: true, editable: true},
@@ -345,6 +345,9 @@ async function portTableInit(){
                               ]
 		});
 		
+//		let response = await requestApi('GET', '/api/management/website-terminal-code-init');
+//		$(tableName).searchData(response.data, {editor: true});
+//		response = null;
 }
 
 async function demStatusChang(selection){
@@ -496,20 +499,20 @@ function demRcvdSelectOnchange(){
 
 function clearSearchBox(){
 	$('#searchFrom')[0].reset();
-	let sreturnDate = $('#sreturnDate').data('daterangepicker');
-   	sreturnDate.setStartDate(moment().subtract(30, 'days').format('YYYY-MM-DD'));
-	sreturnDate.setEndDate(moment().format('YYYY-MM-DD'));
-	sreturnDate.element.trigger('apply.daterangepicker', sreturnDate);
-	
-	let serd = $('#serd').data('daterangepicker');
-   	serd.setStartDate(moment().subtract(30, 'days').format('YYYY-MM-DD'));
-	serd.setEndDate(moment().format('YYYY-MM-DD'));
-	serd.element.trigger('apply.daterangepicker', serd);
-	
-	let sprofitDate = $('#sprofitDate').data('daterangepicker');
-   	sprofitDate.setStartDate(moment().subtract(30, 'days').format('YYYY-MM-DD'));
-	sprofitDate.setEndDate(moment().format('YYYY-MM-DD'));
-	sprofitDate.element.trigger('apply.daterangepicker', sprofitDate);
+//	let sreturnDate = $('#sreturnDate').data('daterangepicker');
+//   	sreturnDate.setStartDate(moment().subtract(30, 'days').format('YYYY-MM-DD'));
+//	sreturnDate.setEndDate(moment().format('YYYY-MM-DD'));
+//	sreturnDate.element.trigger('apply.daterangepicker', sreturnDate);
+//	
+//	let serd = $('#serd').data('daterangepicker');
+//   	serd.setStartDate(moment().subtract(30, 'days').format('YYYY-MM-DD'));
+//	serd.setEndDate(moment().format('YYYY-MM-DD'));
+//	serd.element.trigger('apply.daterangepicker', serd);
+//	
+//	let sprofitDate = $('#sprofitDate').data('daterangepicker');
+//   	sprofitDate.setStartDate(moment().subtract(30, 'days').format('YYYY-MM-DD'));
+//	sprofitDate.setEndDate(moment().format('YYYY-MM-DD'));
+//	sprofitDate.element.trigger('apply.daterangepicker', sprofitDate);
 	
 	$('#sshipmentStatus').val('Y').trigger('change');
 	$('#sdemRcvdSelect').val('0').trigger('change');
@@ -522,20 +525,20 @@ $( document ).ready(function() {
    	searchTerminalAutocomplete();
    	searchCustomerAutocomplete();
    	
-   	let sreturnDate = $('#sreturnDate').data('daterangepicker');
-   	sreturnDate.setStartDate(moment().subtract(30, 'days').format('YYYY-MM-DD'));
-	sreturnDate.setEndDate(moment().format('YYYY-MM-DD'));
-	sreturnDate.element.trigger('apply.daterangepicker', sreturnDate);
-	
-	let serd = $('#serd').data('daterangepicker');
-   	serd.setStartDate(moment().subtract(30, 'days').format('YYYY-MM-DD'));
-	serd.setEndDate(moment().format('YYYY-MM-DD'));
-	serd.element.trigger('apply.daterangepicker', serd);
-	
-	let sprofitDate = $('#sprofitDate').data('daterangepicker');
-   	sprofitDate.setStartDate(moment().subtract(30, 'days').format('YYYY-MM-DD'));
-	sprofitDate.setEndDate(moment().format('YYYY-MM-DD'));
-	sprofitDate.element.trigger('apply.daterangepicker', sprofitDate);
+//   	let sreturnDate = $('#sreturnDate').data('daterangepicker');
+//   	sreturnDate.setStartDate(moment().subtract(30, 'days').format('YYYY-MM-DD'));
+//	sreturnDate.setEndDate(moment().format('YYYY-MM-DD'));
+//	sreturnDate.element.trigger('apply.daterangepicker', sreturnDate);
+//	
+//	let serd = $('#serd').data('daterangepicker');
+//   	serd.setStartDate(moment().subtract(30, 'days').format('YYYY-MM-DD'));
+//	serd.setEndDate(moment().format('YYYY-MM-DD'));
+//	serd.element.trigger('apply.daterangepicker', serd);
+//	
+//	let sprofitDate = $('#sprofitDate').data('daterangepicker');
+//   	sprofitDate.setStartDate(moment().subtract(30, 'days').format('YYYY-MM-DD'));
+//	sprofitDate.setEndDate(moment().format('YYYY-MM-DD'));
+//	sprofitDate.element.trigger('apply.daterangepicker', sprofitDate);
 });
 
 function calculate(){
