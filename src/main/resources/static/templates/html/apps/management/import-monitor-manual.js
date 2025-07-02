@@ -149,7 +149,32 @@ async function portTableInit(){
 	    	{ name: 'pol', 					width: 100, 	align:'center',		hidden : false, rowspan: true, editable: true},
 	    	{ name: 'pod', 					width: 100, 	align:'center'},
 	    	{ name: 'terminalCode', 		width: 100, 	align:'center', 	hidden : true},
-	    	{ name: 'parkingLotCode', 		width: 80, 	align:'center', 	hidden : false},
+	    	{ name: 'parkingLotCode', 		width: 80, 	align:'center', 	hidden : false, editable : true, edittype: 'text', editoptions: {
+				dataInit:function(elem) {
+					$(elem).autocomplete({
+						source: terminalList,
+						delay: 100,
+						autoFocus: true,
+						minChars: 0,
+						minLength: 0,
+				        select: function (event, ui) {
+							ComSetCellData(tableName, ComSelectIndex(tableName), 'terminalCode', ui.item.code, true);
+							ComSetCellData(tableName, ComSelectIndex(tableName), 'pod', ui.item.region, true);
+							ComSetCellData(tableName, ComSelectIndex(tableName), 'terminalHomepage', ui.item.homepage, true);
+							ComSetCellData(tableName, ComSelectIndex(tableName), 'terminalName', ui.item.value, true);
+							setTimeout(function() {
+					    		ComSetCellData(tableName, ComSelectIndex(tableName), 'parkingLotCode', ui.item.parkingLotCode, true);
+							}, 100);
+				        },
+				        close : function (event, ui) {
+				            $(tableName).delay(2000).focus();
+				            return false;
+				        }
+					}).focus(function() {
+			            $(this).autocomplete("search", $(this).val());
+			        });
+				}
+			}},
 	    	{ name: 'terminalName', 		width: 150, 	align:'center',		hidden : false, editable : true, edittype: 'text', editoptions: {
 				dataInit:function(elem) {
 					$(elem).autocomplete({

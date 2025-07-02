@@ -1,5 +1,6 @@
 package com.kclogix.apps.mdm.terminal.repository;
 
+import static com.kclogix.common.entity.QMdmCargo.mdmCargo;
 import static com.kclogix.common.entity.QMdmTerminal.mdmTerminal;
 
 import java.util.Date;
@@ -126,7 +127,7 @@ public class TerminalRepository extends KainosRepositorySupport {
 				mdmTerminal.homepage,
 				mdmTerminal.parkingLotCode,
 				mdmTerminal.name.upper().as("value"),
-				mdmTerminal.name.upper().as("label")
+				mdmTerminal.name.upper().concat(" | ").concat(mdmTerminal.parkingLotCode).upper().as("label")
 				))
 				.from(mdmTerminal)
 				.fetch();

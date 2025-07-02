@@ -94,7 +94,7 @@
 									</div>
 									<div class="form-group" style="width: 80px; margin-right: 1px;">
 										<label for="name">Code</label>
-										<input type="text" class="form-control" id="parkingLotCode" name="parkingLotCode" readonly="readonly">
+										<input type="text" class="form-control" id="parkingLotCode" name="parkingLotCode">
 									</div>
 									<div class="form-group" style="width: 210px; margin-right: 15px;">
 										<label for="name">TERMINAL</label>
@@ -255,6 +255,34 @@ async function terminalAutocompleteLoad(){
 	}).focus(function() {
 	    $(this).autocomplete("search", $(this).val());
 	});
+	
+	$("#parkingLotCode").autocomplete({
+		source: terminalList,
+		delay: 100,
+		autoFocus: true,
+		minChars: 0,
+		minLength: 0,
+		open: function(){
+	        $(this).autocomplete('widget').css('z-index', 1100);
+	        return false;
+	    },
+	    select: function (event, ui) {
+	    	$('#terminalCode').val(ui.item.code);
+	    	$('#pod').val(ui.item.region);
+	    	$('#terminal').val(ui.item.value);
+	    	setTimeout(function() {
+	    		$('#parkingLotCode').val(ui.item.parkingLotCode);
+			}, 100);
+	    },
+	    close : function (event, ui) {
+	    	
+	        return false;
+	    }
+	}).focus(function() {
+	    $(this).autocomplete("search", $(this).val());
+	});
+	
+	
 }
 
 async function customerAutocompleteLoad(){
