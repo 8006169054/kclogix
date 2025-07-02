@@ -3,6 +3,7 @@ var tableName = '#jqtable';
  * 조회
  */
 async function search() {
+	clearSaveBox();
 	response = await requestApi('GET', '/api/system/notices', $('#searchFrom').serializeObject());
 	$(tableName).clearGridData();
 	$(tableName).searchData(response.data, {editor: false, nodatamsg: true});
@@ -14,7 +15,6 @@ async function save(){
 	var response = await requestApi('POST', '/api/system/notices', saveFrom);
 	if(response.common.status === 'S'){
 		// 데이터 초기화 하고 조회
-		clearSaveBox();
  		search();
  	}
 }
