@@ -303,35 +303,6 @@ async function portTableInit(){
 				
 				multiFn(iRow);
 			}
-//			else if('returnDate' === cellname || 'ata' === cellname){
-//				var greturnDate = $(tableName).jqGrid('getCell', iRow, 'returnDate');
-//				var gendOfFt = $(tableName).jqGrid('getCell', iRow, 'endOfFt');
-//				var demRate = $(tableName).jqGrid('getCell', iRow, 'demRate');
-//				
-//				var totalDem = 'N/A';
-//				var demStatus = 'N';
-//				try{
-//					const returnDate = new Date(greturnDate);
-//					const endOfFT = new Date(gendOfFt); 
-//					if (isNaN(returnDate) || isNaN(endOfFT)) {
-//						throw new Error('One or both dates are invalid');
-//					}
-//
-//					if (returnDate > endOfFT) {
-//					  	const msPerDay = 24 * 60 * 60 * 1000;
-//  						const daysOverdue = Math.max(0, Math.ceil((returnDate - endOfFT) / msPerDay));
-//  						const totalCharge = daysOverdue * demRate;
-//	  					if (totalCharge > 0) {
-//							totalDem = totalCharge;
-//							demStatus = 'Y';
-//						}
-//					}
-//				} catch (error) {
-//					console.log(error);
-//				}
-//				ComSetCellData(tableName, iRow, 'totalDem', totalDem);
-//				ComSetCellData(tableName, iRow, 'demStatus', demStatus);
-//			}
 		}
 	});
 	
@@ -442,11 +413,26 @@ function terminalFn (cellvalue, options, rowObject ){
 		return '<a href="' + rowObject.terminalHomepage + '" target="_blank"><img src="/assets/img/popup.png" height="22px"></a>';
 }
 
-async function save(){
+async function confirmSave(){
 	var saveData = $(tableName).saveGridData();
 	if(saveData.length === 0)
 		alertMessage(getMessage('0001'), 'info');
 	else{
+//		message, type, title, callFn
+		var del = 0;
+		var up = 0;
+		for(var i=0; i<saveData.length; i++){
+			if(saveData[i].jqFlag === 'U') up++;
+			else if(saveData[i].jqFlag === 'D') del++;
+		}
+		var msg = 'There are ' + del + ' deletions and ' + up + ' modifications. Save changes?'
+		confirmMessage(msg, 'info', 'Save', save);
+	}
+}
+
+async function save(selection){
+	if(selection){
+		var saveData = $(tableName).saveGridData();
 		await requestApi('POST', '/api/management/save-port', saveData, {successFn : portSaveFn, errorFn : portSaveFn});
 	}
 }

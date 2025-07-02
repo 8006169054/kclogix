@@ -7806,9 +7806,8 @@ $.jgrid.extend({
 			}
 		});
 	},
-	// 정인선 afterSaveJqFlag
+	// 정인선 에프터 저장afterSaveJqFlag
 	afterSaveJqFlag : function(iRow, oRowData) {
-//		console.log('afterSaveJqFlag',iRow, oRowData);
 		var $t = this;
 		var deleteChecked = $('#' + 'delete_' + $t[0].id + '_' + iRow).is(":checked");
 		if(deleteChecked) return;
@@ -7901,9 +7900,10 @@ $.jgrid.extend({
 							var fcell = $(tcell).clone();
 							$("#"+rowid +" td", "#" + $.jgrid.jqID($t.p.id + "_frozen") ).eq( pos ).replaceWith(fcell);
 						}
-						if(colname !== 'jqFlag') {
-							$($t).jqGrid("afterSaveJqFlag", rowid, $t.p.basedata[rowid-1]);
-						}
+						// 이걸 왜 만들었는지 모르겠음.. 수정상태로 변환 시 모든 필드를 체크함
+//						if(colname !== 'jqFlag') {
+//							$($t).jqGrid("afterSaveJqFlag", rowid, $t.p.basedata[rowid-1]);
+//						}
 					}
 				}
 			}
@@ -9525,7 +9525,7 @@ $.jgrid.extend({
 				}
 			},0);
 						
-			// 정인선 저정되고 상태값 변경을 위해 호출
+			// 정인선 로우스펜 저정되고 상태값 변경을 위해 호출
 			let rowspan = $('td', trow).eq( iCol ).attr('rowspan');
 			if(rowspan === undefined) rowspan = 1;
 			let cellData = $($t).jqGrid("getCell", iRow, iCol);
