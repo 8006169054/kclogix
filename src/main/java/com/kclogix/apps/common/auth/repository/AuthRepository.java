@@ -2,7 +2,7 @@ package com.kclogix.apps.common.auth.repository;
 
 import static com.kclogix.common.entity.QComNotices.comNotices;
 import static com.kclogix.common.entity.QComUser.comUser;
-
+import static com.kclogix.common.entity.QMdmPartner.mdmPartner;
 import java.util.Date;
 import java.util.List;
 
@@ -45,10 +45,11 @@ public class AuthRepository extends KainosRepositorySupport {
 				, comUser.name
 				, comUser.type
 				, comUser.activation
-				, comUser.partnerCode
+				, mdmPartner.name.as("partnerCode")
 				, comUser.mail
 				))
 				.from(comUser)
+				.leftJoin(mdmPartner).on(comUser.partnerCode.eq(mdmPartner.code))
 				.where(comUser.id.eq(id).and(comUser.password.eq(password)))
 				.fetchOne();
 	}

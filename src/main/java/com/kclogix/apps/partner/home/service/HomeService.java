@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.kclogix.apps.management.website.dto.WebsiteSearchDto;
 import com.kclogix.apps.partner.home.dto.HomeDto;
 import com.kclogix.apps.partner.home.dto.HomeExcelDownDto;
 import com.kclogix.apps.partner.home.repository.HomeRepository;
@@ -24,7 +25,7 @@ public class HomeService {
 	 * @throws Exception
 	 */
 	@Transactional(readOnly = true)
-	public List<HomeDto> selectWebsiteTerminalCode(HomeDto paramDto) throws Exception {
+	public List<HomeDto> selectWebsiteTerminalCode(WebsiteSearchDto paramDto) throws Exception {
 		return repository.selectWebsiteTerminalCode(paramDto);
 	}
 	
@@ -34,7 +35,7 @@ public class HomeService {
 	}
 	
 	@Transactional(readOnly = true)
-	public List<HomeExcelDownDto> selectWebsiteTerminalCodeExcel(HomeDto paramDto) throws Exception {
+	public List<HomeExcelDownDto> selectWebsiteTerminalCodeExcel(WebsiteSearchDto paramDto) throws Exception {
 		return repository.selectWebsiteTerminalCodeExcel(paramDto);
 	}
 }

@@ -4,8 +4,6 @@
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{layouts/default/partnerLayout}" layout:fragment="Content">
 
-<!-- Page Specific JS File -->
-<script src="/templates/html/apps/partner.js"></script>
 <!-- Main Content -->
 <div style="padding-left: 30px;  padding-right: 30px;  padding-top: 60px;  width: 100%;  position: relative;">
 	<section class="section">
@@ -22,15 +20,124 @@
 				<div class="col-100">
 					<div class="card">
 						<div class="card-header text-right">
-							<button class="btn btn-primary" onclick="search()" th:text="#{common.button.label.search}"></button>
+						<button class="btn btn-warning" onclick="clearSearchBox()">Clear</button>
+						<a class="btn btn-light" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="true" aria-controls="collapseExample" onclick="collapse()">
+                        	Search Box
+                      	</a>
+						<button class="btn btn-primary" onclick="search()" th:text="#{common.button.label.search}"></button>
 						</div>
 						<div class="card-body">
-							<div class="form-group row">
-								<label class="col-form-label text-md-left col-md-5">HBL NO.</label>
-								<div class="col-md-15">
-									<input type="text" id="hblNo" name="hblNo" class="form-control" onkeydown="if (event.key == 'Enter'){ search(); }">
+						<form id="searchFrom" name="searchFrom">
+							<input type="hidden" id="initSearch" name="initSearch" value="true">
+							<div class="collapse" id="collapseExample">
+								<div class="form-group row">
+									<label class="col-form-label text-md-left" style="width: 80px;">STATUS</label>
+									<div style="width: 130px; margin-right: 15px;">
+										<select id="sshipmentStatus" name="sshipmentStatus" class="form-control select2" data-minimum-results-for-search="Infinity">
+											<option value="Y" selected="selected">IN PROGRES</option>
+											<option value="N">CLOSED</option>
+											<option value="">All</option>
+										</select>
+									</div>
+									<label class="col-form-label text-md-left" style="width: 90px;">Profit Date</label>
+									<div style="width: 230px; margin-right: 15px;">
+										<div class="input-group">
+											<div class="input-group-prepend">
+												<div class="input-group-text">
+													<i class="fas fa-calendar"></i>
+												</div>
+											</div>
+											<input type="text" id="sprofitDate" name="sprofitDate" class="form-control daterange-cus">
+										</div>
+									</div>
+									<label class="col-form-label text-md-left" style="width: 60px;">Item</label>
+									<div style="width: 345px; margin-right: 15px;">
+										<input type="text" id="sitem" name="sitem" value="" class="form-control">
+										<input type="hidden" id="scargo" name="scargo">
+									</div>
+									<label class="col-form-label text-md-left" style="width: 80px;">Tank no.</label>
+									<div style="width: 120px; margin-right: 15px;">
+										<input type="text" id="stankNo" name="stankNo" value="" class="form-control">
+									</div>
+									<label class="col-form-label text-md-left" style="width: 70px;">Partner</label>
+									<div style="width: 150px; margin-right: 15px;">
+										<input type="text" id="spartner" name="spartner" value="" class="form-control">
+									</div>
 								</div>
-							</div>
+								<div class="form-group row">
+									<label class="col-form-label text-md-left" style="width: 80px;">HBL NO.</label>
+									<div style="width: 230px; margin-right: 15px;">
+										<input type="text" id="shblNo" name="shblNo" value="" class="form-control">
+									</div>
+									<label class="col-form-label text-md-left" style="width: 90px;">MBL NO.</label>
+									<div style="width: 130px; margin-right: 15px;">
+										<input type="text" id="smblNo" name="smblNo" value="" class="form-control">
+									</div>
+									<label class="col-form-label text-md-left" style="width: 60px;">POL</label>
+									<div style="width: 110px; margin-right: 15px;">
+										<input type="text" id="spol" name="spol" value="" class="form-control">
+									</div>
+									<label class="col-form-label text-md-left" style="width: 100px;">POD</label>
+									<div style="width: 120px; margin-right: 15px;">
+										<input type="text" id="spod" name="spod" value="" class="form-control">
+									</div>
+									<label class="col-form-label text-md-left" style="width: 80px;">ATA</label>
+									<div style="width: 235px; margin-right: 15px;">
+										<div class="input-group">
+											<div class="input-group-prepend">
+												<div class="input-group-text">
+													<i class="fas fa-calendar"></i>
+												</div>
+											</div>
+											<input type="text" id="sata" name="sata" class="form-control daterange-cus">
+										</div>
+									</div>
+								</div>	
+								<div class="form-group row">
+									<label class="col-form-label text-md-left" style="width: 80px;">ER DATE</label>
+									<div style="width: 230px; margin-right: 15px;">
+										<div class="input-group">
+											<div class="input-group-prepend">
+												<div class="input-group-text">
+													<i class="fas fa-calendar"></i>
+												</div>
+											</div>
+											<input type="text" id="serd" name="serd" class="form-control daterange-cus">
+										</div>
+									</div>
+									<label class="col-form-label text-md-left" style="width: 90px;">Return Date</label>
+									<div style="width: 315px; margin-right: 15px;">
+										<div class="input-group">
+											<div class="input-group-prepend">
+												<div class="input-group-text">
+													<i class="fas fa-calendar"></i>
+												</div>
+											</div>
+											<input type="text" id="sreturnDate" name="sreturnDate" class="form-control daterange-cus">
+										</div>
+									</div>
+									
+									<label class="col-form-label text-md-left" style="width: 100px;">Return Depot</label>
+									<div style="width: 120px; margin-right: 15px;">
+										<input type="text" id="sreturnDepot" name="sreturnDepot" class="form-control">
+									</div>
+									
+									<label class="col-form-label text-md-left" style="width: 80px;">DEM RCVD</label>
+									<div style="width: 120px; margin-right: 15px;">
+										<input type="text" id="sdemRcvd" name="sdemRcvd" class="form-control datepicker" style="display: none;">
+										<input type="text" id="sdemRcvd1" name="sdemRcvd1" class="form-control" readonly="readonly">
+									</div> 
+									<div style="width: 100px; margin-right: 15px;">
+										<select id="sdemRcvdSelect" name="sdemRcvdSelect" class="form-control select2" data-minimum-results-for-search="Infinity" onchange="demRcvdSelectOnchange()">
+											<option value="0" selected="selected">All</option>
+											<option value="1">Date</option>
+											<option value="2">N/A</option>
+											<option value="3">Empty</option>
+										</select>
+									</div>
+								</div>
+							 </div>
+							 </form>
 						</div>
 					</div>
 				</div>
@@ -56,5 +163,5 @@
 		</div>
 	</section>
 </div>
-
+<script src="/templates/html/apps/partner.js"></script>
 </html>

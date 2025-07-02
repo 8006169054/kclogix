@@ -393,7 +393,8 @@ public class WebsiteController {
 	}
 	
 	@GetMapping(value = "/api/management/website-terminal-code-exceldown")
-	public ResponseEntity<InputStreamResource> exceldown(@RequestParam(required = false) String sprofitDate, 
+	public ResponseEntity<InputStreamResource> exceldown(
+			@RequestParam(required = false) String sprofitDate, 
 			@RequestParam(required = false) String spartner, 
 			@RequestParam(required = false) String stankNo, 
 			@RequestParam(required = false) String sitem, 

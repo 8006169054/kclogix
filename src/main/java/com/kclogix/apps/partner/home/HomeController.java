@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import kainos.framework.core.servlet.KainosResponseEntity;
 import kainos.framework.core.session.annotation.KainosSession;
+
+import com.kclogix.apps.management.website.dto.WebsiteSearchDto;
 import com.kclogix.apps.partner.home.dto.HomeDto;
 import com.kclogix.apps.partner.home.dto.HomeExcelDownDto;
 import com.kclogix.apps.partner.home.service.HomeService;
@@ -32,9 +34,46 @@ public class HomeController {
 	
 	@GetMapping(value = "/api/partner/home/website-terminal-code")
 	public ResponseEntity<HomeDto> selectWebsiteTerminalCode(
-			@RequestParam(required = false) String hblNo, @KainosSession SessionDto session
+			@RequestParam(required = false) String sprofitDate, 
+			@RequestParam(required = false) String spartner, 
+			@RequestParam(required = false) String stankNo, 
+			@RequestParam(required = false) String sitem, 
+			@RequestParam(required = false) String scargo, 
+			@RequestParam(required = false) String shblNo, 
+			@RequestParam(required = false) String smblNo, 
+			@RequestParam(required = false) String spol, 
+			@RequestParam(required = false) String spod, 
+			@RequestParam(required = false) String sata, 
+			@RequestParam(required = false) String serd, 
+			@RequestParam(required = false) String sreturnDate, 
+			@RequestParam(required = false) String sreturnDepot, 
+			@RequestParam(required = false) String sdemRcvd,
+			@RequestParam(required = false) String sdemRcvdSelect,
+			@RequestParam(required = false) String sshipmentStatus,
+			@KainosSession SessionDto session
 		) throws Exception {
-		List<HomeDto> PortList = service.selectWebsiteTerminalCode(HomeDto.builder().hblNo(hblNo).partner(session.getPartnerCode()).build());
+		
+		WebsiteSearchDto paramDto = WebsiteSearchDto.builder()
+				.profitDate(sprofitDate)
+				.partner(spartner)
+				.tankNo(stankNo)
+				.item(sitem)
+				.cargo(scargo)
+				.hblNo(shblNo)
+				.mblNo(smblNo)
+				.pol(spol)
+				.pod(spod)
+				.ata(sata)
+				.erd(serd)
+				.returnDate(sreturnDate)
+				.returnDepot(sreturnDepot)
+				.demRcvd(sdemRcvd)
+				.demRcvdSelect(sdemRcvdSelect)
+				.shipmentStatus(sshipmentStatus)
+				.partner(session.getPartnerCode())
+				.build();
+		
+		List<HomeDto> PortList = service.selectWebsiteTerminalCode(paramDto);
 		return KainosResponseEntity.builder().build()
 				.addData(handler.GenerationRowSpen(PortList, HomeDto.class))
 				.close();
@@ -48,9 +87,47 @@ public class HomeController {
 	}
 	
 	@GetMapping(value = "/api/partner/home/website-terminal-code-exceldown")
-	public ResponseEntity<InputStreamResource> exceldown(@RequestParam(required = false) String hblNo, @KainosSession SessionDto session) throws Exception {
+	public ResponseEntity<InputStreamResource> exceldown(
+			@RequestParam(required = false) String sprofitDate, 
+			@RequestParam(required = false) String spartner, 
+			@RequestParam(required = false) String stankNo, 
+			@RequestParam(required = false) String sitem, 
+			@RequestParam(required = false) String scargo, 
+			@RequestParam(required = false) String shblNo, 
+			@RequestParam(required = false) String smblNo, 
+			@RequestParam(required = false) String spol, 
+			@RequestParam(required = false) String spod, 
+			@RequestParam(required = false) String sata, 
+			@RequestParam(required = false) String serd, 
+			@RequestParam(required = false) String sreturnDate, 
+			@RequestParam(required = false) String sreturnDepot, 
+			@RequestParam(required = false) String sdemRcvd,
+			@RequestParam(required = false) String sdemRcvdSelect,
+			@RequestParam(required = false) String sshipmentStatus,
+			@KainosSession SessionDto session
+			) throws Exception {
 		
-		List<HomeExcelDownDto> PortList = service.selectWebsiteTerminalCodeExcel(HomeDto.builder().hblNo(hblNo).partner(session.getPartnerCode()).build());
+		WebsiteSearchDto paramDto = WebsiteSearchDto.builder()
+				.profitDate(sprofitDate)
+				.partner(spartner)
+				.tankNo(stankNo)
+				.item(sitem)
+				.cargo(scargo)
+				.hblNo(shblNo)
+				.mblNo(smblNo)
+				.pol(spol)
+				.pod(spod)
+				.ata(sata)
+				.erd(serd)
+				.returnDate(sreturnDate)
+				.returnDepot(sreturnDepot)
+				.demRcvd(sdemRcvd)
+				.demRcvdSelect(sdemRcvdSelect)
+				.shipmentStatus(sshipmentStatus)
+				.partner(session.getPartnerCode())
+				.build();
+		
+		List<HomeExcelDownDto> PortList = service.selectWebsiteTerminalCodeExcel(paramDto);
 		handler.GenerationRowSpen(PortList, HomeExcelDownDto.class);
 		
 		byte[] downLoadFile = null;
