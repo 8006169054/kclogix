@@ -4,8 +4,7 @@
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{layouts/default/layout}" layout:fragment="Content">
 
-<link rel="stylesheet"
-	href="/modules/summernote/dist/summernote-bs4.css">
+<link rel="stylesheet" href="/modules/summernote/dist/summernote-bs4.css">
 <script src="/modules/summernote/dist/summernote-bs4.js"></script>
 <div class="main-content">
 	<section class="section">
@@ -27,17 +26,14 @@
 								<div style="width: 315px; margin-right: 15px;">
 									<input type="text" id="stitle" name="stitle" value="" class="form-control">
 								</div>
-								<label class="col-form-label text-md-left" style="width: 100px;">Notices Date</label>
-								<div style="width: 250px; margin-right: 15px;">
-									<div class="input-group">
-										<div class="input-group-prepend">
-											<div class="input-group-text">
-												<i class="fas fa-calendar"></i>
-											</div>
-										</div>
-										<input type="text" id="snoticesDate" name="snoticesDate" class="form-control daterange-cus">
-									</div>
-								</div>
+								<label class="col-form-label text-md-left" style="width: 60px;">Use</label>
+							<div style="width: 130px; margin-right: 15px;">
+								<select id="suse" name="suse" class="form-control select2" data-minimum-results-for-search="Infinity">
+									<option value="Y" selected="selected">Y</option>
+									<option value="N">N</option>
+									<option value="">All</option>
+								</select>
+							</div>
 							</div>
 						</form>
 						</div>
@@ -48,17 +44,19 @@
 				<div class="card" style="width: 49.5%">
 					<div class="card-body p-0">
 						<div class="table-responsive" style="overflow: hidden;">
-							<table id="notices-table"></table>
+							<table id="jqtable"></table>
 						</div>
 					</div>
 				</div>
 				<div class="card" style="width: 1%; visibility: hidden;"></div>
 				<div class="card" style="width: 49.5%">
 					<div class="card-body">
+						<form id="saveFrom" name="saveFrom">
+						<input type="hidden" id="id" name="id" class="form-control">
 						<div class="form-group row mb-4">
 							<label class="col-form-label text-md-left" style="width: 90px;padding-left: 10px;">Title</label>
 							<div style="width: 85%">
-								<input type="text" class="form-control">
+								<input type="text" id="title" name="title" class="form-control" value="">
 							</div>
 						</div>
 						<div class="form-group row mb-4">
@@ -75,17 +73,29 @@
 							</div>
 						</div>
 						<div class="form-group row mb-4">
-							<label class="col-form-label text-md-left" style="width: 90px;padding-left: 10px;">Content</label>
+							<label class="col-form-label text-md-left" style="width: 90px;padding-left: 10px;">Use</label>
 							<div style="width: 85%">
-								<textarea class="summernote"></textarea>
+								<select id="use" name="use" class="form-control select2" data-minimum-results-for-search="Infinity">
+									<option value="Y" selected="selected">Y</option>
+									<option value="N">N</option>
+								</select>
 							</div>
 						</div>
 						<div class="form-group row mb-4">
-							<div class="col-sm-12 col-md-7">
-								<button class="btn btn-primary">Save</button>
+							<label class="col-form-label text-md-left" style="width: 90px;padding-left: 10px;">Content</label>
+							<div style="width: 85%">
+								<textarea id="contentBody" name="contentBody" class="summernote"></textarea>
+							</div>
+						</div>
+						</form>
+						<div class="form-group row mb-4">
+							<div class="text-right" style="width: 97%">
+								<button class="btn btn-warning" onclick="clearSaveBox()">Clear</button>
+								<button class="btn btn-success" onclick="save()">Save</button>
 							</div>
 						</div>
 					</div>
+					
 				</div>
 			</div>
 		</div>

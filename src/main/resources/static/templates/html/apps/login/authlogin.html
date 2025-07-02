@@ -3,18 +3,133 @@
 <head>
   <meta charset="UTF-8">
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
-  <title>KC LOGIX</title>
+    <title>KC LOGIX</title>
   <!-- General CSS Files -->
   <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
   <link rel="stylesheet" href="/assets/css/all.css">
   <!-- CSS Libraries -->
-  <link rel="stylesheet" href="/modules/bootstrap-social/bootstrap-social.css">
+<!--   <link rel="stylesheet" href="/modules/bootstrap-social/bootstrap-social.css"> -->
   <!-- Template CSS -->
   <link rel="stylesheet" href="/assets/css/style.css">
   <link rel="stylesheet" href="/assets/css/components.css">
-</head>
-<style scoped>
-.loading-mask {
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    /* Nunito 대체 스타일 */
+    body {
+      margin: 0;
+      padding: 60px 20px;
+      background: #f6f7fb;
+      font-family: "Segoe UI", "Helvetica Neue", arial, sans-serif;
+      font-weight: 400;
+      letter-spacing: 0.3px;
+      color: #2c3e50;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+    }
+
+    .container {
+      display: flex;
+      max-width: 1000px;
+      width: 100%;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 12px 32px rgba(0,0,0,0.05);
+      overflow: hidden;
+    }
+
+    .login-section,
+    .notice-section {
+      flex: 1;
+      padding: 40px;
+    }
+
+    .divider {
+      width: 1px;
+      background-color: #e0e0e0;
+    }
+
+    h2 {
+      font-size: 24px;
+      margin-bottom: 32px;
+      font-weight: 700;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 0.95em;
+      color: #555;
+    }
+
+    input[type="text"],
+    input[type="password"] {
+      width: 100%;
+      padding: 12px 14px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      font-size: 1em;
+      box-sizing: border-box;
+    }
+
+    input:focus {
+      border-color: #4a90e2;
+      outline: none;
+    }
+
+    button {
+      width: 100%;
+      padding: 14px;
+      background-color: #4a90e2;
+      color: #fff;
+      font-weight: 600;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 1em;
+      transition: background 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #3a7bd5;
+    }
+
+    .notice-list {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .notice-item {
+      border-bottom: 1px solid #ececec;
+      padding-bottom: 10px;
+    }
+
+    .notice-title {
+      font-weight: 600;
+      font-size: 1em;
+    }
+
+    .notice-date {
+      font-size: 0.85em;
+      color: #888;
+      margin-top: 4px;
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        flex-direction: column;
+      }
+      .divider {
+        width: 100%;
+        height: 1px;
+      }
+    }
+    .loading-mask {
     top: 0;
     left: 0;
     position: fixed;
@@ -26,56 +141,7 @@
     justify-content: center;
     align-items: center;
 }
-</style>
-<body>
-	<div id ="loading" class="loading-mask" style="display: none;">
-        <img style="width: 100px" src="/assets/img/loading.svg" />
-    </div>
-  <div id="app">
-    <section class="section" style="margin-top: 200px;">
-      <div class="container mt-5">
-        <div class="row">
-          <div class="col-12 col-sm-8 offset-sm-2 col-md-6 offset-md-3 col-lg-6 offset-lg-3 col-xl-4 offset-xl-4">
-<!--             <div class="login-brand"> -->
-<!--               <img src="/assets/img/stisla-fill.svg" alt="logo" width="100" class="shadow-light rounded-circle"> -->
-<!--             </div> -->
-
-            <div class="card card-primary">
-              	<div class="card-header"><h4>Login</h4></div>
-
-              	<div id="formDiv" class="card-body needs-validation" style="padding-bottom:15px;"> <!-- was-validated -->
-					<div class="form-group">
-						<label for="email" th:text="#{common.login.label.id}"></label> 
-						<input id="id" type="text" class="form-control" name="id" tabindex="1" required autofocus>
-						<div class="invalid-feedback" th:text="#{common.login.label.id.invalid.feedback}"></div>
-					</div>
-		
-					<div class="form-group">
-						<div class="d-block">
-							<label for="password" class="control-label" th:text="#{common.login.label.password}"></label>
-						</div>
-						<input id="password" type="password" class="form-control" name="password" tabindex="2" required onkeydown="if (event.key == 'Enter'){ login(); }">
-						<div class="invalid-feedback" th:text="#{common.login.label.password.invalid.feedback}"></div>
-					</div>
-		
-					<div class="form-group">
-						<div class="custom-control custom-checkbox">
-							<input type="checkbox" name="remember" class="custom-control-input" tabindex="3" id="remember-me">
-							<label class="custom-control-label" for="remember-me" th:text="#{common.login.label.remember}"></label>
-						</div>
-					</div>
-		
-					<div class="form-group">
-						<button type="submit" class="btn btn-primary btn-lg btn-block" tabindex="4" onclick="login()">Login</button>
-					</div>
-				</div>
-           	</div>
-          </div>
-        </div>
-      </div>
-    </section>
-  </div>
-
+  </style>
 <script src="/assets/js/jquery.min.js"></script>
 <script src="/assets/js/jquery.cookie.js"></script>
 <script src="/assets/js/popper.min.js"></script>
@@ -86,6 +152,89 @@
 <script src="/assets/js/custom.js"></script>
 <script src="/js/common.js"></script>
 <script src="/js/api.js"></script>
+<script type="text/javascript">
+$( document ).ready(function() {
+	search();
+});
+
+var noticesList = [];
+async function search() {
+	var response = await requestApi('GET', '/open/notices');
+	var noticesHtml = '';
+	noticesList = response.data;
+	for(var i=0; i < noticesList.length; i++){
+		let notices = noticesList[i];
+		noticesHtml += '<div class="notice-item">';
+		noticesHtml += '<div class="notice-title"><label style="cursor: pointer;" onclick="openNoticesModal(' + i + ')">' + notices.title + '</label></div>';
+		noticesHtml += '</div>';
+	}
+	
+	if(noticesHtml.length === 0) {
+		noticesHtml += '<div class="notice-item">';
+		noticesHtml += '<div class="notice-title">No notices available at this time.</div>';
+		noticesHtml += '</div>';
+	}
+	$('.notice-list').html(noticesHtml);
+}
+
+function openNoticesModal(index){
+	$('.modal-title').html(noticesList[index].title);
+	$('.modal-body').html(noticesList[index].contentBody);
+	$('#noticesModal').modal('show');
+}
+</script>
+</head>
+<body>
+	<div id ="loading" class="loading-mask" style="display: none;">
+        <img style="width: 100px" src="/assets/img/loading.svg" />
+    </div>
+  	<div class="container">
+		<div class="login-section">
+			<h2>Login</h2>
+			<div class="form-group">
+				<label for="username">ID</label> <input id="id" type="text" class="form-control" name="id" tabindex="1" required autofocus>
+				<div class="invalid-feedback" th:text="#{common.login.label.id.invalid.feedback}"></div>
+			</div>
+			<div class="form-group">
+				<label for="password">Password</label> <input id="password" type="password" class="form-control" name="password" tabindex="2" required onkeydown="if (event.key == 'Enter'){ login(); }">
+				<div class="invalid-feedback" th:text="#{common.login.label.password.invalid.feedback}"></div>
+			</div>
+			<div class="form-group">
+				<div class="custom-control custom-checkbox">
+					<input type="checkbox" name="remember" class="custom-control-input" tabindex="3" id="remember-me">
+					<label class="custom-control-label" for="remember-me" th:text="#{common.login.label.remember}"></label>
+				</div>
+			</div>
+
+			<div class="form-group">
+				<button type="submit" class="btn btn-primary btn-lg btn-block" tabindex="4" onclick="login()">Login</button>
+			</div>
+		</div>
+		<div class="divider"></div>
+		<div class="notice-section">
+			<h2>Notice</h2>
+			<div class="notice-list"></div>
+		</div>
+	</div>
+
+	<div class="modal fade" tabindex="-1" role="dialog" id="noticesModal">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title"></h5>
+				</div>
+				<div class="modal-body">
+					<p>Modal body text goes here.</p>
+				</div>
+				<div class="modal-footer bg-whitesmoke br">
+					<button type="button" class="btn btn-secondary"
+						data-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</body>
 
 <script type="text/javascript">
 
@@ -102,6 +251,7 @@
 			return false;
 		}
 		
+		$('#loading').show();
 		if($('#remember-me').is(":checked")) $.cookie('remember-me',  escape( $('#id').val()), { expires: 365, path: '/' });
 		else $.removeCookie('remember-me', { path: '/' });
 		
@@ -116,12 +266,11 @@
 		}else{
 			alertMessage(response.common.message, 'error');
 		}
+		$('#loading').hide();
 	}
 
 
  	$('input').attr('autocomplete','off');
 
 </script>
-
-</body>
 </html>

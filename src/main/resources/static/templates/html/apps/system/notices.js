@@ -1,28 +1,53 @@
+var tableName = '#jqtable';
 /**
  * 조회
  */
 async function search() {
-	response = await requestApi('GET', '/api/system/user', {name : $('#name').val()});
+	response = await requestApi('GET', '/api/system/notices', $('#searchFrom').serializeObject());
 	$(tableName).clearGridData();
-	$(tableName).searchData(response.data, {editor: true});
+	$(tableName).searchData(response.data, {editor: false, nodatamsg: true});
 }
 
+async function save(){
+	var saveFrom = $('#saveFrom').serializeObject()
+	// 벨리데이션
+	var response = await requestApi('POST', '/api/system/notices', saveFrom);
+	if(response.common.status === 'S'){
+		// 데이터 초기화 하고 조회
+		clearSaveBox();
+ 		search();
+ 	}
+}
+
+function clearSaveBox(){
+	$('#title, #noticesDate, #id').val('');
+	$('#contentBody').summernote('code', '');
+	$('#use').val('Y').trigger('change');
+}
+		
 function tableInit(){
 	$(tableName).jqGrid({
 	   	datatype: "json",
-	   	colNames: ['','key','제목','적용날짜','Use','Update User','Update Date'],
+	   	colNames: ['', 'key','제목','적용날짜','Use','Update User','Update Date'],
 	   	colModel: [
-			{ name: 'jqFlag', 		width: 50, 		align:'center', hidden : false},
-	       	{ name: 'id', 			width: 100, 	align:'center', hidden : false},
-	       	{ name: '제목', 			width: 150, 	align:'center'},
-	       	{ name: '적용날짜', 		width: 150, 	align:'center'},
-	       	{ name: 'Use', 			width: 150, 	align:'center'},
+			{ name: 'contentBody', 			width: 100, 	align:'center', hidden : true},
+	       	{ name: 'id', 			width: 100, 	align:'center', hidden : true},
+	       	{ name: 'title', 			width: 350, 	align:'left'},
+	       	{ name: 'noticesDate', 		width: 150, 	align:'center'},
+	       	{ name: 'use', 			width: 70, 	align:'center'},
 	    	{ name: 'updateUserId', width: 100, 	align:'center'},
 	    	{ name: 'updateDate',	width: 140,		align:'center'}
 	   	],
-		height: 500, 
+		height: 550, 
 		width: '100%',
-		delselect: true
+		ondblClickRow: function(rowid, iRow, iCol) {
+		    const rowData = $(tableName).jqGrid("getRowData", rowid);
+		    $('#id').val(rowData.id);
+		    $('#title').val(rowData.title);
+		    $('#noticesDate').val(rowData.noticesDate);
+		    $('#use').val(rowData.use).trigger('change');
+		    $('#contentBody').summernote('code', rowData.contentBody);
+		  }
 	});
 }
 
@@ -44,18 +69,7 @@ $('#noticesDate').daterangepicker({
   $(this).val(picker.startDate.format('YYYY-MM-DD') + ' ~ ' + picker.endDate.format('YYYY-MM-DD'));
 });
 
-var tableName = '#notices-table';
 $( document ).ready(function() {
    tableInit();
-   
-    let snoticesDate = $('#snoticesDate').data('daterangepicker');
-   	snoticesDate.setStartDate(moment().subtract(30, 'days').format('YYYY-MM-DD'));
-	snoticesDate.setEndDate(moment().format('YYYY-MM-DD'));
-	snoticesDate.element.trigger('apply.daterangepicker', snoticesDate);
-	
-	let noticesDate = $('#noticesDate').data('daterangepicker');
-   	noticesDate.setStartDate(moment().subtract(30, 'days').format('YYYY-MM-DD'));
-	noticesDate.setEndDate(moment().format('YYYY-MM-DD'));
-//	noticesDate.element.trigger('apply.daterangepicker', noticesDate);
 	
 });

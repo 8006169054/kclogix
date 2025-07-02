@@ -1,12 +1,16 @@
 package com.kclogix.apps.common.auth.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import kainos.framework.core.lang.KainosBusinessException;
-import kainos.framework.core.session.KainosSessionContext;
+import com.kclogix.apps.common.auth.dto.OpenNoticesDto;
 import com.kclogix.apps.common.auth.repository.AuthRepository;
 import com.kclogix.common.dto.SessionDto;
+
+import kainos.framework.core.lang.KainosBusinessException;
+import kainos.framework.core.session.KainosSessionContext;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -17,6 +21,17 @@ public class AuthService {
 
 	private final AuthRepository repository;
 	private final KainosSessionContext kainosSession;
+	
+	/**
+	 * 
+	 * @param paramDto
+	 * @return
+	 * @throws Exception
+	 */
+	@Transactional(readOnly = true)
+	public List<OpenNoticesDto> selectOpenNotices() throws Exception {
+		return repository.selectOpenNotices();
+	}
 	
 	/**
 	 * 
