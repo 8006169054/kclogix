@@ -8988,7 +8988,7 @@ $.jgrid.extend({
 	}
 });
 
-//module begin
+//정인선 셀수정
 $.jgrid.extend({
 	editCell : function (iRow,iCol, ed, event, excel){
 		for (const child of event.target.children) {
@@ -9056,6 +9056,7 @@ $.jgrid.extend({
 				} catch (_) {
 					tmp = ( cm.edittype && cm.edittype === 'textarea' ) ? cc.text() : cc.html();
 				}
+				
 				if($t.p.autoencode) { tmp = $.jgrid.htmlDecode(tmp); }
 				if (!cm.edittype) {cm.edittype = "text";}
 				$t.p.savedRow.push({id:iRow, ic:iCol, name:nm, v:tmp, rowId: $t.rows[iRow].id });
@@ -9076,6 +9077,7 @@ $.jgrid.extend({
 					tmp = event.key;
 				}
 				var elc = $.jgrid.createEl.call($t,cm.edittype,opt,tmp,true,$.extend({},$.jgrid.ajaxOptions,$t.p.ajaxSelectOptions || {}));
+				
 				if( $.inArray(cm.edittype, ['text','textarea','password']) > -1) {
 					$(elc).addClass(inpclass);
 				} else if(cm.edittype === 'select') {
@@ -9087,9 +9089,10 @@ $.jgrid.extend({
 				$.jgrid.bindEv.call($t, elc, opt);
 				window.setTimeout(function () { $(elc).focus();},1);
 				
-				/** 정인선 */
+				/** 정인선 포커스 */
 				$("input, select, textarea",cc).focusout(function() {
-					$($t).jqGrid("saveCell", $t.p.savedRow[0].id, $t.p.savedRow[0].ic);
+					if(cm.edittype != 'date')
+						$($t).jqGrid("saveCell", $t.p.savedRow[0].id, $t.p.savedRow[0].ic);
 				});
 
 				$("input, select, textarea",cc).on("keydown",function(e) {
@@ -9216,11 +9219,28 @@ $.jgrid.extend({
 			if(cm.edittype === 'date'){
 				setTimeout(function(){
 					const dateInput = document.getElementById(iRow + '_' + nm);
-					dateInput.addEventListener('change', function() { 
-						$($t).jqGrid("saveCell", $t.p.savedRow[0].id, $t.p.savedRow[0].ic); 
-//						$($t).jqGrid("setCell", iRow, iCol, $(this).val(), false, false, true);
-						}, false );
-					dateInput.showPicker();
+					$(dateInput).daterangepicker({
+			         	locale: {format: 'YYYY-MM-DD'},
+					  	autoUpdateInput: false,
+					  	singleDatePicker: true,
+					  	drops: 'down',
+					  	opens: 'right'
+			        });
+			        $(dateInput).data('daterangepicker').show();
+			        $(dateInput).on('apply.daterangepicker', function(ev, picker) {
+					  $(dateInput).val(picker.startDate.format('YYYY-MM-DD'));
+					  $($t).jqGrid("saveCell", $t.p.savedRow[0].id, $t.p.savedRow[0].ic); 
+					});
+					// 날짜 자동 포맷
+					$(dateInput).on('input', function () {
+					  let val = $(this).val().replace(/\D/g, ''); // 숫자만 추출
+					  if (val.length >= 8) {
+					    val = val.substring(0, 8);
+					    const formatted = val.replace(/(\d{4})(\d{2})(\d{2})/, '$1-$2-$3');
+					    $(this).val(formatted);
+					  }
+					});
+//					dateInput.showPicker();
 				},100);
 			}
 			
@@ -10102,6 +10122,10 @@ $.extend($.jgrid,{
 				$(elm).attr('id', $.jgrid.randId());
 			}
 		}
+		
+		/** 정인선 날짜 타입일때 커스텀 달렸을 쓰기위해 text 변경 */
+		if(eltype === 'date') eltype = 'text';
+		
 		switch (eltype)
 		{
 			case "textarea" :
