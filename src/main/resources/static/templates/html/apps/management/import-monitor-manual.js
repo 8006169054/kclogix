@@ -48,6 +48,7 @@ var customerList = [];
  * 조회
  */
 async function search() {
+	$("initSearch").val("false");
 	$(tableName).clearGridData();
 	let response = await requestApi('GET', '/api/management/website-terminal-code', $('#searchFrom').serializeObject());
 	$(tableName).searchData(response.data, {editor: true, nodatamsg: true});
@@ -71,7 +72,7 @@ async function portTableInit(){
 	       	{ name: 'sales', 				width: 50, 		align:'center',		hidden : false, rowspan: true,	editable: true},
 	       	{ name: 'carryoverSales', 		width: 50, 		align:'center',		hidden : false, rowspan: true,	editable: true},
 	       	{ name: 'arrivalNotice',		width: 70, 		align:'center',		hidden : false, rowspan: true},
-	       	{ name: 'invoice', 				width: 70, 		align:'center',		hidden : false, rowspan: true},
+	       	{ name: 'invoice', 				width: 70, 		align:'center',		hidden : false, rowspan: true, editable: true},
 	    	{ name: 'concineName',			width: 150, 	align:'center',		hidden : false, rowspan: true, editable: true, edittype: 'text', editoptions: {
 				dataInit:function(elem) {
 					$(elem).autocomplete({
@@ -639,4 +640,10 @@ function endOfFt(etaOrAtadate, ft){
 		return formatDateToYYYYMMDD(returnData);
 	else
 		return returnData;
+}
+
+
+async function excelDown(){
+	var date = new Date().toString("yyyymmddhhmm");
+	await requestFileDownload('GET', '/api/management/website-terminal-code-exceldown', $('#searchFrom').serializeObject(), 'kclogix-' + date +'.xlsx');
 }

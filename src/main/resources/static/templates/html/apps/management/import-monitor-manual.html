@@ -30,6 +30,7 @@
 						</div>
 						<div class="card-body">
 						<form id="searchFrom" name="searchFrom">
+							<input type="hidden" id="initSearch" name="initSearch" value="true">
 							<div class="collapse" id="collapseExample">
 								<div class="form-group row">
 									<label class="col-form-label text-md-left" style="width: 80px;">STATUS</label>
@@ -174,9 +175,10 @@
 		                      	</select>
 							</div>
 							<div class="col-md-74 text-right">
-							<button class="btn btn-success" onclick="calculate()">Calculate</button>
+							<button class="btn btn btn-primary" onclick="excelDown()">Excel Download</button>
+							<button class="btn btn btn-light" onclick="calculate()">Calculate</button>
 							<button class="btn btn-primary" id="add" name="add" data-toggle="modal" data-target="#importMonitorPopup" >Add</button>
-							<button class="btn btn-success" onclick="confirmSave()" th:text="#{common.button.label.save}"></button>
+							<button class="btn btn-success" onclick="confirmSave()">Save</button>
 							</div>
 							</div>
 						</div>

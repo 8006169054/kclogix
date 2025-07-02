@@ -28,6 +28,7 @@ import com.kclogix.common.util.MailUtil;
 import com.kclogix.common.util.MessageUtil;
 import com.kclogix.common.util.excel.GridRowSpenHandler;
 import com.kclogix.common.util.excel.KainosExcelReadHandler;
+import com.kclogix.common.util.excel.KainosExcelWriteHandler;
 import com.kclogix.common.util.mail.MicrosoftGraph;
 
 import kainos.framework.core.lang.KainosBusinessException;
@@ -47,13 +48,13 @@ public class WebsiteController {
 	private final MailUtil mailutil;
 	private final MicrosoftGraph mg; // Microsoft Graph
 	
-	@GetMapping(value = "/api/management/website-terminal-code-init")
-	public ResponseEntity<WebsiteDto> selectWebsiteTerminalCodeInit() throws Exception {
-		List<WebsiteDto> PortList = service.selectWebsiteTerminalCode(null, true);
-		return KainosResponseEntity.builder().build()
-				.addData(handler.GenerationRowSpen(PortList, WebsiteDto.class))
-				.close();
-	}
+//	@GetMapping(value = "/api/management/website-terminal-code-init")
+//	public ResponseEntity<WebsiteDto> selectWebsiteTerminalCodeInit() throws Exception {
+//		List<WebsiteDto> PortList = service.selectWebsiteTerminalCode(null, true);
+//		return KainosResponseEntity.builder().build()
+//				.addData(handler.GenerationRowSpen(PortList, WebsiteDto.class))
+//				.close();
+//	}
 	
 	@GetMapping(value = "/api/management/website-terminal-code")
 	public ResponseEntity<WebsiteDto> selectWebsiteTerminalCode(
@@ -72,7 +73,8 @@ public class WebsiteController {
 			@RequestParam(required = false) String sreturnDepot, 
 			@RequestParam(required = false) String sdemRcvd,
 			@RequestParam(required = false) String sdemRcvdSelect,
-			@RequestParam(required = false) String sshipmentStatus
+			@RequestParam(required = false) String sshipmentStatus,
+			@RequestParam(required = false) Boolean initSearch
 			
 		) throws Exception {
 		
@@ -94,7 +96,7 @@ public class WebsiteController {
 		.demRcvdSelect(sdemRcvdSelect)
 		.shipmentStatus(sshipmentStatus)
 		.build();
-		List<WebsiteDto> PortList = service.selectWebsiteTerminalCode(paramDto, false);
+		List<WebsiteDto> PortList = service.selectWebsiteTerminalCode(paramDto, initSearch);
 		return KainosResponseEntity.builder().build()
 				.addData(handler.GenerationRowSpen(PortList, WebsiteDto.class))
 				.close();
@@ -388,5 +390,70 @@ public class WebsiteController {
 		return KainosResponseEntity.builder().build()
 				.addData(handler.GenerationRowSpen(excelData, WebsiteExcelReadDto.class))
 				.close();
+	}
+	
+	@GetMapping(value = "/api/management/website-terminal-code-exceldown")
+	public ResponseEntity<InputStreamResource> exceldown(@RequestParam(required = false) String sprofitDate, 
+			@RequestParam(required = false) String spartner, 
+			@RequestParam(required = false) String stankNo, 
+			@RequestParam(required = false) String sitem, 
+			@RequestParam(required = false) String scargo, 
+			@RequestParam(required = false) String shblNo, 
+			@RequestParam(required = false) String smblNo, 
+			@RequestParam(required = false) String spol, 
+			@RequestParam(required = false) String spod, 
+			@RequestParam(required = false) String sata, 
+			@RequestParam(required = false) String serd, 
+			@RequestParam(required = false) String sreturnDate, 
+			@RequestParam(required = false) String sreturnDepot, 
+			@RequestParam(required = false) String sdemRcvd,
+			@RequestParam(required = false) String sdemRcvdSelect,
+			@RequestParam(required = false) String sshipmentStatus,
+			@RequestParam(required = false) Boolean initSearch
+		) throws Exception {
+		
+		WebsiteSearchDto paramDto = WebsiteSearchDto.builder()
+				.profitDate(sprofitDate)
+				.partner(spartner)
+				.tankNo(stankNo)
+				.item(sitem)
+				.cargo(scargo)
+				.hblNo(shblNo)
+				.mblNo(smblNo)
+				.pol(spol)
+				.pod(spod)
+				.ata(sata)
+				.erd(serd)
+				.returnDate(sreturnDate)
+				.returnDepot(sreturnDepot)
+				.demRcvd(sdemRcvd)
+				.demRcvdSelect(sdemRcvdSelect)
+				.shipmentStatus(sshipmentStatus)
+				.build();
+		
+		List<WebsiteDto> PortList = service.selectWebsiteTerminalCode(paramDto, initSearch);
+		handler.GenerationRowSpen(PortList, WebsiteDto.class);
+		
+		byte[] downLoadFile = null;
+		
+		KainosExcelWriteHandler excelWriteHandler = KainosExcelWriteHandler.builder().startRowNum(2)
+				.templateFile("excel/admin-website-terminal-code-exceldown.xlsx") // 템플릿 파일 경로
+				.build();
+
+		excelWriteHandler.writeALL(PortList);
+		downLoadFile = excelWriteHandler.writeFlush();
+		
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+        headers.setContentLength(downLoadFile.length);
+        ContentDisposition contentDisposition = ContentDisposition.builder("attachment")
+                  .filename("aaaaaaaaaaa.xlsx", Charset.forName("UTF-8"))
+                  .build();
+        headers.setContentDisposition(contentDisposition);
+		
+		return ResponseEntity.ok()
+                .headers(headers)
+                .contentLength(downLoadFile.length)
+                .body(new InputStreamResource(new ByteArrayInputStream(downLoadFile)));
 	}
 }

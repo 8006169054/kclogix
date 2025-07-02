@@ -134,7 +134,7 @@ public class WebsiteRepository extends KainosRepositorySupport {
 				.leftJoin(mdmTerminal).on(websiteTerminalCode.terminal.eq(mdmTerminal.code))
 				.leftJoin(mdmCustomer).on(websiteTerminalCode.concine.eq(mdmCustomer.code))
 				.where(where)
-				.orderBy(websiteTerminalCode.profitDate.asc())
+				.orderBy(websiteTerminalCode.uuid.asc())
 				.fetch();
 	}
 

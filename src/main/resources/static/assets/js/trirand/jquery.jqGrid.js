@@ -4308,6 +4308,8 @@ $.fn.jqGrid = function( pin ) {
 				clipboardData = clipboardData.split("	");
 				for ( var i = 0 ; i < clipboardData.length ; i++ ) {
 					$(ts).jqGrid("setCell", $.jgrid.jqID(ts.p.iRow), (selectGridData.iCol+i), clipboardData[i]);
+					var iRow = $.jgrid.jqID(ts.p.iRow);
+					$(ts).jqGrid("afterSaveJqFlag", iRow, ts.p.basedata[iRow-1]);
 				}
 				type=null,clipboardData=null;
 			});
