@@ -48,7 +48,7 @@ var customerList = [];
  * 조회
  */
 async function search() {
-	$("initSearch").val("false");
+	$("#initSearch").val("false");
 	$(tableName).clearGridData();
 	let response = await requestApi('GET', '/api/management/website-terminal-code', $('#searchFrom').serializeObject());
 	$(tableName).searchData(response.data, {editor: true, nodatamsg: true});

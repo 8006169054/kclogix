@@ -141,6 +141,11 @@
     justify-content: center;
     align-items: center;
 }
+
+.scroll-box {
+  height: 260px;
+  overflow-y: auto;
+}
   </style>
 <script src="/assets/js/jquery.min.js"></script>
 <script src="/assets/js/jquery.cookie.js"></script>
@@ -211,9 +216,9 @@ function openNoticesModal(index){
 			</div>
 		</div>
 		<div class="divider"></div>
-		<div class="notice-section">
+		<div class="notice-section" >
 			<h2>Notice</h2>
-			<div class="notice-list"></div>
+			<div class="notice-list scroll-box"></div>
 		</div>
 	</div>
 
@@ -224,7 +229,6 @@ function openNoticesModal(index){
 					<h5 class="modal-title"></h5>
 				</div>
 				<div class="modal-body">
-					<p>Modal body text goes here.</p>
 				</div>
 				<div class="modal-footer bg-whitesmoke br">
 					<button type="button" class="btn btn-secondary"
