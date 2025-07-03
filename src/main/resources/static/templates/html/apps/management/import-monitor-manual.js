@@ -76,10 +76,19 @@ async function portTableInit(){
 	    	{ name: 'concineName',			width: 150, 	align:'center',		hidden : false, rowspan: true, editable: true, editoptions: {
 				dataInit:function(elem) {
 					$(elem).autocomplete({
-						source: customerList,
 						delay: 100,
 						autoFocus: true,
 						minLength: 0,
+						source: function(request, response) {
+						    const results = $.ui.autocomplete.filter(customerList, request.term);
+						    if (results.length === 0) {
+						      results.push({
+						        label: "No results found",
+						        value: ""
+						      });
+						    }
+						    response(results);
+						},
 				        select: function (event, ui) {
 							ComSetCellData(tableName, ComSelectIndex(tableName), 'concine', ui.item.code, true);
 							ComSetCellData(tableName, ComSelectIndex(tableName), 'concinePic', ui.item.pic, true);
@@ -102,11 +111,19 @@ async function portTableInit(){
 	    	{ name: 'partner',				width: 100, 	align:'center', 	hidden : false, rowspan: false, editable : true, editable : true, edittype: 'text', editoptions: {
 				dataInit:function(elem) {
 					$(elem).autocomplete({
-						source: partnerList,
 						delay: 100,
 						autoFocus: true,
-						minChars: 0,
 						minLength: 0,
+						source: function(request, response) {
+						    const results = $.ui.autocomplete.filter(partnerList, request.term);
+						    if (results.length === 0) {
+						      results.push({
+						        label: "No results found",
+						        value: ""
+						      });
+						    }
+						    response(results);
+						},
 				        select: function (event, ui) {
 				        },
 				        close : function (event, ui) {
@@ -122,11 +139,19 @@ async function portTableInit(){
 	    	{ name: 'item',					width: 220, 	align:'center', 	hidden : false, rowspan: true, editable : true, edittype: 'text', editoptions: {
 				dataInit:function(elem) {
 					$(elem).autocomplete({
-						source: carGoList,
 						delay: 100,
 						autoFocus: true,
-						minChars: 0,
 						minLength: 0,
+						source: function(request, response) {
+						    const results = $.ui.autocomplete.filter(carGoList, request.term);
+						    if (results.length === 0) {
+						      results.push({
+						        label: "No results found",
+						        value: ""
+						      });
+						    }
+						    response(results);
+						},
 				        select: function (event, ui) {
 							ComSetCellData(tableName, ComSelectIndex(tableName), 2, ui.item.code, true);
 							ComSetCellData(tableName, ComSelectIndex(tableName), 'cargoDate', ui.item.cargoDate, true);
@@ -152,11 +177,19 @@ async function portTableInit(){
 	    	{ name: 'parkingLotCode', 		width: 80, 	align:'center', 	hidden : false, editable : true, edittype: 'text', editoptions: {
 				dataInit:function(elem) {
 					$(elem).autocomplete({
-						source: terminalList,
 						delay: 100,
 						autoFocus: true,
-						minChars: 0,
 						minLength: 0,
+						source: function(request, response) {
+						    const results = $.ui.autocomplete.filter(terminalList, request.term);
+						    if (results.length === 0) {
+						      results.push({
+						        label: "No results found",
+						        value: ""
+						      });
+						    }
+						    response(results);
+						},
 				        select: function (event, ui) {
 							ComSetCellData(tableName, ComSelectIndex(tableName), 'terminalCode', ui.item.code, true);
 							ComSetCellData(tableName, ComSelectIndex(tableName), 'pod', ui.item.region, true);
@@ -178,11 +211,19 @@ async function portTableInit(){
 	    	{ name: 'terminalName', 		width: 150, 	align:'center',		hidden : false, editable : true, edittype: 'text', editoptions: {
 				dataInit:function(elem) {
 					$(elem).autocomplete({
-						source: terminalList,
 						delay: 100,
 						autoFocus: true,
-						minChars: 0,
 						minLength: 0,
+						source: function(request, response) {
+						    const results = $.ui.autocomplete.filter(terminalList, request.term);
+						    if (results.length === 0) {
+						      results.push({
+						        label: "No results found",
+						        value: ""
+						      });
+						    }
+						    response(results);
+						},
 				        select: function (event, ui) {
 							ComSetCellData(tableName, ComSelectIndex(tableName), 'terminalCode', ui.item.code, true);
 							ComSetCellData(tableName, ComSelectIndex(tableName), 'pod', ui.item.region, true);
