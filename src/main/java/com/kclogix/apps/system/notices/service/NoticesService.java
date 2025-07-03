@@ -10,6 +10,7 @@ import com.kclogix.apps.system.notices.repository.NoticesRepository;
 import com.kclogix.common.dto.SessionDto;
 
 import kainos.framework.core.KainosKey;
+import kainos.framework.utils.KainosStringUtils;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -38,7 +39,7 @@ private final NoticesRepository repository;
 	@Transactional(transactionManager = KainosKey.DBConfig.TransactionManager.Default, rollbackFor = Exception.class)
 	public void saveNotices(NoticesDto paramDto, SessionDto session) throws Exception {
 		String userId = session.getUserId();
-		if(paramDto.getId() == null)
+		if(KainosStringUtils.isEmpty(paramDto.getId()))
 			repository.insertNotices(paramDto, userId);
 		else
 			repository.updateNotices(paramDto, userId);
