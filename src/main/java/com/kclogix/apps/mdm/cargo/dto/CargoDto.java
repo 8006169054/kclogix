@@ -1,7 +1,7 @@
 package com.kclogix.apps.mdm.cargo.dto;
 
-import com.kclogix.apps.mdm.customer.dto.CustomerDto;
 import com.kclogix.common.util.excel.Field;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
