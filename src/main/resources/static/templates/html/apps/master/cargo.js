@@ -24,7 +24,7 @@ function cargoTableInit(){
 	       	{ name: 'code', 			width: 100, 	align:'left', 	hidden : true, editable : false},
 	       	{ name: 'cargoDate', 		width: 80, 		align:'center', editable : true, editoptions : {pk:true}, edittype: "date"},
 	       	{ name: 'name', 			width: 450, 	align:'left', 	editable : true, editoptions : {pk:true}},
-	       	{ name: 'location', 		width: 100, 	align:'center', editable : true, editoptions : {pk:true}},
+	       	{ name: 'location', 		width: 100, 	align:'center', editable : true},
 	       	{ name: 'depot', 			width: 80, 		align:'center', editable : true},
 	    	{ name: 'cleaningCost',		width: 100, 	align:'center', editable : true},
 	    	{ name: 'difficultLevel',	width: 80, 		align:'center', editable : true},

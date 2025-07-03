@@ -29,4 +29,16 @@ public class CustomerDto {
 	private String createDate;
 	private String updateUserId;
 	private String updateDate;
+	
+	@Data
+	@Builder
+	@NoArgsConstructor
+	@AllArgsConstructor
+	@ToString
+	public static class PopupDto {
+		private String pconcineCode;
+		private String pconcineName;
+		private String pconcinePic;
+		private String pconcineEmail;
+	}
 }

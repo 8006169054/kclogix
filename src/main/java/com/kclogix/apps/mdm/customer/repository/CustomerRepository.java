@@ -31,6 +31,9 @@ public class CustomerRepository extends KainosRepositorySupport {
 		if(!KainosStringUtils.isEmpty(paramDto.getName()))
 				where.and(mdmCustomer.name.contains(paramDto.getName()));
 		
+		if(!KainosStringUtils.isEmpty(paramDto.getCode()))
+			where.and(mdmCustomer.code.contains(paramDto.getCode()));
+		
 		return select(Projections.bean(CustomerDto.class,
 				mdmCustomer.code,
 				mdmCustomer.name,
@@ -85,11 +88,11 @@ public class CustomerRepository extends KainosRepositorySupport {
 			mdmCustomer.updateUserId,
 			mdmCustomer.updateDate
 		).values(
-			paramDto.getCode(),
+			paramDto.getCode().trim(),
 			paramDto.getName().trim(),
 			paramDto.getEmail().trim(),
 			paramDto.getPic().trim(),
-			paramDto.getTel().trim(),
+			paramDto.getTel(),
 			paramDto.getCreateUserId(),
 			new Date(),
 			paramDto.getUpdateUserId(),

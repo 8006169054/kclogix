@@ -1,5 +1,6 @@
 package com.kclogix.apps.mdm.cargo.dto;
 
+import com.kclogix.apps.mdm.customer.dto.CustomerDto;
 import com.kclogix.common.util.excel.Field;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -37,4 +38,14 @@ public class CargoDto {
 	private String updateUserId;
 	private String updateDate;
 	
+	@Data
+	@Builder
+	@NoArgsConstructor
+	@AllArgsConstructor
+	@ToString
+	public static class PopupDto {
+		private String code;
+		private String pitemName;
+		private String pitemCargoDate;
+	}
 }

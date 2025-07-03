@@ -19,6 +19,7 @@ import com.kclogix.apps.mdm.customer.dto.CustomerDto;
 import com.kclogix.apps.mdm.customer.service.CustomerService;
 import com.kclogix.common.dto.SelectBoxDto;
 import com.kclogix.common.dto.SessionDto;
+import com.kclogix.common.util.JqFlag;
 import com.kclogix.common.util.MessageUtil;
 import com.kclogix.common.util.excel.KainosExcelReadHandler;
 import lombok.RequiredArgsConstructor;
@@ -48,6 +49,33 @@ public class CustomerController {
 	public ResponseEntity<Void> saveCustomer(@RequestBody List<CustomerDto> paramList, @KainosSession SessionDto session) throws Exception {
 		try {
 			service.saveCustomer(paramList, session);
+		} catch (KainosBusinessException e) {
+			throw e;
+		} catch (Exception e) {
+			throw new KainosBusinessException("common.system.error");
+		}
+		return message.getInsertMessage(KainosResponseEntity.builder().build()).close();
+	}
+	
+	@PostMapping(value = "/api/mdm/customer-popup")
+	public ResponseEntity<Void> saveCustomerPopup(@RequestBody CustomerDto.PopupDto paramDto, @KainosSession SessionDto session) throws Exception {
+		try {
+			
+			CustomerDto param = CustomerDto.builder()
+					.code(paramDto.getPconcineCode())
+					.name(paramDto.getPconcineName())
+					.pic(paramDto.getPconcinePic())
+					.email(paramDto.getPconcineEmail())
+					.jqFlag(JqFlag.Insert)
+					.build();
+			
+//			if(service.selectCustomer(param).size() > 0)
+//				param.setJqFlag(JqFlag.Insert);
+//			else
+//				param.setJqFlag(JqFlag.Update);
+			
+			service.saveCustomer(List.of(param), session);
+			
 		} catch (KainosBusinessException e) {
 			throw e;
 		} catch (Exception e) {

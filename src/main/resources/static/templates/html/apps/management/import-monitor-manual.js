@@ -73,13 +73,12 @@ async function portTableInit(){
 	       	{ name: 'carryoverSales', 		width: 50, 		align:'center',		hidden : false, rowspan: true,	editable: true},
 	       	{ name: 'arrivalNotice',		width: 70, 		align:'center',		hidden : false, rowspan: true},
 	       	{ name: 'invoice', 				width: 70, 		align:'center',		hidden : false, rowspan: true, editable: true},
-	    	{ name: 'concineName',			width: 150, 	align:'center',		hidden : false, rowspan: true, editable: true, edittype: 'text', editoptions: {
+	    	{ name: 'concineName',			width: 150, 	align:'center',		hidden : false, rowspan: true, editable: true, editoptions: {
 				dataInit:function(elem) {
 					$(elem).autocomplete({
 						source: customerList,
 						delay: 100,
 						autoFocus: true,
-						minChars: 0,
 						minLength: 0,
 				        select: function (event, ui) {
 							ComSetCellData(tableName, ComSelectIndex(tableName), 'concine', ui.item.code, true);

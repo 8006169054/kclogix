@@ -179,13 +179,13 @@ requestApi = async (method, url, params, option) => {
 					if(response.common.status === 'E' && response.common.message != undefined )
 						swal('', response.common.message, 'error').then((selection) => {
 					      if (selection)
-					      	if(option.errorFn !== undefined)
+					      	if(option !== undefined && option.errorFn !== undefined)
 					      		option.errorFn(response);
 					    });				
 					else if(response.common.status === 'S' && response.common.message != undefined )
 						swal('', response.common.message, 'success').then((selection) => {
 					      if (selection)
-					      	if(option.successFn !== undefined)
+					      	if(option !== undefined && option.successFn !== undefined)
 					      		option.successFn(response);
 					    });				
 					else

@@ -17,8 +17,10 @@ import kainos.framework.core.servlet.KainosResponseEntity;
 import kainos.framework.core.session.annotation.KainosSession;
 import com.kclogix.apps.mdm.cargo.dto.CargoDto;
 import com.kclogix.apps.mdm.cargo.service.CargoService;
+import com.kclogix.apps.mdm.customer.dto.CustomerDto;
 import com.kclogix.common.dto.SelectBoxDto;
 import com.kclogix.common.dto.SessionDto;
+import com.kclogix.common.util.JqFlag;
 import com.kclogix.common.util.MessageUtil;
 import com.kclogix.common.util.excel.KainosExcelReadHandler;
 import lombok.RequiredArgsConstructor;
@@ -58,6 +60,23 @@ public class CargoController {
 		return message.getInsertMessage(KainosResponseEntity.builder().build()).close();
 	}
 
+	@PostMapping(value = "/api/mdm/cargo-popup")
+	public ResponseEntity<CargoDto.PopupDto> saveCargoPopup(@RequestBody CargoDto.PopupDto paramDto, @KainosSession SessionDto session) throws Exception {
+		CargoDto param = CargoDto.builder().build();
+		try {
+			param.setName(paramDto.getPitemName());
+			param.setCargoDate(paramDto.getPitemCargoDate());
+			param.setJqFlag(JqFlag.Insert);
+			service.saveCargo(List.of(param), session);
+		} catch (KainosBusinessException e) {
+			throw e;
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new KainosBusinessException("common.system.error");
+		}
+		return message.getInsertMessage(KainosResponseEntity.builder().build().addData(param)).close();
+	}
+	
 	@PostMapping(value = "/api/mdm/cargo/upload")
 	public ResponseEntity<Void> excelupload(@RequestPart MultipartFile upload, @KainosSession SessionDto session) throws Exception {
 		List<CargoDto> excelData = new ArrayList<>();

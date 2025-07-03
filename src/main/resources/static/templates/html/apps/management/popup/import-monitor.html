@@ -45,7 +45,12 @@
 									<input type="hidden" class="form-control" id="concine" name="concine">
 									<div class="form-group" style="width: 330px; margin-right: 15px;">
 										<label for="name">CNEE</label>
-										<input type="text" class="form-control" id="concineName" name="concineName">
+										<div class="input-group">
+											<input type="text" class="form-control" id="concineName" name="concineName">
+											<div class="input-group-append">
+												<button class="btn btn-primary" type="button" onclick="popupConcineNew()">New</button>
+											</div>
+										</div>
 									</div>
 									<div class="form-group" style="width: 150px; margin-right: 1px;">
 										<label for="name">PIC</label>
@@ -63,7 +68,12 @@
 								<div class="form-group row">
 									<div class="form-group" style="width: 330px; margin-right: 1px;">
 										<label for="name">Item Name</label>
-										<input type="text" class="form-control" id="itemName" name="itemName">
+										<div class="input-group">
+											<input type="text" class="form-control" id="itemName" name="itemName">
+											<div class="input-group-append">
+												<button class="btn btn-primary" type="button" onclick="popupItemNew()">New</button>
+											</div>
+										</div>
 										<input type="hidden" class="form-control" id="cargo" name="cargo" readonly="readonly">
 									</div>
 									<div class="form-group" style="width: 100px; margin-right: 1px;">
@@ -151,7 +161,152 @@
 	</div>
 </div>
 
+<!-- CNEE 추가 팝업 -->
+<div class="modal fade" tabindex="1" role="dialog" id="concineNewModal">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Add New Consignee Information</h5>
+			</div>
+			<div class="modal-body">
+				<div class="col-100">
+					<div class="card">
+						<form id="concineNewModalForm" name="concineNewModalForm">
+						<div id="concineNewModalFormDiv" name="concineNewModalFormDiv" class="card-body needs-validation">
+						<div class="form-group row">
+							<div class="form-group" style="padding-left: 15px;">
+								<label for="name">Code</label>
+								<input type="text" class="form-control" id="pconcineCode" name="pconcineCode" required>
+								<div class="invalid-feedback">This is a required field.</div>
+							</div>
+						</div>
+						<div class="form-group row">
+							<div class="form-group" style="padding-left: 15px;">
+								<label for="name">Name</label>
+								<input type="text" class="form-control" id="pconcineName" name="pconcineName" required>
+								<div class="invalid-feedback">This is a required field.</div>
+							</div>
+						</div>
+						<div class="form-group row">
+							<div class="form-group" style="padding-left: 15px;">
+								<label for="name">PIC</label>
+								<input type="text" class="form-control" id="pconcinePic" name="pconcinePic" required>
+								<div class="invalid-feedback">This is a required field.</div>
+							</div>
+						</div>
+						<div class="form-group row">
+							<div class="form-group" style="padding-left: 15px;">
+								<label for="name">e-Mail</label>
+								<input type="text" class="form-control" id="pconcineEmail" name="pconcineEmail" required>
+								<div class="invalid-feedback">This is a required field.</div>
+							</div>
+						</div>
+						</div>
+						</form>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer bg-whitesmoke br">
+				<button type="button" class="btn btn-secondary" onclick="popupConcineClose()">Close</button>
+				<button type="button" class="btn btn-success" onclick="popupConcineSave()">Save</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- ITEM 추가 팝업 -->
+<div class="modal fade" tabindex="1" role="dialog" id="itemNewModal">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Add New Item Information</h5>
+			</div>
+			<div class="modal-body">
+				<div class="col-100">
+					<div class="card">
+						<form id="itemNewModalForm" name="itemNewModalForm">
+						<div id="itemNewModalFormDiv" name="itemNewModalFormDiv" class="card-body needs-validation">
+						<div class="form-group row">
+							<div class="form-group" style="padding-left: 15px;">
+								<label for="name">Name</label>
+								<input type="text" class="form-control" id="pitemName" name="pitemName" required>
+								<div class="invalid-feedback">This is a required field.</div>
+							</div>
+						</div>
+						<div class="form-group row">
+							<div class="form-group" style="padding-left: 15px;">
+								<label for="name">Date</label>
+								<div class="input-group">
+									<div class="input-group-prepend">
+										<div class="input-group-text">
+											<i class="fas fa-calendar"></i>
+										</div>
+									</div>
+									<input type="text" id="pitemCargoDate" name="pitemCargoDate" class="form-control daterange-cus" required>
+									<div class="invalid-feedback">This is a required field.</div>
+								</div>
+							</div>
+						</div>
+						</div>
+						</form>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer bg-whitesmoke br">
+				<button type="button" class="btn btn-secondary" onclick="popupItemClose()">Close</button>
+				<button type="button" class="btn btn-success" onclick="popupItemSave()">Save</button>
+			</div>
+		</div>
+	</div>
+</div>
 <script type="text/javascript">
+
+$('#pitemCargoDate').daterangepicker({
+	  locale: {format: 'YYYY-MM-DD'},
+	  autoUpdateInput: false,
+	  singleDatePicker: true,
+	  drops: 'down',
+	  opens: 'right'
+}).on('apply.daterangepicker', function (ev, picker) {
+  $(this).val(picker.startDate.format('YYYY-MM-DD'));
+});
+	
+/**
+ * Item 팝업 오픈
+ */
+async function popupItemSave(){
+	
+	if($('#pitemName').val() === '' || $('#pitemCargoDate').val() === ''){
+		$('#itemNewModalFormDiv').addClass('was-validated');
+		return false;
+	}
+	
+	var response = await requestApi('POST', '/api/mdm/cargo-popup', $('#itemNewModalForm').serializeObject());
+	if(response.common.status === 'S'){
+		var addItem = {cargoDate : $('#pitemCargoDate').val(), label : $('#pitemName').val(), value : $('#pitemName').val(), code : response.data.code};
+		$('#itemName').val($('#pitemName').val());
+		$('#cargo').val(response.data.code);
+		$('#cargoDate').val($('#pitemCargoDate').val());
+		carGoList.push(addItem);
+		popupItemClose();
+ 	}
+}
+
+function popupItemClose(){
+	$('#itemNewModalForm')[0].reset();
+	$('#itemNewModal').modal('hide');
+}
+
+
+/**
+ * Item 팝업 오픈
+ */
+function popupItemNew(){
+	$('#pitemName').val($('#itemName').val());
+	// 특정 input 요소에 포커스를 이동시키기
+	$('#pitemName').focus();
+	$('#itemNewModal').modal('show');
+}
 
 $('#profitDate').daterangepicker({
 	  locale: {format: 'YYYY-MM-DD'},
@@ -385,6 +540,43 @@ inputs.forEach((input, index) => {
     }
   });
 });
+
+
+
+
+/**
+ * concine 팝업 오픈
+ */
+function popupConcineNew(){
+	$('#pconcineName').val($('#concineName').val());
+	// 특정 input 요소에 포커스를 이동시키기
+	$('#pconcineCode').focus();
+	$('#concineNewModal').modal('show');
+}
+
+/**
+ * concine 팝업 오픈
+ */
+async function popupConcineSave(){
+	if($('#pconcineCode').val() === '' || $('#pconcineName').val() === '' || $('#pconcinePic').val() === '' || $('#pconcineEmail').val() === ''){
+		$('#concineNewModalFormDiv').addClass('was-validated');
+		return false;
+	}
+	
+	var response = await requestApi('POST', '/api/mdm/customer-popup', $('#concineNewModalForm').serializeObject());
+	if(response.common.status === 'S'){
+		var addCustomer = {code : $('#pconcineCode').val(), email : $('#pconcineEmail').val(), label : $('#pconcineName').val(), pic : $('#pconcinePic').val(), value : $('#pconcineName').val()};
+		$('#concine').val($('#pconcineCode').val());
+		$('#concineName').val($('#pconcineName').val());
+		$('#concinePic').val($('#pconcinePic').val());
+		customerList.push(addCustomer);
+ 	}
+}
+
+function popupConcineClose(){
+	$('#concineNewModalForm')[0].reset();
+	$('#concineNewModal').modal('hide');
+}
 
 </script>
 </html>

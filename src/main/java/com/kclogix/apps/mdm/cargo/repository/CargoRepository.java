@@ -116,14 +116,14 @@ public class CargoRepository extends KainosRepositorySupport {
 				mdmCargoHistory.updateUserId,
 				mdmCargoHistory.updateDate
 		).values(
-			paramDto.getName().trim(),
-			paramDto.getLocation().trim(),
-			paramDto.getCargoDate().trim(),
-			paramDto.getDepot().trim(),
-			paramDto.getCleaningCost().trim(),
-			paramDto.getDifficultLevel().trim(),
-			paramDto.getRemark1().trim(),
-			paramDto.getRemark2().trim(),
+			paramDto.getName(),
+			paramDto.getLocation(),
+			paramDto.getCargoDate(),
+			paramDto.getDepot(),
+			paramDto.getCleaningCost(),
+			paramDto.getDifficultLevel(),
+			paramDto.getRemark1(),
+			paramDto.getRemark2(),
 			userId,
 			new Date(),
 			userId,
@@ -132,6 +132,7 @@ public class CargoRepository extends KainosRepositorySupport {
 	}
 	
 	public void insertCargo(CargoDto paramDto, String userId) throws Exception {
+		paramDto.setCode(CodeGenerationUtil.createCode("CG"));
 		insert(mdmCargo)
 		.columns(
 			mdmCargo.code,
@@ -148,7 +149,7 @@ public class CargoRepository extends KainosRepositorySupport {
 			mdmCargo.updateUserId,
 			mdmCargo.updateDate
 		).values(
-			CodeGenerationUtil.createCode("CG"),
+			paramDto.getCode(),
 			paramDto.getName(),
 			paramDto.getLocation(),
 			paramDto.getCargoDate(),
