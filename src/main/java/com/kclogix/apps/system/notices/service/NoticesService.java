@@ -1,5 +1,6 @@
 package com.kclogix.apps.system.notices.service;
 
+import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -44,5 +45,15 @@ private final NoticesRepository repository;
 		else
 			repository.updateNotices(paramDto, userId);
 	}
+	
+	@Transactional(transactionManager = KainosKey.DBConfig.TransactionManager.Default, rollbackFor = Exception.class)
+	public void deleteNotices(List<NoticesDto> paramDtos) throws Exception {
+		for (Iterator<NoticesDto> iterator = paramDtos.iterator(); iterator.hasNext();) {
+			NoticesDto noticesDto = iterator.next();
+			repository.deleteNotices(noticesDto);
+		}
+	}
+	
+	
 	
 }

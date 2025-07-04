@@ -1,6 +1,9 @@
 package com.kclogix.apps.system.notices;
 
+import java.util.List;
+
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -55,6 +58,18 @@ public class NoticesController {
 				paramDto.setViewEndDate(tmp[1].trim());
 			}
 			service.saveNotices(paramDto, session);
+		} catch (KainosBusinessException e) {
+			throw e;
+		} catch (Exception e) {
+			throw new KainosBusinessException("common.system.error");
+		}
+		return message.getInsertMessage(KainosResponseEntity.builder().build()).close();
+	}
+	
+	@DeleteMapping(value = "/api/system/notices")
+	public ResponseEntity<Void> deleteNotices(@RequestBody List<NoticesDto> paramDto) throws Exception {
+		try {
+			service.deleteNotices(paramDto);
 		} catch (KainosBusinessException e) {
 			throw e;
 		} catch (Exception e) {

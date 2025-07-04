@@ -28,18 +28,20 @@ function clearSaveBox(){
 function tableInit(){
 	$(tableName).jqGrid({
 	   	datatype: "json",
-	   	colNames: ['', 'key','제목','적용날짜','Use','Update User','Update Date'],
+	   	colNames: ['', 'contentBody', 'key','제목','적용날짜','Use','Update User','Update Date'],
 	   	colModel: [
+			{ name: 'jqFlag', 			width: 30, 		align:'center', hidden : false},
 			{ name: 'contentBody', 			width: 100, 	align:'center', hidden : true},
 	       	{ name: 'id', 			width: 100, 	align:'center', hidden : true},
 	       	{ name: 'title', 			width: 350, 	align:'left'},
-	       	{ name: 'noticesDate', 		width: 150, 	align:'center'},
-	       	{ name: 'use', 			width: 70, 	align:'center'},
+	       	{ name: 'noticesDate', 		width: 120, 	align:'center'},
+	       	{ name: 'use', 			width: 50, 	align:'center'},
 	    	{ name: 'updateUserId', width: 100, 	align:'center'},
-	    	{ name: 'updateDate',	width: 140,		align:'center'}
+	    	{ name: 'updateDate',	width: 120,		align:'center'}
 	   	],
 		height: 550, 
 		width: '100%',
+		delselect: true,
 		ondblClickRow: function(rowid, iRow, iCol) {
 		    const rowData = $(tableName).jqGrid("getRowData", rowid);
 		    $('#id').val(rowData.id);
@@ -49,6 +51,19 @@ function tableInit(){
 		    $('#contentBody').summernote('code', rowData.contentBody);
 		  }
 	});
+}
+
+async function deleteFn(){
+	var saveData = $(tableName).saveGridData();
+	if(saveData.length === 0)
+		alertMessage(getMessage('0001'), 'info');
+	else{
+		var response = await requestApi('DELETE', '/api/system/notices', saveData);
+		if(response.common.status === 'S'){
+			// 데이터 초기화 하고 조회
+	 		search();
+	 	}
+	}
 }
 
 $('#snoticesDate').daterangepicker({
