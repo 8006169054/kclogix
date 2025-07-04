@@ -246,6 +246,8 @@ public class HomeRepository extends KainosRepositorySupport {
 					websiteTerminalCode.partner,
 					websiteTerminalCode.tankNo,
 					websiteTerminalCode.term,
+					websiteTerminalCode.shipmentStatus,
+					websiteTerminalCode.profitDate,
 					websiteTerminalCode.item,
 					websiteTerminalCode.vesselVoyage,
 					websiteTerminalCode.carrier,

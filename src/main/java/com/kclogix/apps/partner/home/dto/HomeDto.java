@@ -27,6 +27,12 @@ public class HomeDto {
 	@Field(value = "D")
 	private String tankNo; //Tank no.
 	
+	@Field(value = "D", merge = true)
+	private String shipmentStatus; //Tank no.
+	
+	@Field(value = "D", merge = true)
+	private String profitDate; //Tank no.
+	
 	@Field(value = "E", merge = true)
 	private String term; //Term
 	
@@ -95,6 +101,10 @@ public class HomeDto {
 		private RowSpan quantity = RowSpan.builder().build();
 		@Builder.Default
 		private RowSpan term = RowSpan.builder().build();
+		@Builder.Default
+		private RowSpan shipmentStatus = RowSpan.builder().build();
+		@Builder.Default
+		private RowSpan profitDate = RowSpan.builder().build();
 		@Builder.Default
 		private RowSpan item = RowSpan.builder().build();
 		@Builder.Default

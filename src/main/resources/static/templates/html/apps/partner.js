@@ -70,7 +70,7 @@ async function search() {
 function portTableInit(){
 	$(tableName).jqGrid({
 	   	datatype: "json",
-	   	colNames: ['', 'HBL NO.', "Q'ty", 'Partner', 'Tank no.', 'Term', 'Item', 'Vessel / Voyage', 'Carrier', 'MBL NO.', 'POL', 'POD', 'ETD', 'ETA', 'F/T', 'DEM RATE', 'END OF F/T', 'RETURN DATE', 'RETURN DEPOT', 'TOTAL DEM', 'COMMISSION DEM', 'DEM COMMISSION', 'DEPOT IN DATE(REPO ONLY)'],
+	   	colNames: ['', 'HBL NO.', "Q'ty", 'Partner', 'Tank no.', 'Term', 'SHIPMENT STATUS', 'PROFIT DATE', 'Item', 'Vessel / Voyage', 'Carrier', 'MBL NO.', 'POL', 'POD', 'ETD', 'ETA', 'F/T', 'DEM RATE', 'END OF F/T', 'RETURN DATE', 'RETURN DEPOT', 'TOTAL DEM', 'COMMISSION DEM', 'DEM COMMISSION', 'DEPOT IN DATE(REPO ONLY)'],
 	   	colModel: [
 	   		{ name: 'jqFlag',				width: 40,		align:'center', 	hidden : true,	frozen:true},
 	       	{ name: 'hblNo', 				width: 140, 	align:'center',		rowspan: true,	frozen:true},
@@ -78,6 +78,8 @@ function portTableInit(){
 	    	{ name: 'partner',				width: 100, 	align:'center'},
 	    	{ name: 'tankNo', 				width: 120, 	align:'center'},
 	    	{ name: 'term', 				width: 80, 		align:'center',		rowspan: true},
+	    	{ name: 'shipmentStatus', 		width: 80, 		align:'center',		rowspan: true, formatter:'select', edittype:'select', editoptions : {value: 'Y:IN PROGRES;N:CLOSED'}},
+	    	{ name: 'profitDate', 			width: 90, 		align:'center',		rowspan: true},
 	    	{ name: 'item',					width: 220, 	align:'center', 	rowspan: true},
 	    	{ name: 'vesselVoyage', 		width: 200, 	align:'center',		rowspan: true},
 	    	{ name: 'carrier', 				width: 80, 		align:'center',		rowspan: true},
