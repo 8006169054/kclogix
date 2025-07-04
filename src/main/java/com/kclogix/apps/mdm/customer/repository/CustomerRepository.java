@@ -66,7 +66,7 @@ public class CustomerRepository extends KainosRepositorySupport {
 				mdmCustomer.email
 				))
 				.from(mdmCustomer)
-				.where(mdmCustomer.pic.isNotEmpty())
+				.where(mdmCustomer.code.isNotEmpty())
 				.fetch();
 	}
 	

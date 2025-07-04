@@ -191,14 +191,12 @@
 							<div class="form-group" style="padding-left: 15px;">
 								<label for="name">PIC</label>
 								<input type="text" class="form-control" id="pconcinePic" name="pconcinePic" required>
-								<div class="invalid-feedback">This is a required field.</div>
 							</div>
 						</div>
 						<div class="form-group row">
 							<div class="form-group" style="padding-left: 15px;">
 								<label for="name">e-Mail</label>
 								<input type="text" class="form-control" id="pconcineEmail" name="pconcineEmail" required>
-								<div class="invalid-feedback">This is a required field.</div>
 							</div>
 						</div>
 						</div>
@@ -558,7 +556,7 @@ function popupConcineNew(){
  * concine 팝업 오픈
  */
 async function popupConcineSave(){
-	if($('#pconcineCode').val() === '' || $('#pconcineName').val() === '' || $('#pconcinePic').val() === '' || $('#pconcineEmail').val() === ''){
+	if($('#pconcineCode').val() === '' || $('#pconcineName').val() === ''){
 		$('#concineNewModalFormDiv').addClass('was-validated');
 		return false;
 	}
