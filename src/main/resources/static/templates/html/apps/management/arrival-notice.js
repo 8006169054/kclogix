@@ -121,8 +121,8 @@ $( document ).ready(function() {
    	portTableInit();
    	searchCargoAutocomplete();
    	
-   	let seta = $('#seta').data('daterangepicker');
-   	seta.setStartDate(moment().subtract(30, 'days').format('YYYY-MM-DD'));
-	seta.setEndDate(moment().format('YYYY-MM-DD'));
-	seta.element.trigger('apply.daterangepicker', seta);
+//   	let seta = $('#seta').data('daterangepicker');
+//   	seta.setStartDate(moment().subtract(30, 'days').format('YYYY-MM-DD'));
+//	seta.setEndDate(moment().format('YYYY-MM-DD'));
+//	seta.element.trigger('apply.daterangepicker', seta);
 });
