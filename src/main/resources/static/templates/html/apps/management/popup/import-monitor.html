@@ -29,7 +29,7 @@
 									</div>
 									<div class="form-group" style="width: 300px; margin-right: 15px;">
 										<label for="name">Tank no.( , )</label>
-										<input type="text" class="form-control" id="tankNo" name="tankNo" title="aaaaaa" onmouseenter="beforeTooltip()" required>
+										<input type="text" class="form-control" id="tankNo" name="tankNo" required>
 										<div class="invalid-feedback">This is a required field.</div>
 									</div>
 									<div class="form-group" style="width: 100px; margin-right: 15px;">
@@ -285,10 +285,6 @@
 </div>
 
 <script type="text/javascript">
-
-function beforeTooltip(){
-	$('#tankNo').attr('title', $('#tankNo').val());
-}
 
 $('#pitemCargoDate').daterangepicker({
 	  locale: {format: 'YYYY-MM-DD'},

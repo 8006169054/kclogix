@@ -39,7 +39,7 @@ function partnerTableInit(){
 			if(iCol === 7){
 				roleSelect.iRow = iRow;
 				roleSelect.importMoniterCode = ComRowData(tableName, iRow).importMoniterRoleCode;
-				$('#role').click();
+				$('#importMonitorRolePopup').modal('show');
 			}
 		},
 		dblEdit : true
