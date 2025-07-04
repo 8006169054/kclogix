@@ -29,7 +29,7 @@
 									</div>
 									<div class="form-group" style="width: 300px; margin-right: 15px;">
 										<label for="name">Tank no.( , )</label>
-										<input type="text" class="form-control" id="tankNo" name="tankNo" required>
+										<input type="text" class="form-control" id="tankNo" name="tankNo" title="aaaaaa" onmouseenter="beforeTooltip()" required>
 										<div class="invalid-feedback">This is a required field.</div>
 									</div>
 									<div class="form-group" style="width: 100px; margin-right: 15px;">
@@ -172,7 +172,7 @@
 				<div class="col-100">
 					<div class="card">
 						<form id="concineNewModalForm" name="concineNewModalForm">
-						<div id="concineNewModalFormDiv" name="concineNewModalFormDiv" class="card-body needs-validation">
+						<div id="concineNewModalFormDiv" class="card-body needs-validation">
 						<div class="form-group row">
 							<div class="form-group" style="padding-left: 15px;">
 								<label for="name">Code</label>
@@ -223,7 +223,7 @@
 				<div class="col-100">
 					<div class="card">
 						<form id="itemNewModalForm" name="itemNewModalForm">
-						<div id="itemNewModalFormDiv" name="itemNewModalFormDiv" class="card-body needs-validation">
+						<div id="itemNewModalFormDiv" class="card-body needs-validation">
 						<div class="form-group row">
 							<div class="form-group" style="padding-left: 15px;">
 								<label for="name">Name</label>
@@ -257,7 +257,38 @@
 		</div>
 	</div>
 </div>
+
+<!-- Tank No. 추가 팝업 -->
+<div class="modal fade" tabindex="1" role="dialog" id="tankNoNewModal">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Add New TankNo Information</h5>
+			</div>
+			<div class="modal-body">
+				<div class="col-100">
+					<div class="card">
+						<div class="card-body p-0">
+							<div class="table-responsive" style="overflow: hidden;">
+								<table id="tankNo-table"></table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer bg-whitesmoke br">
+				<button type="button" class="btn btn-secondary" onclick="popupTankNoClose()">Close</button>
+				<button type="button" class="btn btn-success" onclick="popupTankNoSave()">Save</button>
+			</div>
+		</div>
+	</div>
+</div>
+
 <script type="text/javascript">
+
+function beforeTooltip(){
+	$('#tankNo').attr('title', $('#tankNo').val());
+}
 
 $('#pitemCargoDate').daterangepicker({
 	  locale: {format: 'YYYY-MM-DD'},
