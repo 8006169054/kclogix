@@ -18,7 +18,7 @@ async function search() {
 function partnerTableInit(){
 	$(tableName).jqGrid({
 	   	datatype: "json",
-	   	colNames: ['','Code','Name','Company','PIC','e-mail', 'import-moniter-role','Code','Update User','Update Date'],
+	   	colNames: ['','Code','Name','Company','PIC','e-mail', 'import-moniter-role (Selected columns are hidden.)','Code','Update User','Update Date'],
 	   	colModel: [
 			{ name: 'jqFlag', 				width: 50, 		align:'center', hidden : false},
 	       	{ name: 'code', 				width: 100, 	align:'left', hidden : true, editable : false},
