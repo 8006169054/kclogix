@@ -89,16 +89,15 @@ function importMonitorPopupSave(){
 	var code = '';
 	var text = '';
 	$("#roleSelect > option:selected").each(function(index) {
-		if(index > 0) {
+		if(index > 1) {
 			code = code + ",";
 			text = text + ",";
 		}
 		code = code + this.value;
 		text = text + this.text;
 	});
-	
-	ComSetCellData(tableName, roleSelect.iRow, 'importMoniterRoleCode', code);
-	ComSetCellData(tableName, roleSelect.iRow, 'importMoniterRoleName', text);
+	$(tableName).setCell(roleSelect.iRow, 7, text, null, null, true, true); // true 값은 '' 값도 업데이트 한다.
+	$(tableName).setCell(roleSelect.iRow, 8, code, null, null, true, true);
 	$('#importMonitorPopupClose').click();
 }
 

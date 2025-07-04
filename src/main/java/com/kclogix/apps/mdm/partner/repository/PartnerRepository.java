@@ -50,7 +50,7 @@ public class PartnerRepository extends KainosRepositorySupport {
 				))
 				.from(mdmPartner)
 				.where(where)
-				.orderBy(mdmPartner.updateDate.desc())
+				.orderBy(mdmPartner.code.asc())
 				.fetch();
 	}
 	

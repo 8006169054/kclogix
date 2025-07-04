@@ -10,7 +10,7 @@ $( document ).ready(function() {
  * 조회
  */
 async function search() {
-	response = await requestApi('GET', '/api/mdm/cargo', {name : $('#name').val()});
+	var response = await requestApi('GET', '/api/mdm/cargo', $('#searchFrom').serializeObject());
 	$(tableName).clearGridData();
 	$(tableName).searchData(response.data, {editor: true});
 }

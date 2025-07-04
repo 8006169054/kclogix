@@ -12,11 +12,6 @@
 		<div class="section-header">
 			<h1>Cargo List</h1>
 			<div class="section-header-breadcrumb">
-<!-- 				<div class="breadcrumb-item active"> -->
-<!-- 					<a href="/" th:text="#{common.sidebar.hmoe.name}"></a> -->
-<!-- 				</div> -->
-<!-- 				<div class="breadcrumb-item" th:text="#{common.sidebar.basic.name}"></div> -->
-<!-- 				<div class="breadcrumb-item" th:text="#{common.sidebar.basic.partner.name}"></div> -->
 			</div>
 		</div>
 		<div class="section-body">
@@ -27,12 +22,26 @@
 							<button class="btn btn-primary" onclick="search()" th:text="#{common.button.label.search}"></button>
 						</div>
 						<div class="card-body">
+							<form id="searchFrom" name="searchFrom">
 							<div class="form-group row">
-								<label class="col-form-label text-md-left col-md-5">name</label>
-								<div class="col-md-20">
+								<label class="col-form-label text-md-left col-md-5">Name</label>
+								<div class="col-md-15">
 									<input type="text" id="name" name="name" class="form-control" onkeydown="if (event.key == 'Enter'){ search(); }">
 								</div>
+								<label class="col-form-label text-md-left col-md-7">Location</label>
+								<div class="col-md-12">
+									<input type="text" id="location" name="location" class="form-control" onkeydown="if (event.key == 'Enter'){ search(); }">
+								</div>
+								<label class="col-form-label text-md-left col-md-5">Depot</label>
+								<div class="col-md-12">
+									<input type="text" id="depot" name="depot" class="form-control" onkeydown="if (event.key == 'Enter'){ search(); }">
+								</div>
+								<label class="col-form-label text-md-left col-md-5">Level</label>
+								<div class="col-md-12">
+									<input type="text" id="difficultLevel" name="difficultLevel" class="form-control" onkeydown="if (event.key == 'Enter'){ search(); }">
+								</div>
 							</div>
+							</form>
 						</div>
 					</div>
 				</div>

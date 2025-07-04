@@ -34,10 +34,13 @@ public class CargoController {
 	
 	@GetMapping(value = "/api/mdm/cargo")
 	public ResponseEntity<CargoDto> selectCargo(
-			@RequestParam(required = false) String name
+			@RequestParam(required = false) String name,
+			@RequestParam(required = false) String location,
+			@RequestParam(required = false) String depot,
+			@RequestParam(required = false) String difficultLevel
 			) throws Exception {
 		return KainosResponseEntity.builder().build()
-				.addData(service.selectCargo(CargoDto.builder().name(name).build()))
+				.addData(service.selectCargo(CargoDto.builder().name(name).location(location).depot(depot).difficultLevel(difficultLevel).build()))
 				.close();
 	}
 	

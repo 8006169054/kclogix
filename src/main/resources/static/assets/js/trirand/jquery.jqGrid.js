@@ -7854,7 +7854,7 @@ $.jgrid.extend({
 		var recovery = eval("data." + colname);
 		$($t).jqGrid('setCell', rowid, colname, recovery);
 	},
-	setCell : function(rowid,colname,nData,cssp,attrp, forceupd) {
+	setCell : function(rowid,colname,nData,cssp,attrp, forceupd, jpFlag) {
 		return this.each(function(){
 			var $t = this, pos =-1, v, ind;
 			if(!$t.grid) {return;}
@@ -7895,7 +7895,7 @@ $.jgrid.extend({
 						} else if(cssp) {
 							$(tcell).css(cssp);
 						}
-						if(typeof attrp === 'object') {
+						if(typeof attrp === 'object' && attrp != null) {
 							$(tcell).attr(attrp);
 						}
 						if($t.p.frozenColumns && pos <= $t.p.frozenColCount) {
@@ -7903,9 +7903,9 @@ $.jgrid.extend({
 							$("#"+rowid +" td", "#" + $.jgrid.jqID($t.p.id + "_frozen") ).eq( pos ).replaceWith(fcell);
 						}
 						// 이걸 왜 만들었는지 모르겠음.. 수정상태로 변환 시 모든 필드를 체크함
-//						if(colname !== 'jqFlag') {
-//							$($t).jqGrid("afterSaveJqFlag", rowid, $t.p.basedata[rowid-1]);
-//						}
+						if(jpFlag !== undefined && jpFlag) {
+							$($t).jqGrid("afterSaveJqFlag", rowid, $t.p.basedata[rowid-1]);
+						}
 					}
 				}
 			}

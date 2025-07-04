@@ -51,11 +51,13 @@ public class CargoRepository extends KainosRepositorySupport {
 	public List<CargoDto> selectCargo(CargoDto paramDto) throws Exception {
 		BooleanBuilder where = new BooleanBuilder();
 		if(!KainosStringUtils.isEmpty(paramDto.getName()))
-			where.and(mdmCargo.name.contains(paramDto.getName()));
-		if(!KainosStringUtils.isEmpty(paramDto.getCargoDate()))
-			where.and(mdmCargo.cargoDate.contains(paramDto.getCargoDate()));
+			where.and(mdmCargo.name.upper().contains(paramDto.getName().toUpperCase()));
 		if(!KainosStringUtils.isEmpty(paramDto.getLocation()))
-			where.and(mdmCargo.location.contains(paramDto.getLocation()));
+			where.and(mdmCargo.location.upper().contains(paramDto.getLocation().toUpperCase()));
+		if(!KainosStringUtils.isEmpty(paramDto.getDepot()))
+			where.and(mdmCargo.depot.contains(paramDto.getDepot().toUpperCase()));
+		if(!KainosStringUtils.isEmpty(paramDto.getDifficultLevel()))
+			where.and(mdmCargo.difficultLevel.contains(paramDto.getDifficultLevel().toUpperCase()));
 		
 		return select(Projections.bean(CargoDto.class,
 				mdmCargo.code,

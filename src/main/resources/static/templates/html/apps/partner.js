@@ -47,17 +47,12 @@ $('#sprofitDate').daterangepicker({
 async function gridColsearch() {
 	let response = await requestApi('GET', '/api/partner/home/website-terminal-code-grid-col');
 	if(response.data != ''){
-		let loopCol = [];
 		if(response.data.indexOf(",") > 0){
-			loopCol = response.data.split(",");
+			hiddenCelVal = response.data.split(",");
 		}else{
-			loopCol.push(response.data);
-		}
-		for(var i=0; i < loopCol.length; i++){
-			hiddenCelVal[loopCol[i]] = true;
+			hiddenCelVal.push(response.data);
 		}
 	}
-	loopCol = null;
 	response = null;
 	portTableInit();
 }
@@ -105,6 +100,11 @@ function portTableInit(){
 		width: '100%',
 		frozen: true
 	});
+	
+	for(var i=0; i < hiddenCelVal.length; i++){
+		$(tableName).hideCol(hiddenCelVal[i]);
+	}
+	$(tableName).refreshFrozen();
 	
 }
 
