@@ -63,8 +63,8 @@ async function portTableInit(){
 	   	colNames: ['','cargo','concine code', 'seq', 'uuid', 'HBL NO.', 'Tank no.', '매출', '이월 매출', 'A/N&EDI', 'INVOICE', 'CNEE', 'PIC', 'SHIPMENT STATUS', 'PROFIT DATE', '국내매출', '해외매출', "Q'ty", 'Partner', 'Term', 'Name', 'Date', 'Location', 'Vessel / Voyage', 'Carrier', 'MBL NO.', 'POL', 'POD', 'Code', 'Code', 'Name', 'Link', 'ETD', 'ETA', 'ATA', '비고', 'F/T', 'DEM RATE', 'END OF F/T', 'ESTIMATE RETURN DATE', 'RETURN DATE', 'RETURN DEPOT', 'DEM STATUS', 'TOTAL DEM', 'DEM BILLING', 'DEM RCVD', 'DEM(USD) COMMISSION', 'DEM COMMISSION', 'DEPOT IN DATE(REPO ONLY)', 'REPOSITION 매입'],
 	   	colModel: [
 	   		{ name: 'jqFlag',				width: 40,		index: 1,align:'center', 	hidden : false,	frozen:true},
-	   		{ name: 'cargo',				width: 100,		index: 2,align:'center', 	hidden : false, rowspan: true,	editable : true, hidden : true,	frozen:true},
-	   		{ name: 'concine', 				width: 70, 		index: 3,align:'center',		hidden : true, rowspan: true,	editable : true, hidden : false,	frozen:true},
+	   		{ name: 'cargo',				width: 100,		index: 2,align:'center', 		hidden : true, rowspan: true,	editable : true, frozen:true},
+	   		{ name: 'concine', 				width: 70, 		index: 3,align:'center',		hidden : true, rowspan: true,	editable : true, frozen:true},
 	   		{ name: 'seq', 					width: 50, 		index: 4,align:'center',		hidden : true,	frozen:true},
 	   		{ name: 'uuid', 				width: 50, 		index: 5,align:'center',		hidden : true,	frozen:true},
 	       	{ name: 'hblNo', 				width: 140, 	index: 6,align:'center',		hidden : false, rowspan: true,	frozen:true}, /**여기서부터 히든처리 */
