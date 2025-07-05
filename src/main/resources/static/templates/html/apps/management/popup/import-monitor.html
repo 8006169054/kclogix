@@ -28,9 +28,14 @@
 										<div class="invalid-feedback">This is a required field.</div>
 									</div>
 									<div class="form-group" style="width: 300px; margin-right: 15px;">
-										<label for="name">Tank no.( , )</label>
-										<input type="text" class="form-control" id="tankNo" name="tankNo" required>
-										<div class="invalid-feedback">This is a required field.</div>
+										<label for="name">Tank no.(여러건의 Tank no 구분자로 , 사용해주세요 )</label>
+										<div class="input-group">
+											<input type="text" class="form-control" id="tankNo" name="tankNo" required>
+											<div class="invalid-feedback">This is a required field.</div>
+											<div class="input-group-append">
+												<button class="btn btn-primary" type="button" onclick="popupTankNoNew()">Multi</button>
+											</div>
+										</div>
 									</div>
 									<div class="form-group" style="width: 100px; margin-right: 15px;">
 										<label for="name">Q'ty</label>
@@ -268,6 +273,12 @@
 			<div class="modal-body">
 				<div class="col-100">
 					<div class="card">
+						<div class="card-header">
+							<div class="text-right">
+								<button class="btn btn btn-light" onclick="tankNoPaste()">Paste</button>
+								<button class="btn btn btn-primary" onclick="tankNoAdd()">Add</button>
+							</div>
+						</div>
 						<div class="card-body p-0">
 							<div class="table-responsive" style="overflow: hidden;">
 								<table id="tankNo-table"></table>
@@ -285,6 +296,78 @@
 </div>
 
 <script type="text/javascript">
+
+$( document ).ready(function() {
+	$('#tankNo-table').jqGrid({
+	   	datatype: "json",
+	   	colNames: ['','Tank No.'],
+	   	colModel: [
+	   		{ name: 'jqFlag', width: 40, align:'center'},
+	   		{ name: 'tankNo', width: 350, align:'center', editable: true}
+	   	],
+		height: 300, 
+		width: '100%',
+		dblEdit : true,
+		delselect: true
+//		multiselect : true, // 그리드 왼쪽부분에 체크 박스가 생겨 다중선택이 가능해진다.
+// 		multiboxonly : true // 다중선택을 단일 선택으로 제한
+	});
+});
+
+function tankNoAdd(){
+	$('#tankNo-table').addRow();
+}
+
+async function tankNoPaste(){
+	 var text = await navigator.clipboard.readText();
+	 text = text.split("\n");
+	 var gridJson = ComGridData('#tankNo-table');
+	 for(var i=0; i < text.length; i++){
+		 if(text[i] != '')
+		 	gridJson[gridJson.length] = {'jqFlag' : C, 'tankNo': text[i]};
+	 }
+	 $('#tankNo-table').clearGridData();
+	 if(gridJson.length > 0) $('#tankNo-table').searchData(gridJson, {editor: true});
+}
+
+function popupTankNoSave(){
+	var saveData = ComGridData('#tankNo-table');
+	var temp = '';
+	for(var i=0; i < saveData.length; i++){
+		if(saveData[i].jqFlag != D){
+			temp += saveData[i].tankNo;
+			if(i < saveData.length-1) temp += ",";
+		}
+	}
+	$('#tankNo').val(temp);
+	popupTankNoClose();
+}
+
+function popupTankNoClose(){
+	$('#tankNo-table').clearGridData();
+	$('#tankNoNewModal').modal('hide');
+}
+
+/**
+ * Item 팝업 오픈
+ */
+function popupTankNoNew(){
+	var temp = $('#tankNo').val();
+	var gridJson = [];
+	if(temp != '' && temp.indexOf(',') > 0){
+		var tankNos = temp.split(",");
+		for(var i=0; i < tankNos.length; i++){
+			gridJson[i] = {'tankNo': tankNos[i]};
+		}
+	}
+	else if(temp != ''){
+		gridJson[0] = {'tankNo': temp};
+	}
+	
+	if(gridJson.length > 0) $('#tankNo-table').searchData(gridJson, {editor: true});
+	$('#tankNoNewModal').modal('show');
+}
+
 
 $('#pitemCargoDate').daterangepicker({
 	  locale: {format: 'YYYY-MM-DD'},
