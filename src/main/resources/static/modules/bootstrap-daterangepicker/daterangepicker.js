@@ -39,7 +39,7 @@
         this.minDate = false;
         this.maxDate = false;
         this.maxSpan = false;
-        this.autoApply = false;
+        this.autoApply = true; // 정인선 false
         this.singleDatePicker = false;
         this.showDropdowns = false;
         this.minYear = moment().subtract(100, 'year').format('YYYY');
