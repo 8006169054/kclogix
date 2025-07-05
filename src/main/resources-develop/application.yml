@@ -4,7 +4,9 @@ server:
 spring:
   profiles:
     active: develop
-    
+  servlet:
+    multipart:
+      max-file-size: 3MB    
   thymeleaf:
     cache: false
     check-template-location: true
