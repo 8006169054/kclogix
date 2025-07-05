@@ -9,6 +9,7 @@ import java.util.List;
 
 import org.apache.commons.io.output.ByteArrayOutputStream;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -29,7 +30,9 @@ public class KainosExcelWriteHandler {
 	private Sheet sheet;
 	private int addIndex = 0;
 	private List<Object> rowspanList;
-	
+	private List<String> hideColList;
+	private java.lang.reflect.Field[] hideColFields;
+			
 	public KainosExcelWriteHandler(String templateFile, int startRowNum) {
 		this.startRowNum = startRowNum;
 		this.workbook = getWorkbook(templateFile);
@@ -37,6 +40,14 @@ public class KainosExcelWriteHandler {
 		this.rowspanList = new ArrayList<>();
 	}
 
+	public KainosExcelWriteHandler(List<String> hideColList, String templateFile, int startRowNum) {
+		this.hideColList = hideColList;
+		this.startRowNum = startRowNum;
+		this.workbook = getWorkbook(templateFile);
+		this.sheet = this.workbook.getSheetAt(0);
+		this.rowspanList = new ArrayList<>();
+	}
+	
 	/**
 	 * 
 	 * @param dataRows
@@ -69,6 +80,30 @@ public class KainosExcelWriteHandler {
 	public byte[] writeFlush() throws Exception {
 		/* 머지 */
 		addMergedRegion();
+		
+		List<Integer> colnums = new ArrayList<>();
+		if(hideColList != null) {
+			for (Iterator<String> iterator = hideColList.iterator(); iterator.hasNext();) {
+				String fname = iterator.next();
+				for (java.lang.reflect.Field field : hideColFields) {
+					if(field.getName().equalsIgnoreCase(fname)) {
+						Field anno = field.getAnnotation(Field.class);
+						colnums.add(GridRowSpenHandler.index.get(anno.value()));
+						sheet.setColumnHidden(GridRowSpenHandler.index.get(anno.value()), true); // 숨김
+						break;
+					}
+				}
+			}
+			
+			for (Row row : sheet) {
+				 for (Iterator<Integer> iterator = colnums.iterator(); iterator.hasNext();) {
+					Integer integer = iterator.next();
+					Cell cell = row.getCell(integer);
+					if(cell != null)
+						row.removeCell(row.getCell(integer));
+				}
+	        }
+		}
 		
 		ByteArrayOutputStream outputByte = new ByteArrayOutputStream();
 		this.workbook.write(outputByte);
@@ -108,6 +143,10 @@ public class KainosExcelWriteHandler {
 	}
 	private void makeCellAndFillValue(Object obj, MakeCell makeCell, Row row) {
 		java.lang.reflect.Field[] fields = obj.getClass().getDeclaredFields();
+		if(hideColList != null && hideColFields == null) {
+			if(hideColFields == null) hideColFields = obj.getClass().getDeclaredFields();
+		}
+		
 		for (java.lang.reflect.Field field : fields) {
 			int cellIndex = -1;
 			field.setAccessible(true);
@@ -133,6 +172,16 @@ public class KainosExcelWriteHandler {
 					makeCell.changeCell(obj, this.sheet, row, cellIndex, startRowNum);
 				}
 				makeCell.fillValue(field, row);
+			}
+			
+			if(hideColList != null) {
+				for (Iterator<String> iterator = hideColList.iterator(); iterator.hasNext();) {
+					String string = iterator.next();
+					if(field.getName().equalsIgnoreCase(string)) {
+						row.removeCell(row.getCell(cellIndex));
+						break;
+					}
+				}
 			}
 		}
 	}
@@ -196,7 +245,8 @@ public class KainosExcelWriteHandler {
 	public static class Builder {
 		private int startRowNum = 0;
 		private String templateFile;
-
+		private List<String> hideColList;
+		
 		public int getStartRowNum() {
 			return startRowNum;
 		}
@@ -215,8 +265,18 @@ public class KainosExcelWriteHandler {
 			return Builder.this;
 		}
 
+		public List<String> getHideColList() {
+			return hideColList;
+		}
+
+		public Builder hideColList(List<String> hideColList) {
+			this.hideColList = hideColList;
+			return Builder.this;
+		}
+		
 		public KainosExcelWriteHandler build() {
-			return new KainosExcelWriteHandler(this.templateFile, this.startRowNum);
+			if(hideColList != null) return new KainosExcelWriteHandler(this.hideColList, this.templateFile, this.startRowNum);
+			else return new KainosExcelWriteHandler(this.templateFile, this.startRowNum);
 		}
 	}
 

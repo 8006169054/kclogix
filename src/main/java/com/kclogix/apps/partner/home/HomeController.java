@@ -2,6 +2,7 @@ package com.kclogix.apps.partner.home;
 
 import java.io.ByteArrayInputStream;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.core.io.InputStreamResource;
@@ -13,9 +14,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import kainos.framework.core.servlet.KainosResponseEntity;
-import kainos.framework.core.session.annotation.KainosSession;
-
 import com.kclogix.apps.management.website.dto.WebsiteSearchDto;
 import com.kclogix.apps.partner.home.dto.HomeDto;
 import com.kclogix.apps.partner.home.dto.HomeExcelDownDto;
@@ -23,6 +21,10 @@ import com.kclogix.apps.partner.home.service.HomeService;
 import com.kclogix.common.dto.SessionDto;
 import com.kclogix.common.util.excel.GridRowSpenHandler;
 import com.kclogix.common.util.excel.KainosExcelWriteHandler;
+
+import kainos.framework.core.servlet.KainosResponseEntity;
+import kainos.framework.core.session.annotation.KainosSession;
+import kainos.framework.utils.KainosStringUtils;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -132,7 +134,16 @@ public class HomeController {
 		
 		byte[] downLoadFile = null;
 		
-		KainosExcelWriteHandler excelWriteHandler = KainosExcelWriteHandler.builder().startRowNum(1)
+		List<String> hiddenCelVal = new ArrayList<>();
+		String hidStr = service.selectWebsiteTerminalCodeGridCol(session.getUserId());
+		if(!KainosStringUtils.isEmpty(hidStr)) {
+			if(hidStr.indexOf(",") > 0) {
+				hiddenCelVal = List.of(hidStr.split(","));
+			}else {
+				hiddenCelVal.add(hidStr);
+			}
+		}
+		KainosExcelWriteHandler excelWriteHandler = KainosExcelWriteHandler.builder().startRowNum(1).hideColList(hiddenCelVal)
 				.templateFile("excel/website-terminal-code-exceldown.xlsx") // 템플릿 파일 경로
 				.build();
 

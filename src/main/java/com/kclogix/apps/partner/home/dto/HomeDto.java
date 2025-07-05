@@ -27,64 +27,64 @@ public class HomeDto {
 	@Field(value = "D")
 	private String tankNo; //Tank no.
 	
-	@Field(value = "D", merge = true)
-	private String shipmentStatus; //Tank no.
-	
-	@Field(value = "D", merge = true)
-	private String profitDate; //Tank no.
-	
 	@Field(value = "E", merge = true)
-	private String term; //Term
+	private String shipmentStatus; //SHIPMENT STATUS
 	
 	@Field(value = "F", merge = true)
-	private String item; //ITEM
+	private String profitDate; //PROFIT DATE
 	
 	@Field(value = "G", merge = true)
-	private String vesselVoyage; //Vessel / Voyage
+	private String term; //Term
 	
 	@Field(value = "H", merge = true)
-	private String carrier; //Carrier
+	private String item; //ITEM
 	
 	@Field(value = "I", merge = true)
-	private String mblNo; //MBL NO
+	private String vesselVoyage; //Vessel / Voyage
 	
 	@Field(value = "J", merge = true)
+	private String carrier; //Carrier
+	
+	@Field(value = "K", merge = true)
+	private String mblNo; //MBL NO
+	
+	@Field(value = "L", merge = true)
 	private String pol; //POL
 	
-	@Field(value = "K")
+	@Field(value = "M")
 	private String pod; //POD
 	
-	@Field(value = "L")
+	@Field(value = "N")
 	private String etd; //ETD
 	
-	@Field(value = "M")
+	@Field(value = "O")
 	private String eta; //ETA
 	
-	@Field(value = "N")
+	@Field(value = "P")
 	private String ft; //F/T
 	
-	@Field(value = "O")
+	@Field(value = "Q")
 	private String demRate; //DEM RATE
 	
-	@Field(value = "P")
+	@Field(value = "R")
 	private String endOfFt; //END OF F/T
 	
-	@Field(value = "Q")
+	@Field(value = "S")
 	private String returnDate; //RETURN DATE
 	
-	@Field(value = "R")
+	@Field(value = "T")
 	private String returnDepot; //RETURN DEPOT
 	
-	@Field(value = "S")
+	@Field(value = "U")
 	private String totalDem; //TOTAL DEM
 	
-	@Field(value = "T")
+	@Field(value = "V")
 	private String demPrch; //DEM(USD)-매입
 	
-	@Field(value = "U")
+	@Field(value = "W")
 	private String demSales; //DEM 매출
 	
-	@Field(value = "V")
+	@Field(value = "X")
 	private String depotInDate; //DEPOT IN DATE
 	
 	@Builder.Default /* 필드명을 rowspan 해야 함 필수 */

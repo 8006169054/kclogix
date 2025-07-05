@@ -128,7 +128,7 @@ public class GridRowSpenHandler {
 		return rowSpaninfo;
 	}
 	
-	private Map<String, Integer> index = new HashMap<>();
+	public static Map<String, Integer> index = new HashMap<>();
 	{
 		index.put("A",0); 
 		index.put("B",1); 
