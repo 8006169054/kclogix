@@ -41,7 +41,7 @@ public class HomeRepository extends KainosRepositorySupport {
 		BooleanBuilder where = new BooleanBuilder();
 		if(!KainosStringUtils.isEmpty(paramDto.getHblNo()))
 			where.and(websiteTerminalCode.hblNo.contains(paramDto.getHblNo()));
-		else if(!KainosStringUtils.isEmpty(paramDto.getHblNo()))
+		else if(!KainosStringUtils.isEmpty(paramDto.getMblNo()))
 			where.and(websiteTerminalCode.mblNo.contains(paramDto.getMblNo()));
 		else {
 			

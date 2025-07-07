@@ -5958,7 +5958,7 @@ $.fn.jqGrid = function( pin ) {
 					if(ts.p.iRow !== ts.p.savedRow[0].id && ts.p.iCol !== ts.p.savedRow[0].ic)
 						$(ts).jqGrid("saveCell", ts.p.savedRow[0].id, ts.p.savedRow[0].ic);
 				}
-					if($(td).closest("td,th")[0].getAttribute('aria-describedby') === ts.p.id + '_deletcb'){
+					if($(td).closest("td,th")[0] != undefined && $(td).closest("td,th")[0].getAttribute('aria-describedby') === ts.p.id + '_deletcb'){
 						$(ts).jqGrid("checKedDelRow", ptr[0].id, ts.p.iCol, $(td).closest("td,th")[0].children[0].checked);
 						return;
 					}

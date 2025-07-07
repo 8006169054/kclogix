@@ -99,7 +99,10 @@ async function portTableInit(){
 				        }
 					}).focus(function() {
 			            $(this).autocomplete("search", $(this).val());
-			        });
+			        }).on("paste", async function() {
+						var text = await navigator.clipboard.readText();
+						$(elem).val(text);
+					});
 				}
 			}},
 			{ name: 'concinePic', 			width: 80, 		index: 13,align:'center',		hidden : false, rowspan: true},
@@ -132,7 +135,10 @@ async function portTableInit(){
 				        }
 					}).focus(function() {
 			            $(this).autocomplete("search", $(this).val());
-			        });
+			        }).on("paste", async function() {
+						var text = await navigator.clipboard.readText();
+						$(elem).val(text);
+					});
 				}
 			}},
 	    	{ name: 'term', 				width: 80, 		index: 20,align:'center',		hidden : false, rowspan: true, editable: true},
@@ -163,7 +169,10 @@ async function portTableInit(){
 				        }
 					}).focus(function() {
 			            $(this).autocomplete("search", $(this).val());
-			        });
+			        }).on("paste", async function() {
+						var text = await navigator.clipboard.readText();
+						$(elem).val(text);
+					});
 				}
 			}},
 			{ name: 'cargoDate', 			width: 80, 		index: 22,align:'center',		hidden : false, rowspan: true},
@@ -191,13 +200,13 @@ async function portTableInit(){
 						    response(results);
 						},
 				        select: function (event, ui) {
-							ComSetCellData(tableName, ComSelectIndex(tableName), 29, ui.item.code, true);
-							ComSetCellData(tableName, ComSelectIndex(tableName), 28, ui.item.region, true);
-							ComSetCellData(tableName, ComSelectIndex(tableName), 32, ui.item.homepage, true);
-							ComSetCellData(tableName, ComSelectIndex(tableName), 31, ui.item.value, true);
-							setTimeout(function() {
-					    		ComSetCellData(tableName, ComSelectIndex(tableName), 'parkingLotCode', ui.item.parkingLotCode, true);
-							}, 100);
+							if(ui.item.code != undefined){
+								ComSetCellData(tableName, ComSelectIndex(tableName), 28, ui.item.region, false);
+								ComSetCellData(tableName, ComSelectIndex(tableName), 29, ui.item.code, false);
+								ComSetCellData(tableName, ComSelectIndex(tableName), 30, ui.item.parkingLotCode, false);
+								ComSetCellData(tableName, ComSelectIndex(tableName), 31, ui.item.value, false);
+								ComSetCellData(tableName, ComSelectIndex(tableName), 32, ui.item.homepage, false);
+							}
 				        },
 				        close : function (event, ui) {
 				            $(tableName).delay(2000).focus();
@@ -205,7 +214,10 @@ async function portTableInit(){
 				        }
 					}).focus(function() {
 			            $(this).autocomplete("search", $(this).val());
-			        });
+			        }).on("paste", async function() {
+						var text = await navigator.clipboard.readText();
+						$(elem).val(text);
+					});
 				}
 			}},
 	    	{ name: 'terminalName', 		width: 150, 	index: 31,align:'center',		hidden : false, editable : true, edittype: 'text', editoptions: {
@@ -225,10 +237,13 @@ async function portTableInit(){
 						    response(results);
 						},
 				        select: function (event, ui) {
-							ComSetCellData(tableName, ComSelectIndex(tableName), 'terminalCode', ui.item.code, true);
-							ComSetCellData(tableName, ComSelectIndex(tableName), 'pod', ui.item.region, true);
-							ComSetCellData(tableName, ComSelectIndex(tableName), 'terminalHomepage', ui.item.homepage, true);
-							ComSetCellData(tableName, ComSelectIndex(tableName), 'parkingLotCode', ui.item.parkingLotCode, true);
+							if(ui.item.code != undefined){
+								ComSetCellData(tableName, ComSelectIndex(tableName), 28, ui.item.region, false);
+								ComSetCellData(tableName, ComSelectIndex(tableName), 29, ui.item.code, false);
+								ComSetCellData(tableName, ComSelectIndex(tableName), 30, ui.item.parkingLotCode, false);
+								ComSetCellData(tableName, ComSelectIndex(tableName), 31, ui.item.value, false);
+								ComSetCellData(tableName, ComSelectIndex(tableName), 32, ui.item.homepage, false);
+							}
 				        },
 				        close : function (event, ui) {
 				            $(tableName).delay(2000).focus();
@@ -236,7 +251,10 @@ async function portTableInit(){
 				        }
 					}).focus(function() {
 			            $(this).autocomplete("search", $(this).val());
-			        });
+			        }).on("paste", async function() {
+						var text = await navigator.clipboard.readText();
+						$(elem).val(text);
+					});
 				}
 			}},
 	    	{ name: 'terminalHomepage', 	width: 60, 		index: 32,align:'center', hidden : false, formatter: terminalFn},

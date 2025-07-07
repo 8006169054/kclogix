@@ -164,7 +164,7 @@ public class WebsiteRepository extends KainosRepositorySupport {
 	private void searchWhere(WebsiteSearchDto paramDto, BooleanBuilder where) {
 		if(!KainosStringUtils.isEmpty(paramDto.getHblNo()))
 			where.and(websiteTerminalCode.hblNo.contains(paramDto.getHblNo()));
-		else if(!KainosStringUtils.isEmpty(paramDto.getHblNo()))
+		else if(!KainosStringUtils.isEmpty(paramDto.getMblNo()))
 			where.and(websiteTerminalCode.mblNo.contains(paramDto.getMblNo()));
 		else {
 			
