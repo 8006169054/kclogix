@@ -21,7 +21,7 @@ function portTableInit(){
 	       	{ name: 'hblNo', 				width: 140, 	align:'center',		rowspan: true,	frozen:true},
 	       	{ name: 'concineName', 			width: 140, 	align:'center',		rowspan: true,	frozen:true},
 	    	{ name: 'concinePic', 			width: 100,		align:'center',		rowspan: true, editable: true},
-	    	{ name: 'concineEmail', 		width: 150,		align:'center',		rowspan: true, editable: true},
+	    	{ name: 'concineEmail', 		width: 300,		align:'center',		rowspan: true, editable: true},
 	    	{ name: 'quantity', 			width: 50, 		align:'center',		rowspan: true},
 	    	{ name: 'tankNo', 				width: 150, 	align:'center'},
 	    	{ name: 'term', 				width: 80, 		align:'center',		rowspan: true},
