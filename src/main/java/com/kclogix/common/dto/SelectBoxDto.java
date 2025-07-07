@@ -38,6 +38,7 @@ public class SelectBoxDto {
 	@NoArgsConstructor
 	public static class TerminalAutoComplete {
 		private String value;
+		private String name;
 		private String label;
 		private String code;
 		private String region;

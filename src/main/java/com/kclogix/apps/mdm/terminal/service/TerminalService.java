@@ -80,4 +80,15 @@ public class TerminalService {
 	public List<SelectBoxDto.TerminalAutoComplete> selectAutocomplete() throws Exception {
 		return repository.selectAutocomplete();
 	}
+	/**
+	 * 
+	 * @param paramDto
+	 * @return
+	 * @throws Exception
+	 */
+	@Transactional(readOnly = true)
+	public List<SelectBoxDto.TerminalAutoComplete> selectParkingLotCodeAutocomplete() throws Exception {
+		return repository.selectParkingLotCodeAutocomplete();
+	}
+	
 }

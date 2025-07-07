@@ -87,4 +87,11 @@ public class TerminalController {
 				.addData(service.selectAutocomplete())
 				.close();
 	}
+	
+	@GetMapping(value = "/api/mdm/terminal/autocompleteParkingLotCode")
+	public ResponseEntity<SelectBoxDto.TerminalAutoComplete> selectParkingLotCodeAutocomplete() throws Exception {
+		return KainosResponseEntity.builder().build()
+				.addData(service.selectParkingLotCodeAutocomplete())
+				.close();
+	}
 }

@@ -85,13 +85,13 @@ public class WebsiteDto {
 	@Field(value = "V", merge = true)
 	private String pol; //POL
 	
-	@Field(value = "W")
+	@Field(value = "W", merge = true)
 	private String pod; //POD
 	
-	@Field(value = "X")
+	@Field(value = "X", merge = true)
 	private String parkingLotCode;
 	
-	@Field(value = "Y")
+	@Field(value = "Y", merge = true)
 	private String terminalName; //TERMINAL code
 	
 	@Field(value = "Z")
@@ -151,14 +151,18 @@ public class WebsiteDto {
 	@Field(value = "KA", merge = true) 
 	private String cargo;
 
-	@Field(value = "KD", merge = true) 
+	@Field(value = "KB", merge = true) 
 	private String concine;
 
-	@Field(value = "KF", merge = true) 
+	@Field(value = "KC", merge = true) 
 	private String concineEmail;
 	
-	private String terminalHomepage; //terminal Homepage
+	@Field(value = "KD", merge = true) 
 	private String terminalCode; //TERMINAL code
+	
+	@Field(value = "KF", merge = true) 
+	private String terminalHomepage; //terminal Homepage
+
 	private String homepage;
 	private String createUserId;
 	private String createDate;
@@ -222,5 +226,15 @@ public class WebsiteDto {
 		private RowSpan pol = RowSpan.builder().build();
 		@Builder.Default
 		private RowSpan remark = RowSpan.builder().build();
+		@Builder.Default
+		private RowSpan terminalCode = RowSpan.builder().build();
+		@Builder.Default
+		private RowSpan terminalHomepage = RowSpan.builder().build();
+		@Builder.Default
+		private RowSpan pod = RowSpan.builder().build();
+		@Builder.Default
+		private RowSpan parkingLotCode = RowSpan.builder().build();
+		@Builder.Default
+		private RowSpan terminalName = RowSpan.builder().build();
 	};
 }

@@ -1,6 +1,5 @@
 package com.kclogix.apps.mdm.terminal.repository;
 
-import static com.kclogix.common.entity.QMdmCargo.mdmCargo;
 import static com.kclogix.common.entity.QMdmTerminal.mdmTerminal;
 
 import java.util.Date;
@@ -8,14 +7,14 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
+import com.kclogix.apps.mdm.terminal.dto.TerminalDto;
+import com.kclogix.common.dto.SelectBoxDto;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.Expressions;
 
 import kainos.framework.data.querydsl.support.repository.KainosRepositorySupport;
 import kainos.framework.utils.KainosStringUtils;
-import com.kclogix.apps.mdm.terminal.dto.TerminalDto;
-import com.kclogix.common.dto.SelectBoxDto;
 
 @Repository
 public class TerminalRepository extends KainosRepositorySupport {
@@ -127,6 +126,24 @@ public class TerminalRepository extends KainosRepositorySupport {
 				mdmTerminal.homepage,
 				mdmTerminal.parkingLotCode,
 				mdmTerminal.name.upper().as("value"),
+				mdmTerminal.name.upper().concat(" | ").concat(mdmTerminal.parkingLotCode).upper().as("label")
+				))
+				.from(mdmTerminal)
+				.fetch();
+	}
+	
+	/**
+	 * 
+	 * @return
+	 * @throws Exception
+	 */
+	public List<SelectBoxDto.TerminalAutoComplete> selectParkingLotCodeAutocomplete() throws Exception {
+		return select(Projections.bean(SelectBoxDto.TerminalAutoComplete.class,
+				mdmTerminal.code,
+				mdmTerminal.region,
+				mdmTerminal.homepage,
+				mdmTerminal.name,
+				mdmTerminal.parkingLotCode.upper().as("value"),
 				mdmTerminal.name.upper().concat(" | ").concat(mdmTerminal.parkingLotCode).upper().as("label")
 				))
 				.from(mdmTerminal)
