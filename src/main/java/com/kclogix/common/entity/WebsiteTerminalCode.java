@@ -64,4 +64,6 @@ public class WebsiteTerminalCode {
 	private Date updateDate;
 	private String shipmentStatus;
 	private String demStatus;
+	private String arrivalNoticeEmail;
+	
 }

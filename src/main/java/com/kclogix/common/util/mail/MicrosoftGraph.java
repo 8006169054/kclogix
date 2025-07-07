@@ -1,6 +1,8 @@
 package com.kclogix.common.util.mail;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import org.apache.hc.core5.http.HttpStatus;
 import org.springframework.beans.factory.annotation.Value;
@@ -13,6 +15,7 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.HttpClientErrorException;
 
+import jakarta.mail.internet.InternetAddress;
 import kainos.framework.core.model.KainosMailDto;
 import kainos.framework.core.support.teams.dto.TeamsResponseDto;
 import kainos.framework.core.util.KainosBeanUtils;
@@ -86,14 +89,17 @@ public class MicrosoftGraph {
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);
 		headers.setBearerAuth(GraphInfo.Token.value);
-		
-		GraphRequestDto.Email.Recipient toRecipients = GraphRequestDto.Email.Recipient.builder().emailAddress(GraphRequestDto.Email.EmailAddress.builder().address(mailDto.getTo().get(0).getAddress()).name(mailDto.getTo().get(0).getPersonal()).build()).build();
+		List<GraphRequestDto.Email.Recipient> toRecipients = new ArrayList<>();
+		for (int i = 0; i < mailDto.getTo().size(); i++) {
+			InternetAddress addr = mailDto.getTo().get(i);
+			toRecipients.add(GraphRequestDto.Email.Recipient.builder().emailAddress(GraphRequestDto.Email.EmailAddress.builder().address(addr.getAddress()).name(addr.getPersonal()).build()).build());
+		}
 		GraphRequestDto.Email.Recipient ccRecipients = GraphRequestDto.Email.Recipient.builder().emailAddress(GraphRequestDto.Email.EmailAddress.builder().address("kcl@kclogix.com").build()).build();
 		
 		GraphRequestDto.Email.Message message = GraphRequestDto.Email.Message.builder()
 				.subject(mailDto.getSubject())
 				.body(GraphRequestDto.Email.Body.builder().contentType("HTML").content(mailDto.getMailbody()).build())
-				.toRecipients(Arrays.asList(toRecipients))
+				.toRecipients(toRecipients)
 				.ccRecipients(Arrays.asList(ccRecipients))
 				.build();
 		

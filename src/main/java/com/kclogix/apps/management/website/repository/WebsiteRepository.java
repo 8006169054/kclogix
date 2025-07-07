@@ -49,6 +49,7 @@ public class WebsiteRepository extends KainosRepositorySupport {
 	public void arrivalNoticeSendMail(WebsiteSearchDto paramDto) throws Exception {
 		update(websiteTerminalCode)
 		 .set(websiteTerminalCode.arrivalNotice, "1")
+		 .set(websiteTerminalCode.arrivalNoticeEmail, paramDto.getConcineEmail())
 		 .where(websiteTerminalCode.hblNo.eq(paramDto.getHblNo()))
 		 .execute();
 	}
@@ -271,7 +272,7 @@ public class WebsiteRepository extends KainosRepositorySupport {
 					new CaseBuilder().when(mdmCustomer.name.isNull()).then(websiteTerminalCode.concine).otherwise(mdmCustomer.name).as("concineName"),
 					mdmCustomer.code.as("concine"),
 					mdmCustomer.pic.as("concinePic"),
-					mdmCustomer.email.as("concineEmail"),
+					new CaseBuilder().when(websiteTerminalCode.arrivalNoticeEmail.isNull()).then(mdmCustomer.email).otherwise(websiteTerminalCode.arrivalNoticeEmail).as("concineEmail"),
 					websiteTerminalCode.profitDate,
 					websiteTerminalCode.domesticSales,
 					websiteTerminalCode.foreignSales,

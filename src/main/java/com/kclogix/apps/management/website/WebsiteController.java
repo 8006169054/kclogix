@@ -182,7 +182,15 @@ public class WebsiteController {
 			KainosMailDto mailDto = KainosMailDto.builder().build();
 			mailDto.from("KCL", "noreply@kclogix.com"); //보내는사람
 			mailDto.addCc("kcl@kclogix.com");
-			mailDto.addTo(paramDto.getConcinePic() , paramDto.getConcineEmail()); //받는사람
+			String[] recipients = null;
+			if(paramDto.getConcineEmail().indexOf(";") > 0) 
+				recipients = paramDto.getConcineEmail().split(";");
+			else 
+				recipients = new String[] {paramDto.getConcineEmail()};
+			
+			for (int i = 0; i < recipients.length; i++) {
+				mailDto.addTo(recipients[i]); //받는사람
+			}
 			mailDto.subject("[KCL] Arrival notice 송부의 건, / " + paramDto.getHblNo());
 			mailDto.mailbody(anMailTemplate(paramDto, session, portList), true);
 			eml = mailutil.sendMessage(mailDto);
@@ -203,9 +211,16 @@ public class WebsiteController {
 		try {
 			List<WebsiteDto> portList = service.selectWebsiteTerminalCode(paramDto, false);
 			KainosMailDto mailDto = KainosMailDto.builder().build();
-//			mailDto.from("KCL", "noreply@kclogix.com"); //보내는사람
-			mailDto.addCc("kcl@kclogix.com");
-			mailDto.addTo(paramDto.getConcinePic() , paramDto.getConcineEmail()); //받는사람
+			String[] recipients = null;
+			if(paramDto.getConcineEmail().indexOf(";") > 0) 
+				recipients = paramDto.getConcineEmail().split(";");
+			else 
+				recipients = new String[] {paramDto.getConcineEmail()};
+			
+			for (int i = 0; i < recipients.length; i++) {
+				mailDto.addTo(recipients[i]); //받는사람
+			}
+			
 			mailDto.subject("[KCL] Arrival notice 송부의 건, / " + paramDto.getHblNo());
 			mailDto.mailbody(anMailTemplate(paramDto, session, portList), true);
 			mg.sendMail(mailDto);
