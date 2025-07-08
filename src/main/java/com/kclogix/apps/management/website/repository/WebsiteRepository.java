@@ -62,6 +62,7 @@ public class WebsiteRepository extends KainosRepositorySupport {
 	 */
 	public List<WebsiteDto> selectWebsiteTerminalCode(WebsiteSearchDto paramDto, boolean init) throws Exception {
 		BooleanBuilder where = new BooleanBuilder();
+		where.and(websiteTerminalCode.delFlg.ne("Y").or(websiteTerminalCode.delFlg.isNull()));
 		if(init)
 			initWhere(where);
 		else
@@ -259,6 +260,7 @@ public class WebsiteRepository extends KainosRepositorySupport {
 	 */
 	public List<WebsiteDto> selectArrivalnotice(WebsiteSearchDto paramDto) throws Exception {
 		BooleanBuilder where = new BooleanBuilder();
+		where.and(websiteTerminalCode.delFlg.ne("Y").or(websiteTerminalCode.delFlg.isNull()));
 		where.and(websiteTerminalCode.shipmentStatus.eq("Y"));
 		searchWhere(paramDto, where);
 		
@@ -509,7 +511,10 @@ public class WebsiteRepository extends KainosRepositorySupport {
 	 * @throws Exception
 	 */
 	public void deleteWebsiteTerminalCode(String uuid, int seq) throws Exception {
-		delete(websiteTerminalCode).where(websiteTerminalCode.uuid.eq(uuid).and(websiteTerminalCode.seq.eq(seq))).execute();
+		update(websiteTerminalCode)
+		.set(websiteTerminalCode.delFlg, "Y")
+		.where(websiteTerminalCode.uuid.eq(uuid).and(websiteTerminalCode.seq.eq(seq))).execute();
+//		delete(websiteTerminalCode).where(websiteTerminalCode.uuid.eq(uuid).and(websiteTerminalCode.seq.eq(seq))).execute();
 	}
 	
 }
