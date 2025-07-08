@@ -98,6 +98,7 @@ async function portTableInit(){
 						delay: 100,
 						autoFocus: true,
 						minLength: 0,
+						maxShowItems: 10,
 						source: function(request, response) {
 						    const results = $.ui.autocomplete.filter(customerList, request.term);
 						    if (results.length === 0) {
@@ -137,6 +138,7 @@ async function portTableInit(){
 						delay: 100,
 						autoFocus: true,
 						minLength: 0,
+						maxShowItems: 10,
 						source: function(request, response) {
 						    const results = $.ui.autocomplete.filter(partnerList, request.term);
 						    if (results.length === 0) {
@@ -167,6 +169,7 @@ async function portTableInit(){
 						delay: 100,
 						autoFocus: true,
 						minLength: 0,
+						maxShowItems: 10,
 						source: function(request, response) {
 						    const results = $.ui.autocomplete.filter(termList, request.term);
 						    if (results.length === 0) {
@@ -198,6 +201,7 @@ async function portTableInit(){
 						delay: 100,
 						autoFocus: true,
 						minLength: 0,
+						maxShowItems: 10,
 						source: function(request, response) {
 						    const results = $.ui.autocomplete.filter(carGoList, request.term);
 						    if (results.length === 0) {
@@ -239,6 +243,7 @@ async function portTableInit(){
 						delay: 100,
 						autoFocus: true,
 						minLength: 0,
+						maxShowItems: 10,
 						source: function(request, response) {
 						    const results = $.ui.autocomplete.filter(terminalCodeList, request.term);
 						    if (results.length === 0) {
@@ -275,6 +280,7 @@ async function portTableInit(){
 						delay: 100,
 						autoFocus: true,
 						minLength: 0,
+						maxShowItems: 10,
 						source: function(request, response) {
 						    const results = $.ui.autocomplete.filter(terminalList, request.term);
 						    if (results.length === 0) {
@@ -372,10 +378,6 @@ async function portTableInit(){
 				var changeVal = false;
 				if('terminalName' === cellname || 'parkingLotCode' === cellname){
 					if(value === ''){
-//						ComSetCellData(tableName, iRow, 'terminalCode', '', true);
-//						ComSetCellData(tableName, iRow, 'parkingLotCode', '', true);
-//						ComSetCellData(tableName, iRow, 'pod', '', true);
-//						ComSetCellData(tableName, iRow, 'terminalHomepage', '', true);
 						ComSetCellData(tableName, iRow, regionIndex, value, true);
 						ComSetCellData(tableName, iRow, terminalCodeIndex, value, true);
 						ComSetCellData(tableName, iRow, parkingLotCodeIndex, value, true);
@@ -521,6 +523,7 @@ async function searchPartnerAutocomplete(){
 		autoFocus: true,
 		minChars: 0,
 		minLength: 0,
+		maxShowItems: 10,
 		open: function(){
 	        $(this).autocomplete('widget').css('z-index', 1100);
 	        return false;
@@ -550,6 +553,7 @@ async function searchCargoAutocomplete(){
 		autoFocus: true,
 		minChars: 0,
 		minLength: 0,
+		maxShowItems: 10,
 		open: function(){
 	        $(this).autocomplete('widget').css('z-index', 1100);
 	        return false;
