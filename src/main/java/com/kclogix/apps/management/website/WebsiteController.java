@@ -112,7 +112,9 @@ public class WebsiteController {
 			@RequestParam(required = false) String smblNo, 
 			@RequestParam(required = false) String spol, 
 			@RequestParam(required = false) String spod, 
-			@RequestParam(required = false) String seta
+			@RequestParam(required = false) String seta,
+			@RequestParam(required = false) String sshipmentStatus
+			
 			) throws Exception {
 		
 		WebsiteSearchDto paramDto = WebsiteSearchDto.builder()
@@ -123,6 +125,7 @@ public class WebsiteController {
 				.mblNo(smblNo)
 				.pol(spol)
 				.pod(spod)
+				.shipmentStatus(sshipmentStatus)
 				.arrivalNotice(sarrivalNotice)
 				.eta(seta)
 				.build();

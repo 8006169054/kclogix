@@ -13,7 +13,7 @@ async function search() {
 function portTableInit(){
 	$(tableName).jqGrid({
 	   	datatype: "json",
-	   	colNames: ['', 'uuid', 'A/N', 'HBL NO.','CNEE', 'PIC', "e-mail", "Q'ty", 'Tank no.', 'Term', 'Name', 'Date', 'Location', 'Vessel / Voyage', 'Carrier', 'MBL NO.', 'POL', 'POD', 'ETD', 'ETA', 'F/T', 'DEM RATE', 'END OF F/T'],
+	   	colNames: ['', 'uuid', 'A/N', 'HBL NO.','CNEE', 'PIC', "e-mail", 'SHIPMENT STATUS', "Q'ty", 'Tank no.', 'Term', 'Name', 'Date', 'Location', 'Vessel / Voyage', 'Carrier', 'MBL NO.', 'POL', 'POD', 'ETD', 'ETA', 'F/T', 'DEM RATE', 'END OF F/T'],
 	   	colModel: [
 			{ name: 'jqFlag',				width: 40,		align:'center', 	hidden : true,  frozen:true},
 	   		{ name: 'uuid', 				width: 50, 		align:'center',		hidden : true, 	frozen:true},
@@ -22,6 +22,7 @@ function portTableInit(){
 	       	{ name: 'concineName', 			width: 140, 	align:'center',		rowspan: true,	frozen:true},
 	    	{ name: 'concinePic', 			width: 100,		align:'center',		rowspan: true, editable: true},
 	    	{ name: 'concineEmail', 		width: 300,		align:'center',		rowspan: true, editable: true},
+	    	{ name: 'shipmentStatus', 		width: 80, 		align:'center',		rowspan: true, formatter:'select', edittype:'select', editoptions : {value: 'Y:IN PROGRES;N:CLOSED'}},
 	    	{ name: 'quantity', 			width: 50, 		align:'center',		rowspan: true},
 	    	{ name: 'tankNo', 				width: 150, 	align:'center'},
 	    	{ name: 'term', 				width: 80, 		align:'center',		rowspan: true},
