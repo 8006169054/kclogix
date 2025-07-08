@@ -369,11 +369,11 @@ async function popupTermSave(){
 		$('#term').val(response.data.name);
 		$('#termId').val(response.data.id);
 		termList.push(addItem);
-		popupTerNoClose();
+		popupTermClose();
  	}
 }
 
-function popupTerNoClose(){
+function popupTermClose(){
 	$('#termNewModalForm')[0].reset();
 	$('#termNewModal').modal('hide');
 }

@@ -75,20 +75,16 @@ public class WebsiteRepository extends KainosRepositorySupport {
 					websiteTerminalCode.sales,
 					websiteTerminalCode.carryoverSales,
 					new CaseBuilder().when(websiteTerminalCode.arrivalNotice.eq("1")).then(Expressions.constant("SEND")).otherwise(Expressions.constant("")).as("arrivalNotice"),
-//					new CaseBuilder().when(websiteTerminalCode.invoice.eq("1")).then(Expressions.constant("SEND")).otherwise(Expressions.constant("")).as("invoice"),
 					websiteTerminalCode.invoice,
 					new CaseBuilder().when(mdmCustomer.name.isNull()).then(websiteTerminalCode.concine).otherwise(mdmCustomer.name).as("concineName"),
 					mdmCustomer.code.as("concine"),
 					mdmCustomer.pic.as("concinePic"),
 					mdmCustomer.email.as("concineEmail"),
-//					 new CaseBuilder()
-//			            .when(websiteTerminalCode.profitDate.length().goe(10)).then(websiteTerminalCode.profitDate)
-//			            .otherwise("9999-99-99")
-//			            .as("profitDate"),
 			         websiteTerminalCode.profitDate,
 					websiteTerminalCode.domesticSales,
 					websiteTerminalCode.foreignSales,
 					websiteTerminalCode.quantity,
+					websiteTerminalCode.quantityType,
 					websiteTerminalCode.partner,
 					websiteTerminalCode.tankNo,
 					mdmTerm.id.as("termId"),
@@ -464,6 +460,7 @@ public class WebsiteRepository extends KainosRepositorySupport {
 			.set(websiteTerminalCode.domesticSales,       !KainosStringUtils.isEmpty(paramDto.getDomesticSales()) ? (paramDto.getDomesticSales().replaceAll("US\\$", "")) : "")
 			.set(websiteTerminalCode.foreignSales,        !KainosStringUtils.isEmpty(paramDto.getForeignSales()) ? (paramDto.getForeignSales().replaceAll("US\\$", "")) : "")
 			.set(websiteTerminalCode.quantity,            paramDto.getQuantity())
+			.set(websiteTerminalCode.quantityType,        paramDto.getQuantityType())
 			.set(websiteTerminalCode.partner,             paramDto.getPartner())
 			.set(websiteTerminalCode.tankNo,              paramDto.getTankNo())
 			.set(websiteTerminalCode.term,                !KainosStringUtils.isEmpty(paramDto.getTermId()) ? paramDto.getTermId() : paramDto.getTerm())

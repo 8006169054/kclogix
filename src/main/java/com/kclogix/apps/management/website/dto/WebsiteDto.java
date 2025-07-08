@@ -166,6 +166,9 @@ public class WebsiteDto {
 	@Field(value = "KG", merge = true)
 	private String termId;
 	
+	@Field(value = "KH", merge = true)
+	private String quantityType;
+	
 	private String homepage;
 	private String createUserId;
 	private String createDate;
@@ -240,5 +243,7 @@ public class WebsiteDto {
 		private RowSpan terminalName = RowSpan.builder().build();
 		@Builder.Default
 		private RowSpan termId = RowSpan.builder().build();
+		@Builder.Default
+		private RowSpan quantityType = RowSpan.builder().build();
 	};
 }

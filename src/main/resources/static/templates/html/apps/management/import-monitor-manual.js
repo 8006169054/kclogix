@@ -58,12 +58,28 @@ async function search() {
 	response = null;
 }
 
+
+var cargoIndex = 2;
+var concineIndex = 3;
+var concinePicIndex = 13;
+
+var addIndex = 1;
+var cargoDateIndex = 22 + addIndex;
+var locationIndex = 23 + addIndex;
+var regionIndex = 28 + addIndex;
+var terminalCodeIndex = 29 + addIndex;
+var parkingLotCodeIndex = 30 + addIndex;
+var terminalNameIndex = 31 + addIndex;
+var terminalHomepageIndex = 32 + addIndex;
+var endOfFtIndex = 39 + addIndex;
+var termIdIndex = 51 + addIndex;
+
 async function portTableInit(){
 	$(tableName).jqGrid({
 		url: '/api/management/website-terminal-code-init',  
 		mtype: 'GET',
 	   	datatype: "json",
-	   	colNames: ['','cargo','concine code', 'seq', 'uuid', 'HBL NO.', 'Tank no.', '매출', '이월 매출', 'A/N&EDI', 'INVOICE', 'CNEE', 'PIC', 'SHIPMENT STATUS', 'PROFIT DATE', '국내매출', '해외매출', "Q'ty", 'Partner', 'Term', 'Name', 'Date', 'Location', 'Vessel / Voyage', 'Carrier', 'MBL NO.', 'POL', 'POD', 'Code1', 'Code', 'Name', 'Link', 'ETD', 'ETA', 'ATA', '비고', 'F/T', 'DEM RATE', 'END OF F/T', 'ESTIMATE RETURN DATE', 'RETURN DATE', 'RETURN DEPOT', 'DEM STATUS', 'TOTAL DEM', 'DEM BILLING', 'DEM RCVD', 'DEM(USD) COMMISSION', 'DEM COMMISSION', 'DEPOT IN DATE(REPO ONLY)', 'REPOSITION 매입', 'termId'],
+	   	colNames: ['','cargo','concine code', 'seq', 'uuid', 'HBL NO.', 'Tank no.', '매출', '이월 매출', 'A/N&EDI', 'INVOICE', 'CNEE', 'PIC', 'SHIPMENT STATUS', 'PROFIT DATE', '국내매출', '해외매출', "Q'ty", 'Packing Type', 'Partner', 'Term', 'Name', 'Date', 'Location', 'Vessel / Voyage', 'Carrier', 'MBL NO.', 'POL', 'POD', 'Code1', 'Code', 'Name', 'Link', 'ETD', 'ETA', 'ATA', '비고', 'F/T', 'DEM RATE', 'END OF F/T', 'ESTIMATE RETURN DATE', 'RETURN DATE', 'RETURN DEPOT', 'DEM STATUS', 'TOTAL DEM', 'DEM BILLING', 'DEM RCVD', 'DEM(USD) COMMISSION', 'DEM COMMISSION', 'DEPOT IN DATE(REPO ONLY)', 'REPOSITION 매입', 'termId'],
 	   	colModel: [
 	   		{ name: 'jqFlag',				width: 40,		index: 1,align:'center', 	hidden : false,	frozen:true},
 	   		{ name: 'cargo',				width: 100,		index: 2,align:'center', 		hidden : true, rowspan: true,	editable : true, frozen:true},
@@ -93,8 +109,8 @@ async function portTableInit(){
 						    response(results);
 						},
 				        select: function (event, ui) {
-							ComSetCellData(tableName, ComSelectIndex(tableName), 3, ui.item.code, true);
-							ComSetCellData(tableName, ComSelectIndex(tableName), 13, ui.item.pic, true);
+							ComSetCellData(tableName, ComSelectIndex(tableName), concineIndex, ui.item.code, true);
+							ComSetCellData(tableName, ComSelectIndex(tableName), concinePicIndex, ui.item.pic, true);
 				        },
 				        close : function (event, ui) {
 				            $(tableName).delay(2000).focus();
@@ -114,7 +130,8 @@ async function portTableInit(){
 	    	{ name: 'domesticSales', 		width: 80, 		index: 16,align:'center',		hidden : false, rowspan: true, editable: true, formatter: domesticSalesFn},
 	    	{ name: 'foreignSales', 		width: 80, 		index: 17,align:'center',		hidden : false, rowspan: true, editable: true, formatter: foreignSalesFn},
 	    	{ name: 'quantity', 			width: 50, 		index: 18,align:'center',		hidden : false, rowspan: true, editable: true},
-	    	{ name: 'partner',				width: 100, 	index: 19,align:'center', 	hidden : false, rowspan: false, editable : true, editable : true, edittype: 'text', editoptions: {
+	    	{ name: 'quantityType', 		width: 80, 		align:'center',		hidden : false, rowspan: true, editable: true, formatter:'select', edittype:'select', editoptions : {value: 'TANK:TANK;20GP:20GP;40HC:40HC;LCL:LCL;AIR:AIR'}},
+	    	{ name: 'partner',				width: 100, 	index: 19,align:'center', 		hidden : false, rowspan: false, editable : true, editable : true, edittype: 'text', editoptions: {
 				dataInit:function(elem) {
 					$(elem).autocomplete({
 						delay: 100,
@@ -161,7 +178,7 @@ async function portTableInit(){
 						    response(results);
 						},
 				        select: function (event, ui) {
-							ComSetCellData(tableName, ComSelectIndex(tableName), 51, ui.item.id, true);
+							ComSetCellData(tableName, ComSelectIndex(tableName), termIdIndex, ui.item.id, true);
 				        },
 				        close : function (event, ui) {
 				            $(tableName).delay(2000).focus();
@@ -192,9 +209,9 @@ async function portTableInit(){
 						    response(results);
 						},
 				        select: function (event, ui) {
-							ComSetCellData(tableName, ComSelectIndex(tableName), 2, ui.item.code, true);
-							ComSetCellData(tableName, ComSelectIndex(tableName), 22, ui.item.cargoDate, true);
-							ComSetCellData(tableName, ComSelectIndex(tableName), 23, ui.item.location, true);
+							ComSetCellData(tableName, ComSelectIndex(tableName), cargoIndex, ui.item.code, true);
+							ComSetCellData(tableName, ComSelectIndex(tableName), cargoDateIndex, ui.item.cargoDate, true);
+							ComSetCellData(tableName, ComSelectIndex(tableName), locationIndex, ui.item.location, true);
 				        },
 				        close : function (event, ui) {
 				            $(tableName).delay(2000).focus();
@@ -234,10 +251,10 @@ async function portTableInit(){
 						},
 				        select: function (event, ui) {
 							if(ui.item.code != undefined){
-								ComSetCellData(tableName, ComSelectIndex(tableName), 28, ui.item.region, true);
-								ComSetCellData(tableName, ComSelectIndex(tableName), 29, ui.item.code, true);
-								ComSetCellData(tableName, ComSelectIndex(tableName), 31, ui.item.name, true);
-								ComSetCellData(tableName, ComSelectIndex(tableName), 32, ui.item.homepage, true);
+								ComSetCellData(tableName, ComSelectIndex(tableName), regionIndex, ui.item.region, true);
+								ComSetCellData(tableName, ComSelectIndex(tableName), terminalCodeIndex, ui.item.code, true);
+								ComSetCellData(tableName, ComSelectIndex(tableName), terminalNameIndex, ui.item.name, true);
+								ComSetCellData(tableName, ComSelectIndex(tableName), terminalHomepageIndex, ui.item.homepage, true);
 							}
 				        },
 				        close : function (event, ui) {
@@ -270,10 +287,10 @@ async function portTableInit(){
 						},
 				        select: function (event, ui) {
 							if(ui.item.code != undefined){
-								ComSetCellData(tableName, ComSelectIndex(tableName), 28, ui.item.region, true);
-								ComSetCellData(tableName, ComSelectIndex(tableName), 29, ui.item.code, true);
-								ComSetCellData(tableName, ComSelectIndex(tableName), 30, ui.item.parkingLotCode, true);
-								ComSetCellData(tableName, ComSelectIndex(tableName), 32, ui.item.homepage, true);
+								ComSetCellData(tableName, ComSelectIndex(tableName), regionIndex, ui.item.region, true);
+								ComSetCellData(tableName, ComSelectIndex(tableName), terminalCodeIndex, ui.item.code, true);
+								ComSetCellData(tableName, ComSelectIndex(tableName), parkingLotCodeIndex, ui.item.parkingLotCode, true);
+								ComSetCellData(tableName, ComSelectIndex(tableName), terminalHomepageIndex, ui.item.homepage, true);
 							}
 				        },
 				        close : function (event, ui) {
@@ -358,11 +375,11 @@ async function portTableInit(){
 //						ComSetCellData(tableName, iRow, 'parkingLotCode', '', true);
 //						ComSetCellData(tableName, iRow, 'pod', '', true);
 //						ComSetCellData(tableName, iRow, 'terminalHomepage', '', true);
-						ComSetCellData(tableName, iRow, 28, value, true);
-						ComSetCellData(tableName, iRow, 29, value, true);
-						ComSetCellData(tableName, iRow, 30, value, true);
-						ComSetCellData(tableName, iRow, 31, value, true);
-						ComSetCellData(tableName, iRow, 32, value, true);
+						ComSetCellData(tableName, iRow, regionIndex, value, true);
+						ComSetCellData(tableName, iRow, terminalCodeIndex, value, true);
+						ComSetCellData(tableName, iRow, parkingLotCodeIndex, value, true);
+						ComSetCellData(tableName, iRow, terminalNameIndex, value, true);
+						ComSetCellData(tableName, iRow, terminalHomepageIndex, value, true);
 					}else{
 						for (let terminal of terminalList) {
 							if(terminal.value === value || terminal.parkingLotCode === value){
@@ -382,9 +399,9 @@ async function portTableInit(){
 					}
 				}else if('item' === cellname){
 					if(value === ''){
-						ComSetCellData(tableName, iRow, 'cargo', '', true);
-						ComSetCellData(tableName, iRow, 'cargoDate', '', true);
-						ComSetCellData(tableName, iRow, 'location', '', true);
+						ComSetCellData(tableName, iRow, cargoIndex, '', true);
+						ComSetCellData(tableName, iRow, cargoDateIndex, '', true);
+						ComSetCellData(tableName, iRow, locationIndex, '', true);
 					}else{
 						for (let carGo of carGoList) {
 							if(carGo.value === value){
@@ -395,8 +412,8 @@ async function portTableInit(){
 					}
 				}else if('concineName' === cellname){
 					if(value === ''){
-						ComSetCellData(tableName, iRow, 'concine', '', true);
-						ComSetCellData(tableName, iRow, 'concinePic', '', true);
+						ComSetCellData(tableName, iRow, concineIndex, '', true);
+						ComSetCellData(tableName, iRow, concinePicIndex, '', true);
 					}else{
 						for (let customer of customerList) {
 							if(customer.value === value){
@@ -432,7 +449,7 @@ async function portTableInit(){
 				if('ata' === cellname || 'ft' === cellname){
 					var ata = $(tableName).jqGrid('getCell', iRow, 'ata');
 					var ft = $(tableName).jqGrid('getCell', iRow, 'ft');
-					ComSetCellData(tableName, iRow, 'endOfFt', endOfFt(ata, ft));
+					ComSetCellData(tableName, iRow, endOfFtIndex, endOfFt(ata, ft));
 				}
 				
 				multiFn(iRow);
