@@ -85,7 +85,7 @@
 					<div class="card">
 						<div class="card-header  text-right">
 							<button class="btn btn-info" onclick="anSend('T')">A/N Send Template</button>
-							<button class="btn btn-success" onclick="anSend('M')">A/N Send</button>
+							<button class="btn btn-success" onclick="fileupload()">A/N Send</button>
 						</div>
 						<div class="card-body p-0">
 							<div class="table-responsive" style="overflow: hidden;">
@@ -97,6 +97,33 @@
 			</div>
 		</div>
 	</section>
+</div>
+
+<!-- 파일 업로드 추가 팝업 -->
+<div class="modal fade" tabindex="1" role="dialog" id="fileUploadModal">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Please upload the file you wish to attach.</h5>
+			</div>
+			<div class="modal-body">
+				<div class="col-100">
+					<div class="card">
+						<div class="card-body p-0">
+							<form class="dropzone" id="mydropzone">
+		                      <div class="fallback">
+		                        <input name="anFile" id="anFile" type="file" multiple />
+		                      </div>
+		                    </form>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer bg-whitesmoke br">
+				<button type="button" class="btn btn-success" onclick="anSend('M')">Send</button>
+			</div>
+		</div>
+	</div>
 </div>
 
 <!-- Page Specific JS File -->

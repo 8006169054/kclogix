@@ -207,7 +207,10 @@ public class WebsiteController {
 	}
 
 	@PostMapping(value = "/api/management/arrival-notice-send-mail")
-	public ResponseEntity<Void> arrivalNoticeSendMail(@RequestBody WebsiteSearchDto paramDto, @KainosSession SessionDto session) throws Exception {
+	public ResponseEntity<Void> arrivalNoticeSendMail(
+			@RequestPart("files") MultipartFile[] files,
+			@RequestPart("jsonData") WebsiteSearchDto paramDto,
+			@KainosSession SessionDto session) throws Exception {
 		try {
 			List<WebsiteDto> portList = service.selectWebsiteTerminalCode(paramDto, false);
 			KainosMailDto mailDto = KainosMailDto.builder().build();
@@ -215,7 +218,8 @@ public class WebsiteController {
 			if(paramDto.getConcineEmail().indexOf(";") > 0) 
 				recipients = paramDto.getConcineEmail().split(";");
 			else 
-				recipients = new String[] {paramDto.getConcineEmail()};
+//				recipients = new String[] {paramDto.getConcineEmail()};
+				recipients = new String[] {"is.jung@hmm21.com"};
 			
 			for (int i = 0; i < recipients.length; i++) {
 				mailDto.addTo(recipients[i]); //받는사람
@@ -223,8 +227,11 @@ public class WebsiteController {
 			
 			mailDto.subject("[KCL] Arrival notice 송부의 건, / " + paramDto.getHblNo());
 			mailDto.mailbody(anMailTemplate(paramDto, session, portList), true);
+			for (int i = 0; i < files.length; i++) {
+				mailDto.addAttachment(files[i]);
+			}
 			mg.sendMail(mailDto);
-			service.arrivalNoticeSendMail(paramDto);
+//			service.arrivalNoticeSendMail(paramDto);
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new KainosBusinessException("common.system.error");

@@ -2,6 +2,7 @@ package com.kclogix.common.util.mail;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.List;
 
 import org.apache.hc.core5.http.HttpStatus;
@@ -14,12 +15,14 @@ import org.springframework.http.MediaType;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.multipart.MultipartFile;
 
 import jakarta.mail.internet.InternetAddress;
 import kainos.framework.core.model.KainosMailDto;
 import kainos.framework.core.support.teams.dto.TeamsResponseDto;
 import kainos.framework.core.util.KainosBeanUtils;
 import kainos.framework.core.web.client.KainosRestTemplate;
+import kainos.framework.utils.KainosJsonUtil;
 
 @Configuration
 public class MicrosoftGraph {
@@ -83,8 +86,9 @@ public class MicrosoftGraph {
 	/**
 	 * 
 	 * @param mailDto
+	 * @throws Exception 
 	 */
-	private void send(KainosMailDto mailDto) {
+	private void send(KainosMailDto mailDto) throws Exception {
 		KainosRestTemplate rest = KainosBeanUtils.getBean(KainosRestTemplate.class);
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);
@@ -94,16 +98,26 @@ public class MicrosoftGraph {
 			InternetAddress addr = mailDto.getTo().get(i);
 			toRecipients.add(GraphRequestDto.Email.Recipient.builder().emailAddress(GraphRequestDto.Email.EmailAddress.builder().address(addr.getAddress()).name(addr.getPersonal()).build()).build());
 		}
-		GraphRequestDto.Email.Recipient ccRecipients = GraphRequestDto.Email.Recipient.builder().emailAddress(GraphRequestDto.Email.EmailAddress.builder().address("kcl@kclogix.com").build()).build();
+		GraphRequestDto.Email.Recipient ccRecipients = GraphRequestDto.Email.Recipient.builder().emailAddress(GraphRequestDto.Email.EmailAddress.builder().address("jis400@daum.net").build()).build();
+		
+		List<GraphRequestDto.Email.FileAttachment> attachments = new ArrayList<>();
+		for (int i = 0; i < mailDto.getAttachment().size(); i++) {
+			KainosMailDto.FileAttachment attachment = mailDto.getAttachment().get(i);
+			byte[] fileBytes =((MultipartFile)attachment.getFile()).getBytes();
+			GraphRequestDto.Email.FileAttachment geAttachment = GraphRequestDto.Email.FileAttachment.builder().name(attachment.getFileName()).contentBytes(Base64.getEncoder().encodeToString(fileBytes)).build();
+			attachments.add(geAttachment);
+		}
 		
 		GraphRequestDto.Email.Message message = GraphRequestDto.Email.Message.builder()
 				.subject(mailDto.getSubject())
-				.body(GraphRequestDto.Email.Body.builder().contentType("HTML").content(mailDto.getMailbody()).build())
+				.body(GraphRequestDto.Email.Body.builder().contentType("HTML").content("AAAAAA").build())
 				.toRecipients(toRecipients)
 				.ccRecipients(Arrays.asList(ccRecipients))
+				.attachments(attachments)
 				.build();
 		
 		GraphRequestDto.Email email = GraphRequestDto.Email.builder().message(message).saveToSentItems(false).build();
+		System.out.println(KainosJsonUtil.ToString(email));
 		HttpEntity<GraphRequestDto.Email> request = new HttpEntity<>(email, headers);
 		rest.exchange(url, HttpMethod.POST, request, String.class).getBody();
 	}

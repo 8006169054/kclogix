@@ -177,7 +177,7 @@ async function portTableInit(){
 					});
 				}
 			}},
-			{ name: 'cargoDate', 			width: 80, 		index: 22,align:'center',		hidden : false, rowspan: true},
+			{ name: 'cargoDate', 			width: 80, 		index: 22,align:'center',		hidden : true, rowspan: true},
 			{ name: 'location', 			width: 100, 	index: 23,align:'center',		hidden : false, rowspan: true},
 	    	{ name: 'vesselVoyage', 		width: 200, 	index: 24,align:'center',		hidden : false, rowspan: true, editable: true},
 	    	{ name: 'carrier', 				width: 80, 		index: 25,align:'center',		hidden : false, rowspan: true, editable: true},
@@ -352,9 +352,9 @@ async function portTableInit(){
 					}
 				}else if('item' === cellname){
 					if(value === ''){
-						ComSetCellData(tableName, iRow, 'cargo', '', true);
-						ComSetCellData(tableName, iRow, 'cargoDate', '', true);
-						ComSetCellData(tableName, iRow, 'location', '', true);
+						ComSetCellData(tableName, iRow, 2, '', true);
+						ComSetCellData(tableName, iRow, 22, '', true);
+						ComSetCellData(tableName, iRow, 23, '', true);
 					}else{
 						for (let carGo of carGoList) {
 							if(carGo.value === value){
@@ -365,8 +365,8 @@ async function portTableInit(){
 					}
 				}else if('concineName' === cellname){
 					if(value === ''){
-						ComSetCellData(tableName, iRow, 'concine', '', true);
-						ComSetCellData(tableName, iRow, 'concinePic', '', true);
+						ComSetCellData(tableName, iRow, 3, '', true);
+						ComSetCellData(tableName, iRow, 13, '', true);
 					}else{
 						for (let customer of customerList) {
 							if(customer.value === value){
@@ -390,7 +390,7 @@ async function portTableInit(){
 				if('ata' === cellname || 'ft' === cellname){
 					var ata = $(tableName).jqGrid('getCell', iRow, 'ata');
 					var ft = $(tableName).jqGrid('getCell', iRow, 'ft');
-					ComSetCellData(tableName, iRow, 'endOfFt', endOfFt(ata, ft));
+					ComSetCellData(tableName, iRow, 39, endOfFt(ata, ft));
 				}
 				
 				multiFn(iRow);
@@ -404,7 +404,6 @@ async function portTableInit(){
                                 {startColumnName:'item', numberOfColumns: 3, titleText: 'Item' },
                                 {startColumnName:'pod', numberOfColumns: 5, titleText: 'Terminal' },
                                 {startColumnName:'concineName', numberOfColumns: 2, titleText: 'Customer' }
-                                
                               ]
 		});
 		
