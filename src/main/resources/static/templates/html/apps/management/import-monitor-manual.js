@@ -318,7 +318,6 @@ async function portTableInit(){
 		    prevRowId = rowId;
 		},
 		afterSaveCell : function(rowid, cellname, value, iRow, iCol) {
-			console.log('afterSaveCell', rowid, cellname, value, iRow, iCol);
 			if('terminalName' === cellname || 'parkingLotCode' === cellname || 'partner' === cellname || 'item' === cellname || 'concineName' === cellname){
 				var changeVal = false;
 				if('terminalName' === cellname || 'parkingLotCode' === cellname){
@@ -333,7 +332,6 @@ async function portTableInit(){
 						ComSetCellData(tableName, iRow, 31, value, true);
 						ComSetCellData(tableName, iRow, 32, value, true);
 					}else{
-						console.log('value', value);
 						for (let terminal of terminalList) {
 							if(terminal.value === value || terminal.parkingLotCode === value){
 								changeVal = true;
