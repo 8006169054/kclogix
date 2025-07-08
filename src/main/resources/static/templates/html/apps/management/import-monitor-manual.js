@@ -127,8 +127,8 @@ async function portTableInit(){
 			{ name: 'concinePic', 			width: 80, 		index: 13,align:'center',		hidden : false, rowspan: true},
 			{ name: 'shipmentStatus', 		width: 80, 		index: 14,align:'center',		hidden : false, rowspan: true, editable: true, formatter:'select', edittype:'select', editoptions : {value: 'Y:IN PROGRES;N:CLOSED'}},
 	    	{ name: 'profitDate', 			width: 90, 		index: 15,align:'center',		hidden : false, rowspan: true, editable: true, edittype: "date"},
-	    	{ name: 'domesticSales', 		width: 80, 		index: 16,align:'center',		hidden : false, rowspan: true, editable: true},
-	    	{ name: 'foreignSales', 		width: 80, 		index: 17,align:'center',		hidden : false, rowspan: true, editable: true},
+	    	{ name: 'domesticSales', 		width: 80, 		index: 16,align:'center',		hidden : false, rowspan: true, editable: true, formatter: domesticSalesFn},
+	    	{ name: 'foreignSales', 		width: 80, 		index: 17,align:'center',		hidden : false, rowspan: true, editable: true, formatter: foreignSalesFn},
 	    	{ name: 'quantity', 			width: 50, 		index: 18,align:'center',		hidden : false, rowspan: true, editable: true},
 	    	{ name: 'quantityType', 		width: 80, 		align:'center',		hidden : false, rowspan: true, editable: true, formatter:'select', edittype:'select', editoptions : {value: 'TANK:TANK;GP:GP;HC:HC;LCL:LCL;AIR:AIR'}},
 	    	{ name: 'partner',				width: 100, 	index: 19,align:'center', 		hidden : false, rowspan: false, editable : true, editable : true, edittype: 'text', editoptions: {
@@ -454,6 +454,18 @@ async function portTableInit(){
 				
 				multiFn(iRow);
 			}
+			else if('quantityType' === cellname){
+				var quantity = $(tableName).jqGrid('getCell', iRow, 'quantity');
+				if(!isEmpty(value) && value === 'TANK'){
+					$(tableName).jqGrid('setCell', iRow, 'foreignSales', 50 * parseInt(quantity));
+				}
+			}
+			else if('quantity' === cellname){
+				var quantityType = $(tableName).jqGrid('getCell', iRow, 'quantityType');
+				if(!isEmpty(value) && !isEmpty(quantityType) && quantityType === 'TANK'){
+					$(tableName).jqGrid('setCell', iRow, 'foreignSales', 50 * parseInt(value));
+				}
+			}
 		}
 	});
 	
@@ -470,6 +482,19 @@ async function portTableInit(){
 //		let response = await requestApi('GET', '/api/management/website-terminal-code-init');
 //		$(tableName).searchData(response.data, {editor: true});
 //		response = null;
+}
+
+/**  국내매출 */
+function domesticSalesFn (cellvalue, options, rowObject ){
+	return cellvalue === '' ? '70' : cellvalue;
+}
+
+/**  해외매출 */
+function foreignSalesFn (cellvalue, options, rowObject ){
+	if(!isEmpty(rowObject.quantity) && rowObject.quantityType === 'TANK'){
+		cellvalue = 50 * parseInt(rowObject.quantity);
+	}
+	return cellvalue;
 }
 
 async function demStatusChang(selection){
