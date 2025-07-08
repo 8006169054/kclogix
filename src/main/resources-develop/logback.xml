@@ -20,21 +20,8 @@
 		</encoder>
 	</appender>
 	
-	<logger name="kc.logic" level="debug" additivity="false" >
-		<appender-ref ref="FILE" />
-	</logger>
-	
-	<logger name="kainos" level="error" additivity="false" >
-		<appender-ref ref="FILE" />
-	</logger>
-	
-	<logger name="org.springframework" level="error" additivity="false" >
-		<appender-ref ref="FILE" />
-	</logger>
-	
-	<root level="info">
+	<root level="debug">
 		<appender-ref ref="FILE" />
 	</root>
-
 
 </configuration>
