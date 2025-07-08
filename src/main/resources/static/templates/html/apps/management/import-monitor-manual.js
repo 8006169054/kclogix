@@ -322,7 +322,7 @@ async function portTableInit(){
 	       	{ name: 'estimateReturnDate', 	width: 160, 	index: 40,align:'center', editable: true, edittype: "date"},
 	       	{ name: 'returnDate', 			width: 100, 	index: 41,align:'center', editable: true, edittype: "date"},
 	       	{ name: 'returnDepot', 			width: 100, 	index: 42,align:'center', editable: true},
-	       	{ name: 'demStatus', 			width: 100, 	index: 43,align:'center', editable: false, formatter:'select', edittype:'select', editoptions : {value: 'Y:Y;N:N'}},
+	       	{ name: 'demStatus', 			width: 100, 	index: 43,align:'center', editable: true},
 	       	{ name: 'totalDem', 			width: 100, 	index: 44,align:'center', editable: true, editoptions : {pk:true}},
 	       	{ name: 'demReceived', 			width: 80, 		index: 45,align:'center', editable: true},
 	       	{ name: 'demRcvd', 				width: 90, 		index: 46,align:'center', editable: true},
