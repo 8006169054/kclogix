@@ -249,15 +249,17 @@ public class WebsiteDto {
 		private RowSpan quantityType = RowSpan.builder().build();
 	};
 	
-//	public String getDomesticSales() {
-//		if(KainosStringUtils.isEmpty(this.domesticSales)) return "70";
-//		else return this.domesticSales;
-//	}
-//	
-//	public String getForeignSales() {
-//		if(KainosStringUtils.isEmpty(this.foreignSales) && !KainosStringUtils.isEmpty(this.quantity)) {
-//			return "70";
-//		}
-//		else return this.foreignSales;
-//	}
+	public String getDomesticSales() {
+		if(KainosStringUtils.isEmpty(this.domesticSales)) return "70";
+		else return this.domesticSales;
+	}
+	
+	public String getForeignSales() {
+		if(KainosStringUtils.isEmpty(this.foreignSales) && !KainosStringUtils.isEmpty(this.quantity) && !KainosStringUtils.isEmpty(this.quantityType)) {
+			if(this.quantityType.equalsIgnoreCase("TANK")) {
+				return String.valueOf(Integer.parseInt(this.quantity) * 50);
+			}
+		}
+		return this.foreignSales;
+	}
 }
