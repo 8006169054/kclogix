@@ -177,7 +177,7 @@ async function portTableInit(){
 					});
 				}
 			}},
-			{ name: 'cargoDate', 			width: 80, 		index: 22,align:'center',		hidden : false, rowspan: true},
+			{ name: 'cargoDate', 			width: 80, 		index: 22,align:'center',		hidden : true, rowspan: true},
 			{ name: 'location', 			width: 100, 	index: 23,align:'center',		hidden : false, rowspan: true},
 	    	{ name: 'vesselVoyage', 		width: 200, 	index: 24,align:'center',		hidden : false, rowspan: true, editable: true},
 	    	{ name: 'carrier', 				width: 80, 		index: 25,align:'center',		hidden : false, rowspan: true, editable: true},
