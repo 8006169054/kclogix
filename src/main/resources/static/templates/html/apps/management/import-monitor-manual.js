@@ -331,6 +331,7 @@ async function portTableInit(){
 		dblEdit : true,
 		frozen: true,
 		delselect: true,
+		multiselect: true,
 		onCellSelect: function (rowId, iCol, cellContent, event) {
     		const grid = $(tableName);
 	    	const colModel = grid.jqGrid("getGridParam", "colModel");
