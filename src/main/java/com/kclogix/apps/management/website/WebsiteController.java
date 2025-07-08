@@ -136,6 +136,19 @@ public class WebsiteController {
 				.close();
 	}
 	
+	@PostMapping(value = "/api/management/closed")
+	public ResponseEntity<Void> closed(@RequestBody List<WebsiteDto> paramList, @KainosSession SessionDto session) throws Exception {
+		try {
+			service.closed(paramList, session);
+		} catch (KainosBusinessException e) {
+			throw e;
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new KainosBusinessException("common.system.error");
+		}
+		return message.getInsertMessage(KainosResponseEntity.builder().build()).close();
+	}
+	
 	@PostMapping(value = "/api/management/save-port")
 	public ResponseEntity<Void> savePort(@RequestBody List<WebsiteDto> paramList, @KainosSession SessionDto session) throws Exception {
 		try {

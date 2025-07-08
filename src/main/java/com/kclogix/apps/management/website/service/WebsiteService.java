@@ -96,6 +96,16 @@ public class WebsiteService {
 	}
 
 	@Transactional(transactionManager = KainosKey.DBConfig.TransactionManager.Default, rollbackFor = Exception.class)
+	public void closed(List<WebsiteDto> paramList, SessionDto session)throws Exception {
+		for (int i = 0; i < paramList.size(); i++) {
+			WebsiteDto dto = paramList.get(i);
+			dto.setUpdateUserId(session.getUserId());
+			dto.setCreateUserId(session.getUserId());
+			repository.closed(dto);
+		}
+	}
+	
+	@Transactional(transactionManager = KainosKey.DBConfig.TransactionManager.Default, rollbackFor = Exception.class)
 	public void savePort(List<WebsiteDto> paramList, SessionDto session)throws Exception {
 		for (int i = 0; i < paramList.size(); i++) {
 			WebsiteDto dto = paramList.get(i);

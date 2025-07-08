@@ -449,6 +449,16 @@ public class WebsiteRepository extends KainosRepositorySupport {
 	 * @param paramDto
 	 * @throws Exception
 	 */
+	public void closed(WebsiteDto paramDto) throws Exception {
+		update(websiteTerminalCode).set(websiteTerminalCode.shipmentStatus, "N").where(websiteTerminalCode.uuid.eq(paramDto.getUuid()).and(websiteTerminalCode.seq.eq(paramDto.getSeq())))
+		.execute();
+	}
+	
+	/**
+	 * 
+	 * @param paramDto
+	 * @throws Exception
+	 */
 	public void updateWebsiteTerminalCode(WebsiteDto paramDto) throws Exception {
 		update(websiteTerminalCode)
 			.set(websiteTerminalCode.sales,				paramDto.getSales())

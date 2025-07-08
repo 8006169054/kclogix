@@ -337,7 +337,7 @@ async function portTableInit(){
 		dblEdit : true,
 		frozen: true,
 		delselect: true,
-		multiselect: true,
+//		multiselect: true,
 		onCellSelect: function (rowId, iCol, cellContent, event) {
     		const grid = $(tableName);
 	    	const colModel = grid.jqGrid("getGridParam", "colModel");
@@ -485,6 +485,18 @@ async function portTableInit(){
 //		let response = await requestApi('GET', '/api/management/website-terminal-code-init');
 //		$(tableName).searchData(response.data, {editor: true});
 //		response = null;
+}
+
+async function closed(){
+	var msg = 'The Shipment Status will be updated to Closed';
+	confirmMessage(msg, 'info', 'Save', saveClosed);
+}
+
+async function saveClosed(selection){
+	if(selection){
+		var saveData = $(tableName).jqGrid("getRowData");
+		await requestApi('POST', '/api/management/closed', saveData, {successFn : portSaveFn, errorFn : portSaveFn});
+	}
 }
 
 /**  국내매출 */
