@@ -1,7 +1,9 @@
 package com.kclogix.apps.management.website.dto;
 
-import kainos.framework.core.support.jqgrid.dto.RowSpan;
 import com.kclogix.common.util.excel.Field;
+
+import kainos.framework.core.support.jqgrid.dto.RowSpan;
+import kainos.framework.utils.KainosStringUtils;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -246,4 +248,16 @@ public class WebsiteDto {
 		@Builder.Default
 		private RowSpan quantityType = RowSpan.builder().build();
 	};
+	
+//	public String getDomesticSales() {
+//		if(KainosStringUtils.isEmpty(this.domesticSales)) return "70";
+//		else return this.domesticSales;
+//	}
+//	
+//	public String getForeignSales() {
+//		if(KainosStringUtils.isEmpty(this.foreignSales) && !KainosStringUtils.isEmpty(this.quantity)) {
+//			return "70";
+//		}
+//		else return this.foreignSales;
+//	}
 }
