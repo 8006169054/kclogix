@@ -454,7 +454,7 @@ public class WebsiteRepository extends KainosRepositorySupport {
 			.set(websiteTerminalCode.sales,				paramDto.getSales())
 			.set(websiteTerminalCode.carryoverSales,      paramDto.getCarryoverSales())
 //			.set(websiteTerminalCode.arrivalNotice,       paramDto.getArrivalNotice())
-//			.set(websiteTerminalCode.invoice,             paramDto.getInvoice())
+			.set(websiteTerminalCode.invoice,             paramDto.getInvoice())
 			.set(websiteTerminalCode.concine,             !KainosStringUtils.isEmpty(paramDto.getConcine()) ? paramDto.getConcine() : paramDto.getConcineName().trim())
 			.set(websiteTerminalCode.profitDate,          paramDto.getProfitDate())
 			.set(websiteTerminalCode.domesticSales,       !KainosStringUtils.isEmpty(paramDto.getDomesticSales()) ? (paramDto.getDomesticSales().replaceAll("US\\$", "")) : "")
