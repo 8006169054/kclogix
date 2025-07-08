@@ -3,6 +3,7 @@ package com.kclogix.apps.management.website.repository;
 import static com.kclogix.common.entity.QMdmCargo.mdmCargo;
 import static com.kclogix.common.entity.QMdmCustomer.mdmCustomer;
 import static com.kclogix.common.entity.QMdmTerminal.mdmTerminal;
+import static com.kclogix.common.entity.QMdmTerm.mdmTerm;
 import static com.kclogix.common.entity.QWebsiteTerminalCode.websiteTerminalCode;
 
 import java.util.Date;
@@ -90,7 +91,8 @@ public class WebsiteRepository extends KainosRepositorySupport {
 					websiteTerminalCode.quantity,
 					websiteTerminalCode.partner,
 					websiteTerminalCode.tankNo,
-					websiteTerminalCode.term,
+					mdmTerm.id.as("termId"),
+					new CaseBuilder().when(mdmTerm.name.isNull()).then(websiteTerminalCode.term.upper()).otherwise(mdmTerm.name.upper()).as("term"),
 					websiteTerminalCode.item,
 					websiteTerminalCode.vesselVoyage,
 					websiteTerminalCode.carrier,
@@ -136,6 +138,7 @@ public class WebsiteRepository extends KainosRepositorySupport {
 				.leftJoin(mdmCargo).on(websiteTerminalCode.item.eq(mdmCargo.code))
 				.leftJoin(mdmTerminal).on(websiteTerminalCode.terminal.eq(mdmTerminal.code))
 				.leftJoin(mdmCustomer).on(websiteTerminalCode.concine.eq(mdmCustomer.code))
+				.leftJoin(mdmTerm).on(websiteTerminalCode.term.eq(mdmTerm.id))
 				.where(where)
 				.orderBy(websiteTerminalCode.uuid.asc())
 				.fetch();
@@ -410,7 +413,7 @@ public class WebsiteRepository extends KainosRepositorySupport {
 			paramDto.getQuantity(),
 			paramDto.getPartner(),
 			paramDto.getTankNo(),
-			paramDto.getTerm(),
+			!KainosStringUtils.isEmpty(paramDto.getTermId()) ? paramDto.getTermId() : paramDto.getTerm(),
 			paramDto.getCargo(),
 			paramDto.getVesselVoyage(),
 			paramDto.getCarrier(),
@@ -463,7 +466,7 @@ public class WebsiteRepository extends KainosRepositorySupport {
 			.set(websiteTerminalCode.quantity,            paramDto.getQuantity())
 			.set(websiteTerminalCode.partner,             paramDto.getPartner())
 			.set(websiteTerminalCode.tankNo,              paramDto.getTankNo())
-			.set(websiteTerminalCode.term,                paramDto.getTerm())
+			.set(websiteTerminalCode.term,                !KainosStringUtils.isEmpty(paramDto.getTermId()) ? paramDto.getTermId() : paramDto.getTerm())
 			.set(websiteTerminalCode.item,                !KainosStringUtils.isEmpty(paramDto.getCargo()) ? paramDto.getCargo() : paramDto.getItem().trim())
 			.set(websiteTerminalCode.vesselVoyage,        paramDto.getVesselVoyage().trim())
 			.set(websiteTerminalCode.carrier,             paramDto.getCarrier())

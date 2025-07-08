@@ -45,6 +45,7 @@ var carGoList = [];
 var terminalList = [];
 var terminalCodeList = [];
 var customerList = [];
+var termList = [];
 
 /**
  * 조회
@@ -62,7 +63,7 @@ async function portTableInit(){
 		url: '/api/management/website-terminal-code-init',  
 		mtype: 'GET',
 	   	datatype: "json",
-	   	colNames: ['','cargo','concine code', 'seq', 'uuid', 'HBL NO.', 'Tank no.', '매출', '이월 매출', 'A/N&EDI', 'INVOICE', 'CNEE', 'PIC', 'SHIPMENT STATUS', 'PROFIT DATE', '국내매출', '해외매출', "Q'ty", 'Partner', 'Term', 'Name', 'Date', 'Location', 'Vessel / Voyage', 'Carrier', 'MBL NO.', 'POL', 'POD', 'Code1', 'Code', 'Name', 'Link', 'ETD', 'ETA', 'ATA', '비고', 'F/T', 'DEM RATE', 'END OF F/T', 'ESTIMATE RETURN DATE', 'RETURN DATE', 'RETURN DEPOT', 'DEM STATUS', 'TOTAL DEM', 'DEM BILLING', 'DEM RCVD', 'DEM(USD) COMMISSION', 'DEM COMMISSION', 'DEPOT IN DATE(REPO ONLY)', 'REPOSITION 매입'],
+	   	colNames: ['','cargo','concine code', 'seq', 'uuid', 'HBL NO.', 'Tank no.', '매출', '이월 매출', 'A/N&EDI', 'INVOICE', 'CNEE', 'PIC', 'SHIPMENT STATUS', 'PROFIT DATE', '국내매출', '해외매출', "Q'ty", 'Partner', 'Term', 'Name', 'Date', 'Location', 'Vessel / Voyage', 'Carrier', 'MBL NO.', 'POL', 'POD', 'Code1', 'Code', 'Name', 'Link', 'ETD', 'ETA', 'ATA', '비고', 'F/T', 'DEM RATE', 'END OF F/T', 'ESTIMATE RETURN DATE', 'RETURN DATE', 'RETURN DEPOT', 'DEM STATUS', 'TOTAL DEM', 'DEM BILLING', 'DEM RCVD', 'DEM(USD) COMMISSION', 'DEM COMMISSION', 'DEPOT IN DATE(REPO ONLY)', 'REPOSITION 매입', 'termId'],
 	   	colModel: [
 	   		{ name: 'jqFlag',				width: 40,		index: 1,align:'center', 	hidden : false,	frozen:true},
 	   		{ name: 'cargo',				width: 100,		index: 2,align:'center', 		hidden : true, rowspan: true,	editable : true, frozen:true},
@@ -70,7 +71,7 @@ async function portTableInit(){
 	   		{ name: 'seq', 					width: 50, 		index: 4,align:'center',		hidden : true,	frozen:true},
 	   		{ name: 'uuid', 				width: 50, 		index: 5,align:'center',		hidden : true,	frozen:true},
 	       	{ name: 'hblNo', 				width: 140, 	index: 6,align:'center',		hidden : false, rowspan: true,	frozen:true}, /**여기서부터 히든처리 */
-	       	{ name: 'tankNo', 				width: 120, 	index: 7,align:'center', 	hidden : false, editable: true,	frozen:true},
+	       	{ name: 'tankNo', 				width: 120, 	index: 7,align:'center', 		hidden : false, editable: true,	frozen:true},
 	       	{ name: 'sales', 				width: 50, 		index: 8,align:'center',		hidden : false, rowspan: true,	editable: true},
 	       	{ name: 'carryoverSales', 		width: 50, 		index: 9,align:'center',		hidden : false, rowspan: true,	editable: true},
 	       	{ name: 'arrivalNotice',		width: 70, 		index: 10,align:'center',		hidden : false, rowspan: true},
@@ -143,7 +144,37 @@ async function portTableInit(){
 					});
 				}
 			}},
-	    	{ name: 'term', 				width: 80, 		index: 20,align:'center',		hidden : false, rowspan: true, editable: true},
+	    	{ name: 'term', 				width: 80, 		index: 20,align:'center',	hidden : false, rowspan: true, editable : true, edittype: 'text', editoptions: {
+				dataInit:function(elem) {
+					$(elem).autocomplete({
+						delay: 100,
+						autoFocus: true,
+						minLength: 0,
+						source: function(request, response) {
+						    const results = $.ui.autocomplete.filter(termList, request.term);
+						    if (results.length === 0) {
+						      results.push({
+						        label: "No results found",
+						        value: ""
+						      });
+						    }
+						    response(results);
+						},
+				        select: function (event, ui) {
+							ComSetCellData(tableName, ComSelectIndex(tableName), 51, ui.item.id, true);
+				        },
+				        close : function (event, ui) {
+				            $(tableName).delay(2000).focus();
+				            return false;
+				        }
+					}).focus(function() {
+			            $(this).autocomplete("search", $(this).val());
+			        }).on("paste", async function() {
+						var text = await navigator.clipboard.readText();
+						$(elem).val(text);
+					});
+				}
+			}},
 	    	{ name: 'item',					width: 220, 	index: 21,align:'center', 	hidden : false, rowspan: true, editable : true, edittype: 'text', editoptions: {
 				dataInit:function(elem) {
 					$(elem).autocomplete({
@@ -275,7 +306,8 @@ async function portTableInit(){
 	       	{ name: 'demPrch', 				width: 100, 	index: 47,align:'center', editable: true, editoptions : {pk:true}},
 	       	{ name: 'demSales', 			width: 100, 	index: 48,align:'center', editable: true, editoptions : {pk:true}},
 	       	{ name: 'depotInDate', 			width: 180, 	index: 49,align:'center', editable: true, edittype: "date"},
-	       	{ name: 'repositionPrch', 		width: 120, 	index: 50,align:'center', editable: true}
+	       	{ name: 'repositionPrch', 		width: 120, 	index: 50,align:'center', editable: true},
+	       	{ name: 'termId', 				width: 100, 	index: 51,align:'center', editable: true, hidden : true, rowspan: true}
 	   	],
 		height: gridHeight,
 		width: '100%',
@@ -373,7 +405,19 @@ async function portTableInit(){
 							}
 						}
 					}
+				}else if('term' === cellname){
+					if(value === ''){
+						ComSetCellData(tableName, iRow, 51, '', true);
+					}else{
+						for (let customer of customerList) {
+							if(customer.value === value){
+								changeVal = true;
+								return false;
+							}
+						}
+					}
 				}
+				
 				if(!changeVal) $(tableName).jqGrid('dataRecovery', rowid, cellname);
 			}else if('demStatus' === cellname && value === 'N'){
 				confirmMessage('TOTAL DEM, DEM BILLING, DEM RCVD, DEM(USD) COMMISSION, DEM COMMISSION 5개 컬럼 값이 N/A 변경됩니다.', 'info', '', demStatusChang);
@@ -477,6 +521,14 @@ async function searchCargoAutocomplete(){
 	    $(this).autocomplete("search", $(this).val());
 	});
 		
+	}
+}
+
+async function searchTermAutocomplete(){
+	var response = await requestApi('GET', '/api/mdm/term/autocomplete');
+	if(response.common.status === 'S'){
+		termList = response.data;
+		termAutocompleteLoad();
 	}
 }
 
@@ -606,7 +658,7 @@ $( document ).ready(function() {
    	searchCargoAutocomplete();
    	searchTerminalAutocomplete();
    	searchCustomerAutocomplete();
-   	
+   	searchTermAutocomplete();
 //   	let sreturnDate = $('#sreturnDate').data('daterangepicker');
 //   	sreturnDate.setStartDate(moment().subtract(30, 'days').format('YYYY-MM-DD'));
 //	sreturnDate.setEndDate(moment().format('YYYY-MM-DD'));

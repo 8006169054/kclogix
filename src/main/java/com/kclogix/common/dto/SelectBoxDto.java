@@ -8,6 +8,19 @@ import lombok.ToString;
 
 public class SelectBoxDto {
 
+	
+	
+	@Builder
+	@Data
+	@ToString
+	@AllArgsConstructor
+	@NoArgsConstructor
+	public static class TermAutocomplete {
+		private String id;
+		private String value;
+		private String label;
+	}
+	
 	@Builder
 	@Data
 	@ToString

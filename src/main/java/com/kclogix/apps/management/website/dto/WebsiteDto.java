@@ -162,13 +162,15 @@ public class WebsiteDto {
 	
 	@Field(value = "KF", merge = true) 
 	private String terminalHomepage; //terminal Homepage
-
+	
+	@Field(value = "KG", merge = true)
+	private String termId;
+	
 	private String homepage;
 	private String createUserId;
 	private String createDate;
 	private String updateUserId;
 	private String updateDate;
-	
 	
 	@Builder.Default /* 필드명을 rowspan 해야 함 필수 */
 	private RowSpanOtion rowspan = RowSpanOtion.builder().build();
@@ -236,5 +238,7 @@ public class WebsiteDto {
 		private RowSpan parkingLotCode = RowSpan.builder().build();
 		@Builder.Default
 		private RowSpan terminalName = RowSpan.builder().build();
+		@Builder.Default
+		private RowSpan termId = RowSpan.builder().build();
 	};
 }
