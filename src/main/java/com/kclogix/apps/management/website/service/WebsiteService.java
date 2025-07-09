@@ -50,18 +50,40 @@ public class WebsiteService {
 		return repository.selectArrivalnotice(paramDto);
 	}
 	
+//	@Transactional(transactionManager = KainosKey.DBConfig.TransactionManager.Default, rollbackFor = Exception.class)
+//	public void uploadPort(List<WebsiteDto> paramList, SessionDto session)throws Exception {
+//		String hbl = null;
+//		String uuid = null;
+//		for (int i = 0; i < paramList.size(); i++) {
+//			WebsiteDto dto = paramList.get(i);
+//			if(hbl == null || !dto.getHblNo().equals(hbl)) {
+//				// BL No 삭제
+//				hbl = dto.getHblNo();
+//				uuid = KainosDateUtil.getCurrentDay("yyyyMMddHHmmssSSS") + new RandomDataGenerator().nextSecureHexString(3);
+//				repository.excelUploadHblNoDelete(dto.getHblNo());
+//			}
+//			if(!KainosStringUtils.isEmpty(dto.getQuantity())) {
+//				String onlyDigits = dto.getQuantity().replaceAll("\\D", ""); // 숫자가 아닌 문자 제거
+//				String onlyLetters = dto.getQuantity().replaceAll("\\d", ""); // 숫자 제거
+//				dto.setQuantity(onlyDigits);
+//				dto.setQuantityType(onlyLetters);
+//			}
+//			if(KainosStringUtils.isEmpty(dto.getCargo())) {
+//				dto.setCargo(dto.getItem());
+//			}
+//			dto.setUuid(uuid);
+//			dto.setCreateUserId(session.getUserId());
+//			dto.setUpdateUserId(session.getUserId());
+//			if(dto.getJqFlag().equalsIgnoreCase(JqFlag.Insert)) {
+//				repository.insertWebsiteTerminalCode(dto);
+//			}
+//		}
+//	}
+	
 	@Transactional(transactionManager = KainosKey.DBConfig.TransactionManager.Default, rollbackFor = Exception.class)
 	public void uploadPort(List<WebsiteDto> paramList, SessionDto session)throws Exception {
-		String hbl = null;
-		String uuid = null;
 		for (int i = 0; i < paramList.size(); i++) {
 			WebsiteDto dto = paramList.get(i);
-			if(hbl == null || !dto.getHblNo().equals(hbl)) {
-				// BL No 삭제
-				hbl = dto.getHblNo();
-				uuid = KainosDateUtil.getCurrentDay("yyyyMMddHHmmssSSS") + new RandomDataGenerator().nextSecureHexString(3);
-				repository.excelUploadHblNoDelete(dto.getHblNo());
-			}
 			if(!KainosStringUtils.isEmpty(dto.getQuantity())) {
 				String onlyDigits = dto.getQuantity().replaceAll("\\D", ""); // 숫자가 아닌 문자 제거
 				String onlyLetters = dto.getQuantity().replaceAll("\\d", ""); // 숫자 제거
@@ -71,12 +93,12 @@ public class WebsiteService {
 			if(KainosStringUtils.isEmpty(dto.getCargo())) {
 				dto.setCargo(dto.getItem());
 			}
-			dto.setUuid(uuid);
-			dto.setCreateUserId(session.getUserId());
-			dto.setUpdateUserId(session.getUserId());
-			if(dto.getJqFlag().equalsIgnoreCase(JqFlag.Insert)) {
-				repository.insertWebsiteTerminalCode(dto);
-			}
+//			dto.setUuid(uuid);
+//			dto.setCreateUserId(session.getUserId());
+//			dto.setUpdateUserId(session.getUserId());
+//			if(dto.getJqFlag().equalsIgnoreCase(JqFlag.Insert)) {
+			repository.excleUpdateWebsiteTerminalCode(dto);
+//			}
 		}
 	}
 	

@@ -530,4 +530,56 @@ public class WebsiteRepository extends KainosRepositorySupport {
 //		delete(websiteTerminalCode).where(websiteTerminalCode.uuid.eq(uuid).and(websiteTerminalCode.seq.eq(seq))).execute();
 	}
 	
+	/**
+	 * 
+	 * @param paramDto
+	 * @throws Exception
+	 */
+	public void excleUpdateWebsiteTerminalCode(WebsiteDto paramDto) throws Exception {
+		update(websiteTerminalCode)
+//			.set(websiteTerminalCode.sales,				paramDto.getSales())
+//			.set(websiteTerminalCode.carryoverSales,      paramDto.getCarryoverSales())
+			.set(websiteTerminalCode.invoice,             paramDto.getInvoice())
+//			.set(websiteTerminalCode.concine,             !KainosStringUtils.isEmpty(paramDto.getConcine()) ? paramDto.getConcine() : paramDto.getConcineName().trim())
+//			.set(websiteTerminalCode.profitDate,          paramDto.getProfitDate())
+//			.set(websiteTerminalCode.domesticSales,       !KainosStringUtils.isEmpty(paramDto.getDomesticSales()) ? (paramDto.getDomesticSales().replaceAll("US\\$", "")) : "")
+//			.set(websiteTerminalCode.foreignSales,        !KainosStringUtils.isEmpty(paramDto.getForeignSales()) ? (paramDto.getForeignSales().replaceAll("US\\$", "")) : "")
+//			.set(websiteTerminalCode.quantity,            paramDto.getQuantity())
+//			.set(websiteTerminalCode.quantityType,        paramDto.getQuantityType())
+//			.set(websiteTerminalCode.partner,             paramDto.getPartner())
+//			.set(websiteTerminalCode.tankNo,              paramDto.getTankNo())
+//			.set(websiteTerminalCode.term,                !KainosStringUtils.isEmpty(paramDto.getTermId()) ? paramDto.getTermId() : paramDto.getTerm())
+//			.set(websiteTerminalCode.item,                !KainosStringUtils.isEmpty(paramDto.getCargo()) ? paramDto.getCargo() : paramDto.getItem().trim())
+//			.set(websiteTerminalCode.vesselVoyage,        paramDto.getVesselVoyage().trim())
+//			.set(websiteTerminalCode.carrier,             paramDto.getCarrier())
+//			.set(websiteTerminalCode.mblNo,               paramDto.getMblNo())
+//			.set(websiteTerminalCode.hblNo,               paramDto.getHblNo())
+//			.set(websiteTerminalCode.pol,                 paramDto.getPol())
+//			.set(websiteTerminalCode.pod,                 paramDto.getPod())
+//			.set(websiteTerminalCode.terminal,            paramDto.getTerminalCode())
+//			.set(websiteTerminalCode.etd,                 paramDto.getEtd())
+//			.set(websiteTerminalCode.eta,                 paramDto.getEta())
+//			.set(websiteTerminalCode.ata,                 paramDto.getAta())
+//			.set(websiteTerminalCode.remark,              paramDto.getRemark())
+//			.set(websiteTerminalCode.ft,                  paramDto.getFt())
+//			.set(websiteTerminalCode.demRate,             paramDto.getDemRate())
+//			.set(websiteTerminalCode.endOfFt,             paramDto.getEndOfFt())
+//			.set(websiteTerminalCode.estimateReturnDate,  paramDto.getEstimateReturnDate())
+//			.set(websiteTerminalCode.returnDate,          paramDto.getReturnDate())
+//			.set(websiteTerminalCode.demReceived,         paramDto.getDemReceived())
+//			.set(websiteTerminalCode.totalDem,            !KainosStringUtils.isEmpty(paramDto.getTotalDem()) ? paramDto.getTotalDem().replaceAll("US\\$", "") : "")
+//			.set(websiteTerminalCode.returnDepot,         paramDto.getReturnDepot())
+//			.set(websiteTerminalCode.demRcvd,             paramDto.getDemRcvd())
+//			.set(websiteTerminalCode.demPrch,             !KainosStringUtils.isEmpty(paramDto.getDemPrch()) ? paramDto.getDemPrch().replaceAll("US\\$", "") : "")
+//			.set(websiteTerminalCode.demSales,            !KainosStringUtils.isEmpty(paramDto.getDemSales()) ? paramDto.getDemSales().replaceAll("US\\$", "") : "")
+//			.set(websiteTerminalCode.depotInDate,         paramDto.getDepotInDate())
+//			.set(websiteTerminalCode.repositionPrch, 	  paramDto.getRepositionPrch())
+//			.set(websiteTerminalCode.updateUserId, 		  paramDto.getUpdateUserId())
+//			.set(websiteTerminalCode.updateDate, 			new Date())
+//			.set(websiteTerminalCode.shipmentStatus, 		paramDto.getShipmentStatus())
+//			.set(websiteTerminalCode.demStatus, 			paramDto.getDemStatus())
+		.where(websiteTerminalCode.hblNo.eq(paramDto.getHblNo()).and(websiteTerminalCode.tankNo.eq(paramDto.getTankNo())))
+		.execute();
+	}
+	
 }
