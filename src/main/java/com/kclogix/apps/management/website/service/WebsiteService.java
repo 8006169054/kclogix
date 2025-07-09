@@ -17,6 +17,7 @@ import com.kclogix.common.util.JqFlag;
 import kainos.framework.core.KainosKey;
 import kainos.framework.core.lang.KainosBusinessException;
 import kainos.framework.utils.KainosDateUtil;
+import kainos.framework.utils.KainosStringUtils;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -60,6 +61,15 @@ public class WebsiteService {
 				hbl = dto.getHblNo();
 				uuid = KainosDateUtil.getCurrentDay("yyyyMMddHHmmssSSS") + new RandomDataGenerator().nextSecureHexString(3);
 				repository.excelUploadHblNoDelete(dto.getHblNo());
+			}
+			if(!KainosStringUtils.isEmpty(dto.getQuantity())) {
+				String onlyDigits = dto.getQuantity().replaceAll("\\D", ""); // 숫자가 아닌 문자 제거
+				String onlyLetters = dto.getQuantity().replaceAll("\\d", ""); // 숫자 제거
+				dto.setQuantity(onlyDigits);
+				dto.setQuantityType(onlyLetters);
+			}
+			if(KainosStringUtils.isEmpty(dto.getCargo())) {
+				dto.setCargo(dto.getItem());
 			}
 			dto.setUuid(uuid);
 			dto.setCreateUserId(session.getUserId());

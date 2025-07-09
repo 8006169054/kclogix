@@ -25,6 +25,7 @@ public class DepotManagement {
 	private String tankNo;
 	private String partner;
 	private String item;
+	private String returnDepot;
 	private String returnDate;
 	private String cleanedDate;
 	private String outDate;

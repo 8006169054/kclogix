@@ -2,17 +2,20 @@ package com.kclogix.apps.management.depot.repository;
 
 import static com.kclogix.common.entity.QDepotManagement.depotManagement;
 import static com.kclogix.common.entity.QMdmCargo.mdmCargo;
-import static com.kclogix.common.entity.QMdmCustomer.mdmCustomer;
 import static com.kclogix.common.entity.QWebsiteTerminalCode.websiteTerminalCode;
+
 import java.util.Date;
 import java.util.List;
+
 import org.springframework.stereotype.Repository;
+
 import com.kclogix.apps.management.depot.dto.DepotManagementDto;
 import com.kclogix.common.dto.SessionDto;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.CaseBuilder;
 import com.querydsl.core.types.dsl.Expressions;
+
 import kainos.framework.data.querydsl.support.repository.KainosRepositorySupport;
 import kainos.framework.utils.KainosStringUtils;
 
@@ -93,6 +96,7 @@ public class DepotManagementRepository extends KainosRepositorySupport {
 				websiteTerminalCode.tankNo,
 				websiteTerminalCode.partner,
 				new CaseBuilder().when(mdmCargo.name.isNull()).then(websiteTerminalCode.item.upper()).otherwise(mdmCargo.name.upper()).as("item"),
+				websiteTerminalCode.returnDepot,
 				websiteTerminalCode.returnDate,
 				depotManagement.cleanedDate,
 				depotManagement.outDate,
@@ -129,6 +133,7 @@ public class DepotManagementRepository extends KainosRepositorySupport {
 			depotManagement.tankNo,
 			depotManagement.partner,
 			depotManagement.item,
+			depotManagement.returnDepot,
 			depotManagement.returnDate,
 			depotManagement.cleanedDate,
 			depotManagement.outDate,
@@ -145,6 +150,7 @@ public class DepotManagementRepository extends KainosRepositorySupport {
 			paramDto.getTankNo(),
 			paramDto.getPartner(),
 			paramDto.getItem(),
+			paramDto.getReturnDepot(),
 			paramDto.getReturnDate(),
 			paramDto.getCleanedDate(),
 			paramDto.getOutDate(),

@@ -1,8 +1,8 @@
 package com.kclogix.apps.management.depot;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,7 +14,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.kclogix.apps.management.depot.dto.DepotManagementDto;
 import com.kclogix.apps.management.depot.service.DepotManagementService;
-import com.kclogix.apps.mdm.cargo.dto.CargoDto;
 import com.kclogix.common.dto.SessionDto;
 import com.kclogix.common.util.MessageUtil;
 import com.kclogix.common.util.excel.KainosExcelReadHandler;
@@ -82,8 +81,8 @@ public class DepotManagementController {
 		return message.getInsertMessage(KainosResponseEntity.builder().build()).close();
 	}
 	
-	@PostMapping(value = "/api/management/depot/upload")
-	public ResponseEntity<Void> excelupload(@RequestPart MultipartFile file, @RequestPart DepotManagementDto paramDto, @KainosSession SessionDto session) throws Exception {
+	@PostMapping(value = "/api/management/depot/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+	public ResponseEntity<Void> excelupload(@RequestPart("file") MultipartFile file, @RequestPart("jsonData") DepotManagementDto paramDto, @KainosSession SessionDto session) throws Exception {
 		try {       
 			/* 클라이언트에서 넘어온 MultipartFile 객체 */
 			KainosExcelReadHandler excelReadHandler = KainosExcelReadHandler.builder().startRowNum(1) // 엑셀파일 데이터 시작 로우
