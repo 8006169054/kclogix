@@ -8,6 +8,7 @@ import java.util.List;
 import org.springframework.stereotype.Repository;
 
 import com.kclogix.apps.mdm.depot.dto.DepotDto;
+import com.kclogix.common.dto.SelectBoxDto;
 import com.kclogix.common.dto.SessionDto;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Projections;
@@ -66,21 +67,20 @@ public class DepotRepository extends KainosRepositorySupport {
 				.fetch();
 	}
 	
-//	/**
-//	 * 
-//	 * @return
-//	 * @throws Exception
-//	 */
-//	public List<SelectBoxDto.TermAutocomplete> selectTermAutocomplete() throws Exception {
-//		return select(Projections.bean(SelectBoxDto.TermAutocomplete.class,
-//				mdmTerm.id,
-//				mdmTerm.name.as("value"),
-//				mdmTerm.name.as("label")
-//				))
-//				.from(mdmTerm)
-//				.where(mdmTerm.use.eq("Y"))
-//				.fetch();
-//	}
+	/**
+	 * 
+	 * @return
+	 * @throws Exception
+	 */
+	public List<SelectBoxDto.DepotAutocomplete> selectDepotAutocomplete() throws Exception {
+		return select(Projections.bean(SelectBoxDto.DepotAutocomplete.class,
+				mdmDepot.depotCode,
+				mdmDepot.depotCode.as("value"),
+				mdmDepot.depotCode.as("label")
+				))
+				.from(mdmDepot)
+				.fetch();
+	}
 	
 	/**
 	 * 

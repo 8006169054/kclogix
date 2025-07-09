@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.kclogix.apps.mdm.depot.dto.DepotDto;
 import com.kclogix.apps.mdm.depot.repository.DepotRepository;
+import com.kclogix.common.dto.SelectBoxDto;
 import com.kclogix.common.dto.SessionDto;
 import com.kclogix.common.util.JqFlag;
 
@@ -30,16 +31,16 @@ public class DepotService {
 		return repository.selectDepot(paramDto);
 	}
 	
-//	/**
-//	 * 
-//	 * @param paramDto
-//	 * @return
-//	 * @throws Exception
-//	 */
-//	@Transactional(readOnly = true)
-//	public List<SelectBoxDto.TermAutocomplete> selectTermAutocomplete() throws Exception {
-//		return repository.selectTermAutocomplete();
-//	}
+	/**
+	 * 
+	 * @param paramDto
+	 * @return
+	 * @throws Exception
+	 */
+	@Transactional(readOnly = true)
+	public List<SelectBoxDto.DepotAutocomplete> selectDepotAutocomplete() throws Exception {
+		return repository.selectDepotAutocomplete();
+	}
 	
 	/**
 	 * 

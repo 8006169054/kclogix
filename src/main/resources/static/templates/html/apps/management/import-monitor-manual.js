@@ -46,6 +46,7 @@ var terminalList = [];
 var terminalCodeList = [];
 var customerList = [];
 var termList = [];
+var depotList = [];
 
 /**
  * 조회
@@ -132,7 +133,7 @@ async function portTableInit(){
 	    	{ name: 'foreignSales', 		width: 80, 		index: 17,align:'center',		hidden : false, rowspan: true, editable: true, formatter: foreignSalesFn},
 	    	{ name: 'quantity', 			width: 50, 		index: 18,align:'center',		hidden : false, rowspan: true, editable: true},
 	    	{ name: 'quantityType', 		width: 80, 		align:'center',		hidden : false, rowspan: true, editable: true, formatter:'select', edittype:'select', editoptions : {value: 'TANK:TANK;GP:GP;HC:HC;LCL:LCL;AIR:AIR'}},
-	    	{ name: 'partner',				width: 100, 	index: 19,align:'center', 		hidden : false, rowspan: false, editable : true, editable : true, edittype: 'text', editoptions: {
+	    	{ name: 'partner',				width: 100, 	index: 19,align:'center', 		hidden : false, rowspan: false, editable : true, edittype: 'text', editoptions: {
 				dataInit:function(elem) {
 					$(elem).autocomplete({
 						delay: 100,
@@ -321,7 +322,37 @@ async function portTableInit(){
 	       	{ name: 'endOfFt', 				width: 90, 		index: 39,align:'center', editable: true, editoptions : {pk:true}, edittype: "date"},
 	       	{ name: 'estimateReturnDate', 	width: 160, 	index: 40,align:'center', editable: true, edittype: "date"},
 	       	{ name: 'returnDate', 			width: 100, 	index: 41,align:'center', editable: true, edittype: "date"},
-	       	{ name: 'returnDepot', 			width: 100, 	index: 42,align:'center', editable: true},
+	       	{ name: 'returnDepot', 			width: 100, 	index: 42,align:'center', editable: true,	editable : true, edittype: 'text', editoptions: {
+				dataInit:function(elem) {
+					$(elem).autocomplete({
+						delay: 100,
+						autoFocus: true,
+						minLength: 0,
+						maxShowItems: 10,
+						source: function(request, response) {
+						    const results = $.ui.autocomplete.filter(depotList, request.term);
+						    if (results.length === 0) {
+						      results.push({
+						        label: "No results found",
+						        value: ""
+						      });
+						    }
+						    response(results);
+						},
+				        select: function (event, ui) {
+				        },
+				        close : function (event, ui) {
+				            $(tableName).delay(2000).focus();
+				            return false;
+				        }
+					}).focus(function() {
+			            $(this).autocomplete("search", $(this).val());
+			        }).on("paste", async function() {
+						var text = await navigator.clipboard.readText();
+						$(elem).val(text);
+					});
+				}
+			}},
 	       	{ name: 'demStatus', 			width: 100, 	index: 43,align:'center', editable: true},
 	       	{ name: 'totalDem', 			width: 100, 	index: 44,align:'center', editable: true, editoptions : {pk:true}},
 	       	{ name: 'demReceived', 			width: 80, 		index: 45,align:'center', editable: true},
@@ -523,6 +554,33 @@ async function demStatusChang(selection){
 	}
 }
 
+async function searchDepotAutocomplete(){
+	var response = await requestApi('GET', '/api/mdm/depot/autocomplete');
+	if(response.common.status === 'S'){
+		depotList = response.data;
+	$("#sreturnDepot").autocomplete({
+		source: depotList,
+		delay: 100,
+		autoFocus: true,
+		minLength: 0,
+		maxShowItems: 10,
+		open: function(){
+	        $(this).autocomplete('widget').css('z-index', 1100);
+	        return false;
+	    },
+	    select: function (event, ui) {
+	    },
+	    close : function (event, ui) {
+
+	        return false;
+	    }
+	}).focus(function() {
+	    $(this).autocomplete("search", $(this).val());
+	});
+	
+	}
+}
+
 async function searchPartnerAutocomplete(){
 	var response = await requestApi('GET', '/api/mdm/partner/autocomplete');
 	if(response.common.status === 'S'){
@@ -718,6 +776,7 @@ $( document ).ready(function() {
    	searchTerminalAutocomplete();
    	searchCustomerAutocomplete();
    	searchTermAutocomplete();
+   	searchDepotAutocomplete();
 //   	let sreturnDate = $('#sreturnDate').data('daterangepicker');
 //   	sreturnDate.setStartDate(moment().subtract(30, 'days').format('YYYY-MM-DD'));
 //	sreturnDate.setEndDate(moment().format('YYYY-MM-DD'));

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.kclogix.apps.mdm.depot.dto.DepotDto;
 import com.kclogix.apps.mdm.depot.service.DepotService;
+import com.kclogix.common.dto.SelectBoxDto;
 import com.kclogix.common.dto.SessionDto;
 import com.kclogix.common.util.MessageUtil;
 
@@ -55,12 +56,13 @@ public class DepotController {
 				.close();
 	}
 	
-//	@GetMapping(value = "/api/mdm/term/autocomplete")
-//	public ResponseEntity<SelectBoxDto.TermAutocomplete> selectPartnerAutocomplete() throws Exception {
-//		return KainosResponseEntity.builder().build()
-//				.addData(service.selectTermAutocomplete())
-//				.close();
-//	}
+	
+	@GetMapping(value = "/api/mdm/depot/autocomplete")
+	public ResponseEntity<SelectBoxDto.DepotAutocomplete> selectDepotAutocomplete() throws Exception {
+		return KainosResponseEntity.builder().build()
+				.addData(service.selectDepotAutocomplete())
+				.close();
+	}
 	
 	@PostMapping(value = "/api/mdm/depot")
 	public ResponseEntity<Void> saveTerm(@RequestBody List<DepotDto> paramList, @KainosSession SessionDto session) throws Exception {

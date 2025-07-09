@@ -26,6 +26,16 @@ public class SelectBoxDto {
 	@ToString
 	@AllArgsConstructor
 	@NoArgsConstructor
+	public static class DepotAutocomplete {
+		private String value;
+		private String label;
+	}
+	
+	@Builder
+	@Data
+	@ToString
+	@AllArgsConstructor
+	@NoArgsConstructor
 	public static class PartnerAutocomplete {
 		private String value;
 		private String label;
