@@ -113,7 +113,7 @@ public class WebsiteService {
 			dto.setCreateUserId(session.getUserId());
 			if(dto.getJqFlag().equalsIgnoreCase(JqFlag.Insert)) {
 				dto.setUuid(repository.getUuid(dto.getHblNo()));
-				if(dto.getUuid() == null) dto.setUuid(KainosDateUtil.getCurrentDay("yyyyMMddHHmmssSSS"));
+				if(dto.getUuid() == null) dto.setUuid(KainosDateUtil.getCurrentDay("yyyyMMddHHmmssSSS") + new RandomDataGenerator().nextSecureHexString(3));
 				repository.insertWebsiteTerminalCode(dto);
 			} else if(dto.getJqFlag().equalsIgnoreCase(JqFlag.Update)) {
 				repository.updateWebsiteTerminalCode(dto);
