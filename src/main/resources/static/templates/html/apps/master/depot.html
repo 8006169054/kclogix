@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<!-- Default Layout Import-->
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layouts/default/layout}" layout:fragment="Content">
+
+<!-- Main Content -->
+<div class="main-content">
+	<section class="section">
+		<div class="section-header">
+			<h1>Depot</h1>
+			<div class="section-header-breadcrumb">
+			</div>
+		</div>
+		<div class="section-body">
+			<div class="row">
+				<div class="col-100">
+					<div class="card">
+						<div class="card-header text-right">
+							<button class="btn btn-primary" onclick="search()">Search</button>
+						</div>
+						<div class="card-body">
+							<form id="searchFrom" name="searchFrom">
+							<div class="form-group row">
+								<label class="col-form-label text-md-left" style="width: 95px;">DEPOT CODE</label>
+								<div style="width: 130px; margin-right: 15px;">
+									<input type="text" id="depotCode" name="depotCode" class="form-control">
+								</div>
+								
+								<label class="col-form-label text-md-left" style="width: 80px;">LOCATION</label>
+								<div style="width: 150px; margin-right: 15px;">
+									<input type="text" id="location" name="location" class="form-control">
+								</div>
+								
+								<label class="col-form-label text-md-left" style="width: 95px;">DEPOT NAME</label>
+								<div style="width: 130px; margin-right: 15px;">
+									<input type="text" id="depotName" name="depotName" class="form-control">
+								</div>
+								
+								
+								
+								<label class="col-form-label text-md-left" style="width: 35px;">PIC</label>
+								<div style="width: 160px; margin-right: 15px;">
+									<input type="text" id="picName" name="picName" class="form-control">
+								</div>
+								
+								<label class="col-form-label text-md-left" style="width: 35px;">TEL</label>
+								<div style="width: 150px; margin-right: 15px;">
+									<input type="text" id="picTel" name="picTel" class="form-control">
+								</div>
+								
+								<label class="col-form-label text-md-left" style="width: 60px;">E-MAIL</label>
+								<div style="width: 200px; margin-right: 15px;">
+									<input type="text" id="picEmail" name="picEmail" class="form-control">
+								</div>
+							</div>
+							<div class="form-group row">
+							<label class="col-form-label text-md-left" style="width: 95px;">ADDRESS</label>
+								<div style="width: 375px; margin-right: 15px;">
+									<input type="text" id="address" name="address" class="form-control">
+								</div>
+								<label class="col-form-label text-md-left" style="width: 95px;">REMARK</label>
+								<div style="width: 540px; margin-right: 15px;">
+									<input type="text" id="operationRemark" name="operationRemark" class="form-control">
+								</div>
+							</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-100">
+					<div class="card">
+						<div class="card-header text-right">
+							<button class="btn btn-primary" id="add" onclick="add()">Add</button>
+							<button class="btn btn-success" id="save" onclick="save()">Save</button>
+						</div>
+						<div class="card-body p-0">
+							<div class="table-responsive" style="overflow: hidden;">
+								<table id="table"></table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+</div>
+<script src="/templates/html/apps/master/depot.js"></script>
+</html>
