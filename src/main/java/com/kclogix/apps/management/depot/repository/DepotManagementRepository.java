@@ -15,6 +15,7 @@ import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.CaseBuilder;
 import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.jpa.impl.JPAUpdateClause;
 
 import kainos.framework.data.querydsl.support.repository.KainosRepositorySupport;
 import kainos.framework.utils.KainosStringUtils;
@@ -22,6 +23,46 @@ import kainos.framework.utils.KainosStringUtils;
 @Repository
 public class DepotManagementRepository extends KainosRepositorySupport {
 
+	
+	/**
+	 * 
+	 * @param paramDto
+	 * @param session
+	 * @throws Exception
+	 */
+	public void dateExcelupload(DepotManagementDto searchDto, DepotManagementDto.DateExcelUpload excelDto, SessionDto session) throws Exception {
+		long cnt = select(depotManagement.uuid.count()).from(depotManagement).where(
+				depotManagement.uuid.eq(searchDto.getUuid())
+				.and(depotManagement.seq.eq(searchDto.getSeq()))
+				.and(depotManagement.hblNo.eq(searchDto.getHblNo()))
+				.and(depotManagement.tankNo.eq(searchDto.getTankNo()))
+				).fetchFirst();
+		
+		if(cnt > 0) {
+			JPAUpdateClause jpaUpate = update(depotManagement)
+					.set(depotManagement.updateUserId, session.getId())
+					.set(depotManagement.updateDate, new Date());
+			
+			if (!KainosStringUtils.isEmpty(excelDto.getCleanedDate())) {
+				jpaUpate.set(depotManagement.cleanedDate, excelDto.getCleanedDate());
+			}
+			if (!KainosStringUtils.isEmpty(excelDto.getOutDate())) {
+				jpaUpate.set(depotManagement.outDate, excelDto.getOutDate());
+			}
+			jpaUpate.where(
+					depotManagement.uuid.eq(searchDto.getUuid())
+					.and(depotManagement.seq.eq(searchDto.getSeq()))
+					.and(depotManagement.hblNo.eq(searchDto.getHblNo()))
+					.and(depotManagement.tankNo.eq(searchDto.getTankNo()))
+			).execute();
+		}
+		else {
+			searchDto.setCleanedDate(excelDto.getCleanedDate());
+			searchDto.setOutDate(excelDto.getOutDate());
+			insertDepotManagement(searchDto, session);
+		}
+	}
+	
 	/**
 	 * 
 	 * @param paramDto
@@ -49,17 +90,22 @@ public class DepotManagementRepository extends KainosRepositorySupport {
 	public List<DepotManagementDto> selectDepotManagement(DepotManagementDto paramDto) throws Exception {
 		BooleanBuilder where = new BooleanBuilder();
 		where.and(websiteTerminalCode.delFlg.ne("Y").or(websiteTerminalCode.delFlg.isNull()));
+		
 		if(!KainosStringUtils.isEmpty(paramDto.getHblNo()))
 			where.and(websiteTerminalCode.hblNo.upper().like(paramDto.getHblNo().toUpperCase() + "%"));
 		
 		if(!KainosStringUtils.isEmpty(paramDto.getTankNo()))
-			where.and(websiteTerminalCode.tankNo.upper().like(paramDto.getTankNo().toUpperCase() + "%"));
+			where.and(websiteTerminalCode.tankNo.upper().eq(paramDto.getTankNo().toUpperCase()));
 		
 		if(!KainosStringUtils.isEmpty(paramDto.getPartner()))
 			where.and(websiteTerminalCode.partner.upper().like(paramDto.getPartner().toUpperCase() + "%"));
 		
 		if(!KainosStringUtils.isEmpty(paramDto.getItem()))
 			where.and(websiteTerminalCode.item.upper().like(paramDto.getItem().toUpperCase() + "%"));
+		
+		if(!KainosStringUtils.isEmpty(paramDto.getReturnDepot()))
+			where.and(websiteTerminalCode.returnDepot.upper().like(paramDto.getReturnDepot().toUpperCase() + "%"));
+		
 		
 		if(!KainosStringUtils.isEmpty(paramDto.getReturnDate())) {
 			String[] tmp = paramDto.getReturnDate().split("~");
@@ -76,14 +122,11 @@ public class DepotManagementRepository extends KainosRepositorySupport {
 			where.and(depotManagement.outDate.goe(tmp[0].trim()).and(depotManagement.outDate.loe(tmp[1].trim())));
 		}
 		
-		if(!KainosStringUtils.isEmpty(paramDto.getAllocation()))
-			where.and(depotManagement.allocation.upper().like(paramDto.getAllocation().toUpperCase() + "%"));
-		
 		if(!KainosStringUtils.isEmpty(paramDto.getRemark()))
 			where.and(depotManagement.remark.upper().like(paramDto.getRemark().toUpperCase() + "%"));
 		
-		if(!KainosStringUtils.isEmpty(paramDto.getAllocationType())) {
-			if(paramDto.getAllocationType().equalsIgnoreCase("0"))
+		if(!KainosStringUtils.isEmpty(paramDto.getAllocation())) {
+			if(paramDto.getAllocation().equalsIgnoreCase("0"))
 				where.and(depotManagement.allocation.isEmpty().or(depotManagement.allocation.isNull()));
 			else
 				where.and(depotManagement.allocation.isNotEmpty().or(depotManagement.allocation.isNotNull()));
@@ -185,13 +228,19 @@ public class DepotManagementRepository extends KainosRepositorySupport {
 		.execute();
 	}
 	
-//	/**
-//	 * 
-//	 * @param paramDto
-//	 * @throws Exception
-//	 */
-//	public void deleteDepot(DepotDto paramDto) throws Exception {
-//		delete(mdmDepot).where(mdmDepot.depotCode.eq(paramDto.getDepotCode())).execute();
-//	}
+	/**
+	 * 
+	 * @param paramDto
+	 * @throws Exception
+	 */
+	public void deleteDepotManagemen(DepotManagementDto paramDto) throws Exception {
+		delete(depotManagement).where(
+				depotManagement.uuid.eq(paramDto.getUuid())
+				.and(depotManagement.seq.eq(paramDto.getSeq()))
+				.and(depotManagement.hblNo.eq(paramDto.getHblNo()))
+				.and(depotManagement.tankNo.eq(paramDto.getTankNo()))
+				)
+		.execute();
+	}
 	
 }

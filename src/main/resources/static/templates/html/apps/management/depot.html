@@ -24,7 +24,7 @@
 							<div class="form-group row">
 								<label class="col-form-label text-md-left" style="width: 80px;">HBL No.</label>
 									<div style="width: 230px; margin-right: 15px;">
-										<input type="text" id="shblNo" name="shblNo" value="" class="form-control">
+										<input type="text" id="hblNo" name="hblNo" value="" class="form-control">
 									</div>
 								<label class="col-form-label text-md-left" style="width: 100px;">Item</label>
 								<div style="width: 235px; margin-right: 15px;">
@@ -41,7 +41,7 @@
 								</div>
 								<label class="col-form-label text-md-left" style="width: 70px;">Depot</label>
 								<div style="width: 200px; margin-right: 15px;">
-									<input type="text" id="partner" name="partner" value="" class="form-control">
+									<input type="text" id="returnDepot" name="returnDepot" value="" class="form-control">
 								</div>
 							</div>
 							<div class="form-group row">
@@ -100,7 +100,10 @@
 				<div class="col-100">
 					<div class="card">
 						<div class="card-header text-right">
-							<button class="btn btn-success" id="save" onclick="save()">Save</button>
+							<input type="file" id="customFile" name="customFile" style="visibility:hidden; width: 10px;" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
+							<button class="btn btn-info" onclick="fileOpen(1)">Date-Upload</button>
+							<button class="btn btn-info" onclick="fileOpen(2)">Allocation-Upload</button>
+							<button class="btn btn-success" id="save" onclick="confirmSave()">Save</button>
 						</div>
 						<div class="card-body p-0">
 							<div class="table-responsive" style="overflow: hidden;">

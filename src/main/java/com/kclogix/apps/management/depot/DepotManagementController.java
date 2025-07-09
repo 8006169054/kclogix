@@ -1,8 +1,9 @@
 package com.kclogix.apps.management.depot;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,6 +22,7 @@ import com.kclogix.common.util.excel.KainosExcelReadHandler;
 import kainos.framework.core.lang.KainosBusinessException;
 import kainos.framework.core.servlet.KainosResponseEntity;
 import kainos.framework.core.session.annotation.KainosSession;
+import kainos.framework.utils.KainosStringUtils;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -37,6 +39,7 @@ public class DepotManagementController {
 			@RequestParam(required = false) String partner,
 			@RequestParam(required = false) String item,
 			@RequestParam(required = false) String returnDate,
+			@RequestParam(required = false) String returnDepot,
 			@RequestParam(required = false) String cleanedDate,
 			@RequestParam(required = false) String outDate,
 			@RequestParam(required = false) String allocation,
@@ -50,6 +53,7 @@ public class DepotManagementController {
 		.partner(partner)
 		.item(item)
 		.returnDate(returnDate)
+		.returnDepot(returnDepot)
 		.cleanedDate(cleanedDate)
 		.outDate(outDate)
 		.allocation(allocation)
@@ -81,8 +85,71 @@ public class DepotManagementController {
 		return message.getInsertMessage(KainosResponseEntity.builder().build()).close();
 	}
 	
-	@PostMapping(value = "/api/management/depot/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-	public ResponseEntity<Void> excelupload(@RequestPart("file") MultipartFile file, @RequestPart("jsonData") DepotManagementDto paramDto, @KainosSession SessionDto session) throws Exception {
+//	@PostMapping(value = "/api/management/depot/date-upload")
+//	public ResponseEntity<Void> dateExcelupload(@RequestPart("file") MultipartFile file, @RequestPart("jsonData") DepotManagementDto searchDto, @KainosSession SessionDto session) throws Exception {
+//		List<DepotManagementDto.DateExcelUpload> uploadList = new ArrayList<>();
+//		try {
+//			/* 클라이언트에서 넘어온 MultipartFile 객체 */
+//			KainosExcelReadHandler excelReadHandler = KainosExcelReadHandler.builder().startRowNum(1) // 엑셀파일 데이터 시작 로우
+//					.excel(file.getInputStream()) // MultipartFile 객체
+//					.build(); // 객체 생성
+//			excelReadHandler.readExcel() // 엑셀 파일 읽기
+//					.getRows() // 데이터 get List
+//					.forEach(dataRow -> {
+//						try {
+//							uploadList.add(excelReadHandler.objectCoyp(dataRow, DepotManagementDto.DateExcelUpload.class));
+//						} catch (Exception e) {
+//							throw new RuntimeException(e);
+//						}
+//					});
+//			service.dateExcelupload(uploadList, searchDto, session);
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//			throw new KainosBusinessException("common.system.error");
+//		}
+//		return message.getInsertMessage(KainosResponseEntity.builder().build()).close();
+//	}
+	
+	@PostMapping(value = "/api/management/depot/date-upload")
+	public ResponseEntity<DepotManagementDto> dateExcelupload(@RequestPart("file") MultipartFile file, @RequestPart("jsonData") List<DepotManagementDto> paramListDto, @KainosSession SessionDto session) throws Exception {
+		try {
+			/* 클라이언트에서 넘어온 MultipartFile 객체 */
+			KainosExcelReadHandler excelReadHandler = KainosExcelReadHandler.builder().startRowNum(1) // 엑셀파일 데이터 시작 로우
+					.excel(file.getInputStream()) // MultipartFile 객체
+					.build(); // 객체 생성
+			excelReadHandler.readExcel() // 엑셀 파일 읽기
+					.getRows() // 데이터 get List
+					.forEach(dataRow -> {
+						try {
+							DepotManagementDto.DateExcelUpload excelData = excelReadHandler.objectCoyp(dataRow, DepotManagementDto.DateExcelUpload.class);
+							
+							for (int i = 0; i < paramListDto.size(); i++) {
+								if(paramListDto.get(i).getTankNo().equalsIgnoreCase(excelData.getTankNo())) {
+									if(!KainosStringUtils.isEmpty(excelData.getCleanedDate())) {
+										paramListDto.get(i).setCleanedDate(excelData.getCleanedDate());
+										paramListDto.get(i).setJqFlag("U");
+									}
+									if(!KainosStringUtils.isEmpty(excelData.getOutDate())) {
+										paramListDto.get(i).setOutDate(excelData.getOutDate());
+										paramListDto.get(i).setJqFlag("U");
+									}
+									break;
+								}
+							}
+							
+						} catch (Exception e) {
+							throw new RuntimeException(e);
+						}
+					});
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new KainosBusinessException("common.system.error");
+		}
+		return KainosResponseEntity.builder().build().addData(paramListDto).close();
+	}
+	
+	@PostMapping(value = "/api/management/depot/allocation-upload")
+	public ResponseEntity<DepotManagementDto> allocationExcelupload(@RequestPart("file") MultipartFile file, @RequestPart("jsonData") List<DepotManagementDto> paramListDto, @KainosSession SessionDto session) throws Exception {
 		try {       
 			/* 클라이언트에서 넘어온 MultipartFile 객체 */
 			KainosExcelReadHandler excelReadHandler = KainosExcelReadHandler.builder().startRowNum(1) // 엑셀파일 데이터 시작 로우
@@ -92,19 +159,43 @@ public class DepotManagementController {
 					.getRows() // 데이터 get List
 					.forEach(dataRow -> {
 						try {
-							System.out.println(dataRow);
-//							/* 주의 엑셀 파일에 빈 데이터 체크 필요 */
-//							excelData.add(excelReadHandler.objectCoyp(dataRow, CargoDto.class));
+							DepotManagementDto.AllocationExcelUpload excelData = excelReadHandler.objectCoyp(dataRow, DepotManagementDto.AllocationExcelUpload.class);
+							for (int i = 0; i < paramListDto.size(); i++) {
+								if(paramListDto.get(i).getTankNo().equalsIgnoreCase(excelData.getTankNo())
+										&& paramListDto.get(i).getPartner().equalsIgnoreCase(excelData.getPartner())
+										&& paramListDto.get(i).getReturnDepot().equalsIgnoreCase(excelData.getReturnDepot())
+										) {
+									if(!KainosStringUtils.isEmpty(excelData.getAllocation())) {
+										paramListDto.get(i).setAllocation(excelData.getAllocation());
+										paramListDto.get(i).setJqFlag("U");
+									}
+								}
+							}
 						} catch (Exception e) {
 							throw new RuntimeException(e);
 						}
 					});
-			
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new KainosBusinessException("common.system.error");
 		}
-		return message.getInsertMessage(KainosResponseEntity.builder().build()).close();
+		return KainosResponseEntity.builder().build().addData(paramListDto).close();
 	}
 	
+	/**
+	 * 
+	 * @param dateStr
+	 * @param format
+	 * @return
+	 */
+	public boolean isValidDateFormat(String dateStr, String format) {
+	    try {
+	        SimpleDateFormat sdf = new SimpleDateFormat(format);
+	        sdf.setLenient(false); // 엄격한 포맷 검사
+	        sdf.parse(dateStr);    // 파싱 시도
+	        return true;
+	    } catch (ParseException e) {
+	        return false;
+	    }
+	}
 }

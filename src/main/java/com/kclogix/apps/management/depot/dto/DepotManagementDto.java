@@ -1,5 +1,7 @@
 package com.kclogix.apps.management.depot.dto;
 
+import com.kclogix.common.util.excel.Field;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -31,4 +33,34 @@ public class DepotManagementDto {
 	private String createDate;
 	private String updateUserId;
 	private String updateDate;
+	
+	@Data
+	@Builder
+	@NoArgsConstructor
+	@AllArgsConstructor
+	@ToString
+	public static class DateExcelUpload {
+		@Field(value = "A")
+		private String tankNo;
+		@Field(value = "B")
+		private String cleanedDate;
+		@Field(value = "C")
+		private String outDate;
+	}
+	
+	@Data
+	@Builder
+	@NoArgsConstructor
+	@AllArgsConstructor
+	@ToString
+	public static class AllocationExcelUpload {
+		@Field(value = "A")
+		private String tankNo;
+		@Field(value = "B")
+		private String partner;
+		@Field(value = "C")
+		private String returnDepot;
+		@Field(value = "D")
+		private String allocation;
+	}
 }
