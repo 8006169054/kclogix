@@ -8,17 +8,17 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.multipart.MultipartFile;
 
-//import com.azure.identity.ClientSecretCredential;
-//import com.azure.identity.ClientSecretCredentialBuilder;
-//import com.microsoft.graph.models.Attachment;
-//import com.microsoft.graph.models.BodyType;
-//import com.microsoft.graph.models.EmailAddress;
-//import com.microsoft.graph.models.FileAttachment;
-//import com.microsoft.graph.models.ItemBody;
-//import com.microsoft.graph.models.Message;
-//import com.microsoft.graph.models.Recipient;
-//import com.microsoft.graph.serviceclient.GraphServiceClient;
-//import com.microsoft.graph.users.item.sendmail.SendMailPostRequestBody;
+import com.azure.identity.ClientSecretCredential;
+import com.azure.identity.ClientSecretCredentialBuilder;
+import com.microsoft.graph.models.Attachment;
+import com.microsoft.graph.models.BodyType;
+import com.microsoft.graph.models.EmailAddress;
+import com.microsoft.graph.models.FileAttachment;
+import com.microsoft.graph.models.ItemBody;
+import com.microsoft.graph.models.Message;
+import com.microsoft.graph.models.Recipient;
+import com.microsoft.graph.serviceclient.GraphServiceClient;
+import com.microsoft.graph.users.item.sendmail.SendMailPostRequestBody;
 
 import jakarta.mail.internet.InternetAddress;
 import kainos.framework.core.model.KainosMailDto;
@@ -127,62 +127,62 @@ public class MicrosoftGraph {
 	 * @throws Exception
 	 */
 	public void sendMail(KainosMailDto mailDto) throws Exception{
-//		ClientSecretCredential credential = new ClientSecretCredentialBuilder()
-//			    .clientId(clientId)
-//			    .clientSecret(clientSecret)
-//			    .tenantId(tenant)
-//			    .build();
-//		
-//		GraphServiceClient graphClient = new GraphServiceClient(credential);
-//		
-//		Message message = new Message();
-//		message.setSubject(mailDto.getSubject());
-//		ItemBody body = new ItemBody();
-//		body.setContentType(BodyType.Html);
-//		body.setContent(mailDto.getMailbody());
-//		message.setBody(body);
-//		
-//		/* To */
-//		List<Recipient> toRecipients = new ArrayList<>();
-//		for (int i = 0; i < mailDto.getTo().size(); i++) {
-//			InternetAddress addr = mailDto.getTo().get(i);
-//			Recipient recipient = new Recipient();
-//			EmailAddress emailAddress = new EmailAddress();
-//			emailAddress.setAddress(addr.getAddress());
-//			recipient.setEmailAddress(emailAddress);;
-//			toRecipients.add(recipient);
-//		}
-//		message.setToRecipients(toRecipients);
-//		
-//		/* CC */
-//		Recipient ccRecipient = new Recipient();
-//		EmailAddress ccAddress = new EmailAddress();
-//		ccAddress.setAddress("kcl@kclogix.com");;
-//		ccRecipient.setEmailAddress(ccAddress);
-//		message.setCcRecipients(Arrays.asList(ccRecipient));
-//		
-//		/* 파일 첨부 */
-//		List<Attachment> attachments = new ArrayList<>();
-//		for (int i = 0; i < mailDto.getAttachment().size(); i++) {
-//			KainosMailDto.FileAttachment attachment = mailDto.getAttachment().get(i);
-//			FileAttachment file = new FileAttachment();
-//			file.setName(attachment.getFileName());;
-//			file.setContentType(((MultipartFile)attachment.getFile()).getContentType());;
-//			file.setContentBytes(((MultipartFile)attachment.getFile()).getBytes());
-//			file.setOdataType("#microsoft.graph.fileAttachment");
-//			attachments.add(file);
-//		}
-//		
-//		if(attachments.size() > 0) {
-//			message.setAttachments(attachments);
-//		}
-//		
-//		// 요청 바디 구성
-//		SendMailPostRequestBody requestBody = new SendMailPostRequestBody();
-//		requestBody.setMessage(message);
-//		requestBody.setSaveToSentItems(false);
-//		
-//		graphClient.users().byUserId(username).sendMail().post(requestBody);
+		ClientSecretCredential credential = new ClientSecretCredentialBuilder()
+			    .clientId(clientId)
+			    .clientSecret(clientSecret)
+			    .tenantId(tenant)
+			    .build();
+		
+		GraphServiceClient graphClient = new GraphServiceClient(credential);
+		
+		Message message = new Message();
+		message.setSubject(mailDto.getSubject());
+		ItemBody body = new ItemBody();
+		body.setContentType(BodyType.Html);
+		body.setContent(mailDto.getMailbody());
+		message.setBody(body);
+		
+		/* To */
+		List<Recipient> toRecipients = new ArrayList<>();
+		for (int i = 0; i < mailDto.getTo().size(); i++) {
+			InternetAddress addr = mailDto.getTo().get(i);
+			Recipient recipient = new Recipient();
+			EmailAddress emailAddress = new EmailAddress();
+			emailAddress.setAddress(addr.getAddress());
+			recipient.setEmailAddress(emailAddress);;
+			toRecipients.add(recipient);
+		}
+		message.setToRecipients(toRecipients);
+		
+		/* CC */
+		Recipient ccRecipient = new Recipient();
+		EmailAddress ccAddress = new EmailAddress();
+		ccAddress.setAddress("kcl@kclogix.com");;
+		ccRecipient.setEmailAddress(ccAddress);
+		message.setCcRecipients(Arrays.asList(ccRecipient));
+		
+		/* 파일 첨부 */
+		List<Attachment> attachments = new ArrayList<>();
+		for (int i = 0; i < mailDto.getAttachment().size(); i++) {
+			KainosMailDto.FileAttachment attachment = mailDto.getAttachment().get(i);
+			FileAttachment file = new FileAttachment();
+			file.setName(attachment.getFileName());;
+			file.setContentType(((MultipartFile)attachment.getFile()).getContentType());;
+			file.setContentBytes(((MultipartFile)attachment.getFile()).getBytes());
+			file.setOdataType("#microsoft.graph.fileAttachment");
+			attachments.add(file);
+		}
+		
+		if(attachments.size() > 0) {
+			message.setAttachments(attachments);
+		}
+		
+		// 요청 바디 구성
+		SendMailPostRequestBody requestBody = new SendMailPostRequestBody();
+		requestBody.setMessage(message);
+		requestBody.setSaveToSentItems(false);
+		
+		graphClient.users().byUserId(username).sendMail().post(requestBody);
 	}
 	
 }
