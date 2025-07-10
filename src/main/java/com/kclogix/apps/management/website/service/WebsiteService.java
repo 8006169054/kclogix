@@ -25,7 +25,6 @@ import lombok.RequiredArgsConstructor;
 public class WebsiteService {
 
 	private final WebsiteRepository repository;
-//	private final CargoRepository cargrepository;
 	
 	
 	/**
@@ -37,17 +36,6 @@ public class WebsiteService {
 	@Transactional(readOnly = true)
 	public List<WebsiteDto> selectWebsiteTerminalCode(WebsiteSearchDto paramDto, boolean init) throws Exception {
 		return repository.selectWebsiteTerminalCode(paramDto, init);
-	}
-	
-	/**
-	 * 
-	 * @param paramDto
-	 * @return
-	 * @throws Exception
-	 */
-	@Transactional(readOnly = true)
-	public List<WebsiteDto> selectArrivalnotice(WebsiteSearchDto paramDto, boolean init) throws Exception {
-		return repository.selectArrivalnotice(paramDto);
 	}
 	
 //	@Transactional(transactionManager = KainosKey.DBConfig.TransactionManager.Default, rollbackFor = Exception.class)
@@ -154,10 +142,4 @@ public class WebsiteService {
 			}
 		}
 	}
-	
-	@Transactional(transactionManager = KainosKey.DBConfig.TransactionManager.Default, rollbackFor = Exception.class)
-	public void arrivalNoticeSendMail(WebsiteSearchDto paramDto)throws Exception {
-		repository.arrivalNoticeSendMail(paramDto);
-	}
-	
 }

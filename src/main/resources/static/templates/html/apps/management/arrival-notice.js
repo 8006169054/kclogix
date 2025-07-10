@@ -64,25 +64,6 @@ function arrivalNoticeFn (cellvalue, options, rowObject ){
 		return rowObject.arrivalNotice;
 }
 
-async function anSend(type){
-	var rowId = $("input:radio[name=anRadio]:checked").val();
-	var rowData = ComRowData(tableName, rowId);
-	if(isEmpty(rowData.concinePic))
-		alertMessage(getMessage('0004'), 'error');
-	else if(isEmpty(rowData.concineEmail))
-		alertMessage(getMessage('0005'), 'error');
-	else if(type === 'T'){
-		requestFileDownload('POST', '/api/management/arrival-notice-send-mail-template', rowData, 'ArrivalNoticeTemplate_' + rowData.hblNo + '.eml');
-	}
-	else if(type === 'M'){
-		let response = await requestApi('POST', '/api/management/arrival-notice-send-mail', rowData);
-		if(response.common.status === 'S'){
-			alertMessage(getMessage('0006'), 'success');
-	 		search();
-	 	}
-	}
-}
-
 async function searchCargoAutocomplete(){
 	var response = await requestApi('GET', '/api/mdm/cargo/autocomplete');
 	if(response.common.status === 'S'){
@@ -122,8 +103,88 @@ $( document ).ready(function() {
    	portTableInit();
    	searchCargoAutocomplete();
    	
+   	$('#anFile').on('change', function () {
+    	let fileNames = Array.from(this.files).map(file => file.name).join(', ');
+   		 $(this).next('.custom-file-label').html(fileNames);
+  	});
+  
 //   	let seta = $('#seta').data('daterangepicker');
 //   	seta.setStartDate(moment().subtract(30, 'days').format('YYYY-MM-DD'));
 //	seta.setEndDate(moment().format('YYYY-MM-DD'));
 //	seta.element.trigger('apply.daterangepicker', seta);
 });
+
+
+var dropzone = new Dropzone("#mydropzone", {
+  url: "#",
+  addRemoveLinks: true
+});
+
+async function anSend(type){
+	var rowId = $("input:radio[name=anRadio]:checked").val();
+	var rowData = ComRowData(tableName, rowId);
+	if(isEmpty(rowData.concinePic))
+		alertMessage(getMessage('0004'), 'error');
+	else if(isEmpty(rowData.concineEmail))
+		alertMessage(getMessage('0005'), 'error');
+	else if(type === 'T'){
+		requestFileDownload('POST', '/api/management/arrival-notice-send-mail-template', rowData, 'ArrivalNoticeTemplate_' + rowData.hblNo + '.eml');
+	}
+	else if(type === 'M'){
+		const formData = new FormData();
+		// 파일 추가
+		dropzone.files.forEach(file => {
+		 	formData.append("files", file); // "files"는 서버에서 받을 필드명
+		});
+		const jsonBlob = new Blob([JSON.stringify(rowData)], { type: "application/json" });
+		formData.append("jsonData", jsonBlob);
+		
+		let response = await requestFormDataApi('POST', '/api/management/arrival-notice-send-mail', formData);
+		if(response.common.status === 'S'){
+			alertMessage(getMessage('0006'), 'success');
+			$('#fileUploadModal').modal('hide');
+			dropzone.removeAllFiles(true);
+	 		search();
+	 	}
+	}
+}
+
+var minSteps = 6,
+  maxSteps = 60,
+  timeBetweenSteps = 100,
+  bytesPerStep = 100000;
+  
+dropzone.uploadFiles = function(files) {
+  var self = this;
+
+  for (var i = 0; i < files.length; i++) {
+
+    var file = files[i];
+      totalSteps = Math.round(Math.min(maxSteps, Math.max(minSteps, file.size / bytesPerStep)));
+
+    for (var step = 0; step < totalSteps; step++) {
+      var duration = timeBetweenSteps * (step + 1);
+      setTimeout(function(file, totalSteps, step) {
+        return function() {
+          file.upload = {
+            progress: 100 * (step + 1) / totalSteps,
+            total: file.size,
+            bytesSent: (step + 1) * file.size / totalSteps
+          };
+
+          self.emit('uploadprogress', file, file.upload.progress, file.upload.bytesSent);
+          if (file.upload.progress == 100) {
+            file.status = Dropzone.SUCCESS;
+            self.emit("success", file, 'success', null);
+            self.emit("complete", file);
+            self.processQueue();
+          }
+        };
+      }(file, totalSteps, step), duration);
+    }
+  }
+}
+
+function fileupload(){
+	$('#fileUploadModal').modal('show');
+}

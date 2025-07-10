@@ -34,6 +34,7 @@ public class GraphRequestDto {
 			private List<Recipient> toRecipients;
 			@JsonIgnoreProperties(ignoreUnknown = true)
 			private List<Recipient> ccRecipients;
+			private List<FileAttachment> attachments;
 		}
 		
 		@Data
@@ -69,6 +70,23 @@ public class GraphRequestDto {
 			private String name;
 			
 		}
+		
+		@Data
+		@Builder
+		@NoArgsConstructor
+		@AllArgsConstructor
+		@ToString
+		public static class FileAttachment {
+			
+			private String name;
+			private String contentBytes;
+			@Builder.Default
+			private String contentType = "application/pdf";
+			@Builder.Default
+			private String oDataType = "#microsoft.graph.fileAttachment";
+			
+		}
+		 
 		
 	}
 	

@@ -25,12 +25,12 @@ kainos:
   datasource:
     primary:
       driver-class-name: org.postgresql.Driver
-      jdbcUrl: jdbc:postgresql://127.0.0.1:5430/postgres
-      username: postgres
-      password: qwer1234
-#      jdbcUrl: jdbc:postgresql://pgm-mj7096s66wlry3z7jo.pgsql.ap-northeast-2.rds.aliyuncs.com:5432/postgres
-#      username: kclogix
-#      password: kclogix0407!
+#      jdbcUrl: jdbc:postgresql://127.0.0.1:5430/postgres
+#      username: postgres
+#      password: qwer1234
+      jdbcUrl: jdbc:postgresql://pgm-mj7096s66wlry3z7jo.pgsql.ap-northeast-2.rds.aliyuncs.com:5432/postgres
+      username: kclogix
+      password: kclogix0407!
       maximumPoolSize: 20
       minimumIdle: 10
       autoCommit: false
