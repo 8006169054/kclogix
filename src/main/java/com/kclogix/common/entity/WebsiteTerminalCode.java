@@ -30,6 +30,7 @@ public class WebsiteTerminalCode {
 	private String domesticSales;
 	private String foreignSales;
 	private String quantity;
+	private String quantityType;
 	private String partner;
 	private String tankNo;
 	private String term;
@@ -65,5 +66,6 @@ public class WebsiteTerminalCode {
 	private String shipmentStatus;
 	private String demStatus;
 	private String arrivalNoticeEmail;
+	private String delFlg;
 	
 }

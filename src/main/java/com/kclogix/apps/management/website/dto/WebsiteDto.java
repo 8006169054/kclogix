@@ -1,7 +1,8 @@
 package com.kclogix.apps.management.website.dto;
 
-import kainos.framework.core.support.jqgrid.dto.RowSpan;
 import com.kclogix.common.util.excel.Field;
+
+import kainos.framework.core.support.jqgrid.dto.RowSpan;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -162,13 +163,18 @@ public class WebsiteDto {
 	
 	@Field(value = "KF", merge = true) 
 	private String terminalHomepage; //terminal Homepage
-
+	
+	@Field(value = "KG", merge = true)
+	private String termId;
+	
+	@Field(value = "KH", merge = true)
+	private String quantityType;
+	
 	private String homepage;
 	private String createUserId;
 	private String createDate;
 	private String updateUserId;
 	private String updateDate;
-	
 	
 	@Builder.Default /* 필드명을 rowspan 해야 함 필수 */
 	private RowSpanOtion rowspan = RowSpanOtion.builder().build();
@@ -236,5 +242,23 @@ public class WebsiteDto {
 		private RowSpan parkingLotCode = RowSpan.builder().build();
 		@Builder.Default
 		private RowSpan terminalName = RowSpan.builder().build();
+		@Builder.Default
+		private RowSpan termId = RowSpan.builder().build();
+		@Builder.Default
+		private RowSpan quantityType = RowSpan.builder().build();
 	};
+	
+//	public String getDomesticSales() {
+//		if(KainosStringUtils.isEmpty(this.domesticSales)) return "70";
+//		else return this.domesticSales;
+//	}
+//	
+//	public String getForeignSales() {
+//		if(KainosStringUtils.isEmpty(this.foreignSales) && !KainosStringUtils.isEmpty(this.quantity) && !KainosStringUtils.isEmpty(this.quantityType)) {
+//			if(this.quantityType.equalsIgnoreCase("TANK")) {
+//				return String.valueOf(Integer.parseInt(this.quantity) * 50);
+//			}
+//		}
+//		return this.foreignSales;
+//	}
 }

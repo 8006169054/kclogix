@@ -17,6 +17,7 @@ import com.kclogix.common.util.JqFlag;
 import kainos.framework.core.KainosKey;
 import kainos.framework.core.lang.KainosBusinessException;
 import kainos.framework.utils.KainosDateUtil;
+import kainos.framework.utils.KainosStringUtils;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -24,7 +25,6 @@ import lombok.RequiredArgsConstructor;
 public class WebsiteService {
 
 	private final WebsiteRepository repository;
-//	private final CargoRepository cargrepository;
 	
 	
 	/**
@@ -38,35 +38,55 @@ public class WebsiteService {
 		return repository.selectWebsiteTerminalCode(paramDto, init);
 	}
 	
-	/**
-	 * 
-	 * @param paramDto
-	 * @return
-	 * @throws Exception
-	 */
-	@Transactional(readOnly = true)
-	public List<WebsiteDto> selectArrivalnotice(WebsiteSearchDto paramDto, boolean init) throws Exception {
-		return repository.selectArrivalnotice(paramDto);
-	}
+//	@Transactional(transactionManager = KainosKey.DBConfig.TransactionManager.Default, rollbackFor = Exception.class)
+//	public void uploadPort(List<WebsiteDto> paramList, SessionDto session)throws Exception {
+//		String hbl = null;
+//		String uuid = null;
+//		for (int i = 0; i < paramList.size(); i++) {
+//			WebsiteDto dto = paramList.get(i);
+//			if(hbl == null || !dto.getHblNo().equals(hbl)) {
+//				// BL No 삭제
+//				hbl = dto.getHblNo();
+//				uuid = KainosDateUtil.getCurrentDay("yyyyMMddHHmmssSSS") + new RandomDataGenerator().nextSecureHexString(3);
+//				repository.excelUploadHblNoDelete(dto.getHblNo());
+//			}
+//			if(!KainosStringUtils.isEmpty(dto.getQuantity())) {
+//				String onlyDigits = dto.getQuantity().replaceAll("\\D", ""); // 숫자가 아닌 문자 제거
+//				String onlyLetters = dto.getQuantity().replaceAll("\\d", ""); // 숫자 제거
+//				dto.setQuantity(onlyDigits);
+//				dto.setQuantityType(onlyLetters);
+//			}
+//			if(KainosStringUtils.isEmpty(dto.getCargo())) {
+//				dto.setCargo(dto.getItem());
+//			}
+//			dto.setUuid(uuid);
+//			dto.setCreateUserId(session.getUserId());
+//			dto.setUpdateUserId(session.getUserId());
+//			if(dto.getJqFlag().equalsIgnoreCase(JqFlag.Insert)) {
+//				repository.insertWebsiteTerminalCode(dto);
+//			}
+//		}
+//	}
 	
 	@Transactional(transactionManager = KainosKey.DBConfig.TransactionManager.Default, rollbackFor = Exception.class)
 	public void uploadPort(List<WebsiteDto> paramList, SessionDto session)throws Exception {
-		String hbl = null;
-		String uuid = null;
 		for (int i = 0; i < paramList.size(); i++) {
 			WebsiteDto dto = paramList.get(i);
-			if(hbl == null || !dto.getHblNo().equals(hbl)) {
-				// BL No 삭제
-				hbl = dto.getHblNo();
-				uuid = KainosDateUtil.getCurrentDay("yyyyMMddHHmmssSSS") + new RandomDataGenerator().nextSecureHexString(3);
-				repository.excelUploadHblNoDelete(dto.getHblNo());
+			if(!KainosStringUtils.isEmpty(dto.getQuantity())) {
+				String onlyDigits = dto.getQuantity().replaceAll("\\D", ""); // 숫자가 아닌 문자 제거
+				String onlyLetters = dto.getQuantity().replaceAll("\\d", ""); // 숫자 제거
+				dto.setQuantity(onlyDigits);
+				dto.setQuantityType(onlyLetters);
 			}
-			dto.setUuid(uuid);
-			dto.setCreateUserId(session.getUserId());
-			dto.setUpdateUserId(session.getUserId());
-			if(dto.getJqFlag().equalsIgnoreCase(JqFlag.Insert)) {
-				repository.insertWebsiteTerminalCode(dto);
+			if(KainosStringUtils.isEmpty(dto.getCargo())) {
+				dto.setCargo(dto.getItem());
 			}
+//			dto.setUuid(uuid);
+//			dto.setCreateUserId(session.getUserId());
+//			dto.setUpdateUserId(session.getUserId());
+//			if(dto.getJqFlag().equalsIgnoreCase(JqFlag.Insert)) {
+			repository.excleUpdateWebsiteTerminalCode(dto);
+//			}
 		}
 	}
 	
@@ -96,6 +116,16 @@ public class WebsiteService {
 	}
 
 	@Transactional(transactionManager = KainosKey.DBConfig.TransactionManager.Default, rollbackFor = Exception.class)
+	public void closed(List<WebsiteDto> paramList, SessionDto session)throws Exception {
+		for (int i = 0; i < paramList.size(); i++) {
+			WebsiteDto dto = paramList.get(i);
+			dto.setUpdateUserId(session.getUserId());
+			dto.setCreateUserId(session.getUserId());
+			repository.closed(dto);
+		}
+	}
+	
+	@Transactional(transactionManager = KainosKey.DBConfig.TransactionManager.Default, rollbackFor = Exception.class)
 	public void savePort(List<WebsiteDto> paramList, SessionDto session)throws Exception {
 		for (int i = 0; i < paramList.size(); i++) {
 			WebsiteDto dto = paramList.get(i);
@@ -103,7 +133,7 @@ public class WebsiteService {
 			dto.setCreateUserId(session.getUserId());
 			if(dto.getJqFlag().equalsIgnoreCase(JqFlag.Insert)) {
 				dto.setUuid(repository.getUuid(dto.getHblNo()));
-				if(dto.getUuid() == null) dto.setUuid(KainosDateUtil.getCurrentDay("yyyyMMddHHmmssSSS"));
+				if(dto.getUuid() == null) dto.setUuid(KainosDateUtil.getCurrentDay("yyyyMMddHHmmssSSS") + new RandomDataGenerator().nextSecureHexString(3));
 				repository.insertWebsiteTerminalCode(dto);
 			} else if(dto.getJqFlag().equalsIgnoreCase(JqFlag.Update)) {
 				repository.updateWebsiteTerminalCode(dto);
@@ -112,10 +142,4 @@ public class WebsiteService {
 			}
 		}
 	}
-	
-	@Transactional(transactionManager = KainosKey.DBConfig.TransactionManager.Default, rollbackFor = Exception.class)
-	public void arrivalNoticeSendMail(WebsiteSearchDto paramDto)throws Exception {
-		repository.arrivalNoticeSendMail(paramDto);
-	}
-	
 }
