@@ -2,6 +2,7 @@ package com.kclogix.apps.management.depot;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
@@ -14,7 +15,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.kclogix.apps.management.depot.dto.DepotManagementDto;
+import com.kclogix.apps.management.depot.dto.DepotMonitorDto;
 import com.kclogix.apps.management.depot.service.DepotManagementService;
+import com.kclogix.apps.mdm.depot.service.DepotService;
 import com.kclogix.common.dto.SessionDto;
 import com.kclogix.common.util.MessageUtil;
 import com.kclogix.common.util.excel.KainosExcelReadHandler;
@@ -30,7 +33,40 @@ import lombok.RequiredArgsConstructor;
 public class DepotManagementController {
 	
 	private final DepotManagementService service;
+	private final DepotService depotService;
 	private final MessageUtil message;
+	
+	@GetMapping(value = "/api/management/depotmonitor")
+	public ResponseEntity<DepotManagementDto> depotmonitor() throws Exception {
+		
+		List<DepotMonitorDto> returnData = new ArrayList<>();
+		returnData.add(
+				DepotMonitorDto.builder()
+				.location("DEPOT TOTAL")
+				.busanNewPort("WS")
+				.busanOldPort("SBCD")
+				.build()
+				);
+		returnData.add(DepotMonitorDto.builder().location("DEPOT CODE").build());
+		returnData.add(DepotMonitorDto.builder().location("PARTNER").build());
+		returnData.add(DepotMonitorDto.builder().location("USIL").build());
+		returnData.add(DepotMonitorDto.builder().location("BESTCHEM").build());
+		returnData.add(DepotMonitorDto.builder().location("SPM").build());
+		returnData.add(DepotMonitorDto.builder().location("DJD").build());
+		returnData.add(DepotMonitorDto.builder().location("DTDZ").build());
+		returnData.add(DepotMonitorDto.builder().location("EBEST").build());
+		returnData.add(DepotMonitorDto.builder().location("SUMEX").build());
+		returnData.add(DepotMonitorDto.builder().location("PROTANK").build());
+		returnData.add(DepotMonitorDto.builder().location("BONDY").build());
+		returnData.add(DepotMonitorDto.builder().location("LAVISH").build());
+		returnData.add(DepotMonitorDto.builder().location("LIDA").build());
+		returnData.add(DepotMonitorDto.builder().location("EVERSTAR").build());
+		returnData.add(DepotMonitorDto.builder().location("CELERITY").build());
+		returnData.add(DepotMonitorDto.builder().location("LUCKYPAL").build());
+		return KainosResponseEntity.builder().build()
+				.addData(returnData)
+				.close();
+	}
 	
 	@GetMapping(value = "/api/management/depot")
 	public ResponseEntity<DepotManagementDto> selecDepot(

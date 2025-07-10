@@ -6945,7 +6945,7 @@ $.jgrid.extend({
 	searchData : function(rdata, options) {
 		var t = this;	
 		
-		if(options.nodatamsg && rdata.length === 0)
+		if((options != undefined && options.nodatamsg) && rdata.length === 0)
 			alertMessage('No data found.', 'info');
 		
 		$.each(rdata, function(index, data){
