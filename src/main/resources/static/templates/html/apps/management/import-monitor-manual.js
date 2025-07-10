@@ -45,6 +45,8 @@ var carGoList = [];
 var terminalList = [];
 var terminalCodeList = [];
 var customerList = [];
+var termList = [];
+var depotList = [];
 
 /**
  * 조회
@@ -57,12 +59,28 @@ async function search() {
 	response = null;
 }
 
+
+var cargoIndex = 2;
+var concineIndex = 3;
+var concinePicIndex = 13;
+
+var addIndex = 1;
+var cargoDateIndex = 22 + addIndex;
+var locationIndex = 23 + addIndex;
+var regionIndex = 28 + addIndex;
+var terminalCodeIndex = 29 + addIndex;
+var parkingLotCodeIndex = 30 + addIndex;
+var terminalNameIndex = 31 + addIndex;
+var terminalHomepageIndex = 32 + addIndex;
+var endOfFtIndex = 39 + addIndex;
+var termIdIndex = 51 + addIndex;
+
 async function portTableInit(){
 	$(tableName).jqGrid({
 		url: '/api/management/website-terminal-code-init',  
 		mtype: 'GET',
 	   	datatype: "json",
-	   	colNames: ['','cargo','concine code', 'seq', 'uuid', 'HBL NO.', 'Tank no.', '매출', '이월 매출', 'A/N&EDI', 'INVOICE', 'CNEE', 'PIC', 'SHIPMENT STATUS', 'PROFIT DATE', '국내매출', '해외매출', "Q'ty", 'Partner', 'Term', 'Name', 'Date', 'Location', 'Vessel / Voyage', 'Carrier', 'MBL NO.', 'POL', 'POD', 'Code1', 'Code', 'Name', 'Link', 'ETD', 'ETA', 'ATA', '비고', 'F/T', 'DEM RATE', 'END OF F/T', 'ESTIMATE RETURN DATE', 'RETURN DATE', 'RETURN DEPOT', 'DEM STATUS', 'TOTAL DEM', 'DEM BILLING', 'DEM RCVD', 'DEM(USD) COMMISSION', 'DEM COMMISSION', 'DEPOT IN DATE(REPO ONLY)', 'REPOSITION 매입'],
+	   	colNames: ['','cargo','concine code', 'seq', 'uuid', 'HBL NO.', 'Tank no.', '매출', '이월 매출', 'A/N&EDI', 'INVOICE', 'CNEE', 'PIC', 'SHIPMENT STATUS', 'PROFIT DATE', '국내매출', '해외매출', "Q'ty", 'Packing Type', 'Partner', 'Term', 'Name', 'Date', 'Location', 'Vessel / Voyage', 'Carrier', 'MBL NO.', 'POL', 'POD', 'Code1', 'Code', 'Name', 'Link', 'ETD', 'ETA', 'ATA', '비고', 'F/T', 'DEM RATE', 'END OF F/T', 'ESTIMATE RETURN DATE', 'RETURN DATE', 'RETURN DEPOT', 'DEM STATUS', 'TOTAL DEM', 'DEM BILLING', 'DEM RCVD', 'DEM(USD) COMMISSION', 'DEM COMMISSION', 'DEPOT IN DATE(REPO ONLY)', 'REPOSITION 매입', 'termId'],
 	   	colModel: [
 	   		{ name: 'jqFlag',				width: 40,		index: 1,align:'center', 	hidden : false,	frozen:true},
 	   		{ name: 'cargo',				width: 100,		index: 2,align:'center', 		hidden : true, rowspan: true,	editable : true, frozen:true},
@@ -70,7 +88,7 @@ async function portTableInit(){
 	   		{ name: 'seq', 					width: 50, 		index: 4,align:'center',		hidden : true,	frozen:true},
 	   		{ name: 'uuid', 				width: 50, 		index: 5,align:'center',		hidden : true,	frozen:true},
 	       	{ name: 'hblNo', 				width: 140, 	index: 6,align:'center',		hidden : false, rowspan: true,	frozen:true}, /**여기서부터 히든처리 */
-	       	{ name: 'tankNo', 				width: 120, 	index: 7,align:'center', 	hidden : false, editable: true,	frozen:true},
+	       	{ name: 'tankNo', 				width: 120, 	index: 7,align:'center', 		hidden : false, editable: true,	frozen:true},
 	       	{ name: 'sales', 				width: 50, 		index: 8,align:'center',		hidden : false, rowspan: true,	editable: true},
 	       	{ name: 'carryoverSales', 		width: 50, 		index: 9,align:'center',		hidden : false, rowspan: true,	editable: true},
 	       	{ name: 'arrivalNotice',		width: 70, 		index: 10,align:'center',		hidden : false, rowspan: true},
@@ -81,6 +99,7 @@ async function portTableInit(){
 						delay: 100,
 						autoFocus: true,
 						minLength: 0,
+						maxShowItems: 10,
 						source: function(request, response) {
 						    const results = $.ui.autocomplete.filter(customerList, request.term);
 						    if (results.length === 0) {
@@ -92,8 +111,8 @@ async function portTableInit(){
 						    response(results);
 						},
 				        select: function (event, ui) {
-							ComSetCellData(tableName, ComSelectIndex(tableName), 3, ui.item.code, true);
-							ComSetCellData(tableName, ComSelectIndex(tableName), 13, ui.item.pic, true);
+							ComSetCellData(tableName, ComSelectIndex(tableName), concineIndex, ui.item.code, true);
+							ComSetCellData(tableName, ComSelectIndex(tableName), concinePicIndex, ui.item.pic, true);
 				        },
 				        close : function (event, ui) {
 				            $(tableName).delay(2000).focus();
@@ -110,15 +129,17 @@ async function portTableInit(){
 			{ name: 'concinePic', 			width: 80, 		index: 13,align:'center',		hidden : false, rowspan: true},
 			{ name: 'shipmentStatus', 		width: 80, 		index: 14,align:'center',		hidden : false, rowspan: true, editable: true, formatter:'select', edittype:'select', editoptions : {value: 'Y:IN PROGRES;N:CLOSED'}},
 	    	{ name: 'profitDate', 			width: 90, 		index: 15,align:'center',		hidden : false, rowspan: true, editable: true, edittype: "date"},
-	    	{ name: 'domesticSales', 		width: 80, 		index: 16,align:'center',		hidden : false, rowspan: true, editable: true},
-	    	{ name: 'foreignSales', 		width: 80, 		index: 17,align:'center',		hidden : false, rowspan: true, editable: true},
+	    	{ name: 'domesticSales', 		width: 80, 		index: 16,align:'center',		hidden : false, rowspan: true, editable: true, formatter: domesticSalesFn},
+	    	{ name: 'foreignSales', 		width: 80, 		index: 17,align:'center',		hidden : false, rowspan: true, editable: true, formatter: foreignSalesFn},
 	    	{ name: 'quantity', 			width: 50, 		index: 18,align:'center',		hidden : false, rowspan: true, editable: true},
-	    	{ name: 'partner',				width: 100, 	index: 19,align:'center', 	hidden : false, rowspan: false, editable : true, editable : true, edittype: 'text', editoptions: {
+	    	{ name: 'quantityType', 		width: 80, 		align:'center',		hidden : false, rowspan: true, editable: true, formatter:'select', edittype:'select', editoptions : {value: 'TANK:TANK;GP:GP;HC:HC;LCL:LCL;AIR:AIR'}},
+	    	{ name: 'partner',				width: 100, 	index: 19,align:'center', 		hidden : false, rowspan: false, editable : true, edittype: 'text', editoptions: {
 				dataInit:function(elem) {
 					$(elem).autocomplete({
 						delay: 100,
 						autoFocus: true,
 						minLength: 0,
+						maxShowItems: 10,
 						source: function(request, response) {
 						    const results = $.ui.autocomplete.filter(partnerList, request.term);
 						    if (results.length === 0) {
@@ -143,13 +164,45 @@ async function portTableInit(){
 					});
 				}
 			}},
-	    	{ name: 'term', 				width: 80, 		index: 20,align:'center',		hidden : false, rowspan: true, editable: true},
+	    	{ name: 'term', 				width: 80, 		index: 20,align:'center',	hidden : false, rowspan: true, editable : true, edittype: 'text', editoptions: {
+				dataInit:function(elem) {
+					$(elem).autocomplete({
+						delay: 100,
+						autoFocus: true,
+						minLength: 0,
+						maxShowItems: 10,
+						source: function(request, response) {
+						    const results = $.ui.autocomplete.filter(termList, request.term);
+						    if (results.length === 0) {
+						      results.push({
+						        label: "No results found",
+						        value: ""
+						      });
+						    }
+						    response(results);
+						},
+				        select: function (event, ui) {
+							ComSetCellData(tableName, ComSelectIndex(tableName), termIdIndex, ui.item.id, true);
+				        },
+				        close : function (event, ui) {
+				            $(tableName).delay(2000).focus();
+				            return false;
+				        }
+					}).focus(function() {
+			            $(this).autocomplete("search", $(this).val());
+			        }).on("paste", async function() {
+						var text = await navigator.clipboard.readText();
+						$(elem).val(text);
+					});
+				}
+			}},
 	    	{ name: 'item',					width: 220, 	index: 21,align:'center', 	hidden : false, rowspan: true, editable : true, edittype: 'text', editoptions: {
 				dataInit:function(elem) {
 					$(elem).autocomplete({
 						delay: 100,
 						autoFocus: true,
 						minLength: 0,
+						maxShowItems: 10,
 						source: function(request, response) {
 						    const results = $.ui.autocomplete.filter(carGoList, request.term);
 						    if (results.length === 0) {
@@ -161,9 +214,9 @@ async function portTableInit(){
 						    response(results);
 						},
 				        select: function (event, ui) {
-							ComSetCellData(tableName, ComSelectIndex(tableName), 2, ui.item.code, true);
-							ComSetCellData(tableName, ComSelectIndex(tableName), 22, ui.item.cargoDate, true);
-							ComSetCellData(tableName, ComSelectIndex(tableName), 23, ui.item.location, true);
+							ComSetCellData(tableName, ComSelectIndex(tableName), cargoIndex, ui.item.code, true);
+							ComSetCellData(tableName, ComSelectIndex(tableName), cargoDateIndex, ui.item.cargoDate, true);
+							ComSetCellData(tableName, ComSelectIndex(tableName), locationIndex, ui.item.location, true);
 				        },
 				        close : function (event, ui) {
 				            $(tableName).delay(2000).focus();
@@ -191,6 +244,7 @@ async function portTableInit(){
 						delay: 100,
 						autoFocus: true,
 						minLength: 0,
+						maxShowItems: 10,
 						source: function(request, response) {
 						    const results = $.ui.autocomplete.filter(terminalCodeList, request.term);
 						    if (results.length === 0) {
@@ -203,10 +257,10 @@ async function portTableInit(){
 						},
 				        select: function (event, ui) {
 							if(ui.item.code != undefined){
-								ComSetCellData(tableName, ComSelectIndex(tableName), 28, ui.item.region, true);
-								ComSetCellData(tableName, ComSelectIndex(tableName), 29, ui.item.code, true);
-								ComSetCellData(tableName, ComSelectIndex(tableName), 31, ui.item.name, true);
-								ComSetCellData(tableName, ComSelectIndex(tableName), 32, ui.item.homepage, true);
+								ComSetCellData(tableName, ComSelectIndex(tableName), regionIndex, ui.item.region, true);
+								ComSetCellData(tableName, ComSelectIndex(tableName), terminalCodeIndex, ui.item.code, true);
+								ComSetCellData(tableName, ComSelectIndex(tableName), terminalNameIndex, ui.item.name, true);
+								ComSetCellData(tableName, ComSelectIndex(tableName), terminalHomepageIndex, ui.item.homepage, true);
 							}
 				        },
 				        close : function (event, ui) {
@@ -227,6 +281,7 @@ async function portTableInit(){
 						delay: 100,
 						autoFocus: true,
 						minLength: 0,
+						maxShowItems: 10,
 						source: function(request, response) {
 						    const results = $.ui.autocomplete.filter(terminalList, request.term);
 						    if (results.length === 0) {
@@ -239,10 +294,10 @@ async function portTableInit(){
 						},
 				        select: function (event, ui) {
 							if(ui.item.code != undefined){
-								ComSetCellData(tableName, ComSelectIndex(tableName), 28, ui.item.region, true);
-								ComSetCellData(tableName, ComSelectIndex(tableName), 29, ui.item.code, true);
-								ComSetCellData(tableName, ComSelectIndex(tableName), 30, ui.item.parkingLotCode, true);
-								ComSetCellData(tableName, ComSelectIndex(tableName), 32, ui.item.homepage, true);
+								ComSetCellData(tableName, ComSelectIndex(tableName), regionIndex, ui.item.region, true);
+								ComSetCellData(tableName, ComSelectIndex(tableName), terminalCodeIndex, ui.item.code, true);
+								ComSetCellData(tableName, ComSelectIndex(tableName), parkingLotCodeIndex, ui.item.parkingLotCode, true);
+								ComSetCellData(tableName, ComSelectIndex(tableName), terminalHomepageIndex, ui.item.homepage, true);
 							}
 				        },
 				        close : function (event, ui) {
@@ -267,21 +322,53 @@ async function portTableInit(){
 	       	{ name: 'endOfFt', 				width: 90, 		index: 39,align:'center', editable: true, editoptions : {pk:true}, edittype: "date"},
 	       	{ name: 'estimateReturnDate', 	width: 160, 	index: 40,align:'center', editable: true, edittype: "date"},
 	       	{ name: 'returnDate', 			width: 100, 	index: 41,align:'center', editable: true, edittype: "date"},
-	       	{ name: 'returnDepot', 			width: 100, 	index: 42,align:'center', editable: true},
-	       	{ name: 'demStatus', 			width: 100, 	index: 43,align:'center', editable: false, formatter:'select', edittype:'select', editoptions : {value: 'Y:Y;N:N'}},
+	       	{ name: 'returnDepot', 			width: 100, 	index: 42,align:'center', editable: true,	editable : true, edittype: 'text', editoptions: {
+				dataInit:function(elem) {
+					$(elem).autocomplete({
+						delay: 100,
+						autoFocus: true,
+						minLength: 0,
+						maxShowItems: 10,
+						source: function(request, response) {
+						    const results = $.ui.autocomplete.filter(depotList, request.term);
+						    if (results.length === 0) {
+						      results.push({
+						        label: "No results found",
+						        value: ""
+						      });
+						    }
+						    response(results);
+						},
+				        select: function (event, ui) {
+				        },
+				        close : function (event, ui) {
+				            $(tableName).delay(2000).focus();
+				            return false;
+				        }
+					}).focus(function() {
+			            $(this).autocomplete("search", $(this).val());
+			        }).on("paste", async function() {
+						var text = await navigator.clipboard.readText();
+						$(elem).val(text);
+					});
+				}
+			}},
+	       	{ name: 'demStatus', 			width: 100, 	index: 43,align:'center', editable: true},
 	       	{ name: 'totalDem', 			width: 100, 	index: 44,align:'center', editable: true, editoptions : {pk:true}},
 	       	{ name: 'demReceived', 			width: 80, 		index: 45,align:'center', editable: true},
 	       	{ name: 'demRcvd', 				width: 90, 		index: 46,align:'center', editable: true},
 	       	{ name: 'demPrch', 				width: 100, 	index: 47,align:'center', editable: true, editoptions : {pk:true}},
 	       	{ name: 'demSales', 			width: 100, 	index: 48,align:'center', editable: true, editoptions : {pk:true}},
 	       	{ name: 'depotInDate', 			width: 180, 	index: 49,align:'center', editable: true, edittype: "date"},
-	       	{ name: 'repositionPrch', 		width: 120, 	index: 50,align:'center', editable: true}
+	       	{ name: 'repositionPrch', 		width: 120, 	index: 50,align:'center', editable: true},
+	       	{ name: 'termId', 				width: 100, 	index: 51,align:'center', editable: true, hidden : true, rowspan: true}
 	   	],
 		height: gridHeight,
 		width: '100%',
 		dblEdit : true,
 		frozen: true,
 		delselect: true,
+//		multiselect: true,
 		onCellSelect: function (rowId, iCol, cellContent, event) {
     		const grid = $(tableName);
 	    	const colModel = grid.jqGrid("getGridParam", "colModel");
@@ -318,22 +405,16 @@ async function portTableInit(){
 		    prevRowId = rowId;
 		},
 		afterSaveCell : function(rowid, cellname, value, iRow, iCol) {
-			console.log('afterSaveCell', rowid, cellname, value, iRow, iCol);
 			if('terminalName' === cellname || 'parkingLotCode' === cellname || 'partner' === cellname || 'item' === cellname || 'concineName' === cellname){
 				var changeVal = false;
 				if('terminalName' === cellname || 'parkingLotCode' === cellname){
 					if(value === ''){
-//						ComSetCellData(tableName, iRow, 'terminalCode', '', true);
-//						ComSetCellData(tableName, iRow, 'parkingLotCode', '', true);
-//						ComSetCellData(tableName, iRow, 'pod', '', true);
-//						ComSetCellData(tableName, iRow, 'terminalHomepage', '', true);
-						ComSetCellData(tableName, iRow, 28, value, true);
-						ComSetCellData(tableName, iRow, 29, value, true);
-						ComSetCellData(tableName, iRow, 30, value, true);
-						ComSetCellData(tableName, iRow, 31, value, true);
-						ComSetCellData(tableName, iRow, 32, value, true);
+						ComSetCellData(tableName, iRow, regionIndex, value, true);
+						ComSetCellData(tableName, iRow, terminalCodeIndex, value, true);
+						ComSetCellData(tableName, iRow, parkingLotCodeIndex, value, true);
+						ComSetCellData(tableName, iRow, terminalNameIndex, value, true);
+						ComSetCellData(tableName, iRow, terminalHomepageIndex, value, true);
 					}else{
-						console.log('value', value);
 						for (let terminal of terminalList) {
 							if(terminal.value === value || terminal.parkingLotCode === value){
 								changeVal = true;
@@ -352,9 +433,9 @@ async function portTableInit(){
 					}
 				}else if('item' === cellname){
 					if(value === ''){
-						ComSetCellData(tableName, iRow, 2, '', true);
-						ComSetCellData(tableName, iRow, 22, '', true);
-						ComSetCellData(tableName, iRow, 23, '', true);
+						ComSetCellData(tableName, iRow, cargoIndex, '', true);
+						ComSetCellData(tableName, iRow, cargoDateIndex, '', true);
+						ComSetCellData(tableName, iRow, locationIndex, '', true);
 					}else{
 						for (let carGo of carGoList) {
 							if(carGo.value === value){
@@ -365,8 +446,19 @@ async function portTableInit(){
 					}
 				}else if('concineName' === cellname){
 					if(value === ''){
-						ComSetCellData(tableName, iRow, 3, '', true);
-						ComSetCellData(tableName, iRow, 13, '', true);
+						ComSetCellData(tableName, iRow, concineIndex, '', true);
+						ComSetCellData(tableName, iRow, concinePicIndex, '', true);
+					}else{
+						for (let customer of customerList) {
+							if(customer.value === value){
+								changeVal = true;
+								return false;
+							}
+						}
+					}
+				}else if('term' === cellname){
+					if(value === ''){
+						ComSetCellData(tableName, iRow, 51, '', true);
 					}else{
 						for (let customer of customerList) {
 							if(customer.value === value){
@@ -376,6 +468,7 @@ async function portTableInit(){
 						}
 					}
 				}
+				
 				if(!changeVal) $(tableName).jqGrid('dataRecovery', rowid, cellname);
 			}else if('demStatus' === cellname && value === 'N'){
 				confirmMessage('TOTAL DEM, DEM BILLING, DEM RCVD, DEM(USD) COMMISSION, DEM COMMISSION 5개 컬럼 값이 N/A 변경됩니다.', 'info', '', demStatusChang);
@@ -390,10 +483,22 @@ async function portTableInit(){
 				if('ata' === cellname || 'ft' === cellname){
 					var ata = $(tableName).jqGrid('getCell', iRow, 'ata');
 					var ft = $(tableName).jqGrid('getCell', iRow, 'ft');
-					ComSetCellData(tableName, iRow, 39, endOfFt(ata, ft));
+					ComSetCellData(tableName, iRow, endOfFtIndex, endOfFt(ata, ft));
 				}
 				
 				multiFn(iRow);
+			}
+			else if('quantityType' === cellname){
+				var quantity = $(tableName).jqGrid('getCell', iRow, 'quantity');
+				if(!isEmpty(value) && value === 'TANK'){
+					$(tableName).jqGrid('setCell', iRow, 'foreignSales', 50 * parseInt(quantity));
+				}
+			}
+			else if('quantity' === cellname){
+				var quantityType = $(tableName).jqGrid('getCell', iRow, 'quantityType');
+				if(!isEmpty(value) && !isEmpty(quantityType) && quantityType === 'TANK'){
+					$(tableName).jqGrid('setCell', iRow, 'foreignSales', 50 * parseInt(value));
+				}
 			}
 		}
 	});
@@ -404,12 +509,38 @@ async function portTableInit(){
                                 {startColumnName:'item', numberOfColumns: 3, titleText: 'Item' },
                                 {startColumnName:'pod', numberOfColumns: 5, titleText: 'Terminal' },
                                 {startColumnName:'concineName', numberOfColumns: 2, titleText: 'Customer' }
+                                
                               ]
 		});
 		
 //		let response = await requestApi('GET', '/api/management/website-terminal-code-init');
 //		$(tableName).searchData(response.data, {editor: true});
 //		response = null;
+}
+
+async function closed(){
+	var msg = 'The Shipment Status will be updated to Closed';
+	confirmMessage(msg, 'info', 'Save', saveClosed);
+}
+
+async function saveClosed(selection){
+	if(selection){
+		var saveData = $(tableName).jqGrid("getRowData");
+		await requestApi('POST', '/api/management/closed', saveData, {successFn : portSaveFn, errorFn : portSaveFn});
+	}
+}
+
+/**  국내매출 */
+function domesticSalesFn (cellvalue, options, rowObject ){
+	return cellvalue === '' ? '70' : cellvalue;
+}
+
+/**  해외매출 */
+function foreignSalesFn (cellvalue, options, rowObject ){
+	if(!isEmpty(rowObject.quantity) && rowObject.quantityType === 'TANK'){
+		cellvalue = 50 * parseInt(rowObject.quantity);
+	}
+	return cellvalue;
 }
 
 async function demStatusChang(selection){
@@ -420,6 +551,33 @@ async function demStatusChang(selection){
 		ComSetCellData(tableName, iRow, 'demRcvd', 'N/A');
 		ComSetCellData(tableName, iRow, 'demPrch', 'N/A');
 		ComSetCellData(tableName, iRow, 'demSales', 'N/A');
+	}
+}
+
+async function searchDepotAutocomplete(){
+	var response = await requestApi('GET', '/api/mdm/depot/autocomplete');
+	if(response.common.status === 'S'){
+		depotList = response.data;
+	$("#sreturnDepot").autocomplete({
+		source: depotList,
+		delay: 100,
+		autoFocus: true,
+		minLength: 0,
+		maxShowItems: 10,
+		open: function(){
+	        $(this).autocomplete('widget').css('z-index', 1100);
+	        return false;
+	    },
+	    select: function (event, ui) {
+	    },
+	    close : function (event, ui) {
+
+	        return false;
+	    }
+	}).focus(function() {
+	    $(this).autocomplete("search", $(this).val());
+	});
+	
 	}
 }
 
@@ -435,6 +593,7 @@ async function searchPartnerAutocomplete(){
 		autoFocus: true,
 		minChars: 0,
 		minLength: 0,
+		maxShowItems: 10,
 		open: function(){
 	        $(this).autocomplete('widget').css('z-index', 1100);
 	        return false;
@@ -464,6 +623,7 @@ async function searchCargoAutocomplete(){
 		autoFocus: true,
 		minChars: 0,
 		minLength: 0,
+		maxShowItems: 10,
 		open: function(){
 	        $(this).autocomplete('widget').css('z-index', 1100);
 	        return false;
@@ -478,6 +638,14 @@ async function searchCargoAutocomplete(){
 	    $(this).autocomplete("search", $(this).val());
 	});
 		
+	}
+}
+
+async function searchTermAutocomplete(){
+	var response = await requestApi('GET', '/api/mdm/term/autocomplete');
+	if(response.common.status === 'S'){
+		termList = response.data;
+		termAutocompleteLoad();
 	}
 }
 
@@ -607,7 +775,8 @@ $( document ).ready(function() {
    	searchCargoAutocomplete();
    	searchTerminalAutocomplete();
    	searchCustomerAutocomplete();
-   	
+   	searchTermAutocomplete();
+   	searchDepotAutocomplete();
 //   	let sreturnDate = $('#sreturnDate').data('daterangepicker');
 //   	sreturnDate.setStartDate(moment().subtract(30, 'days').format('YYYY-MM-DD'));
 //	sreturnDate.setEndDate(moment().format('YYYY-MM-DD'));

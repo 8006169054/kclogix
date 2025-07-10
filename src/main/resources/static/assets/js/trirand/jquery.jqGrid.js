@@ -5453,7 +5453,7 @@ $.fn.jqGrid = function( pin ) {
 		
 		// 정인선 삭제 체크박스
 		if(this.p.delselect) {
-			this.p.colNames.unshift("Del");
+			this.p.colNames.unshift("Del <input role='checkbox' id='dcb_"+this.p.id+"' class='cbox' type='checkbox'/>");
 			this.p.colModel.unshift({name:'deletcb',width:$.jgrid.cell_width ? ts.p.multiselectWidth+ts.p.cellLayout : ts.p.multiselectWidth,sortable:false,resizable:false,hidedlg:true,search:false,align:'center',fixed:true, frozen: true, classes : "jqgrid-multibox", labelClasses: "jqgrid-multibox" });
 		}
 		if(this.p.rownumbers) {
@@ -5591,6 +5591,20 @@ $.fn.jqGrid = function( pin ) {
 			function(){ $(this).addClass(hover);},
 			function(){	$(this).removeClass(hover);}
 		);
+		
+		
+		$('#dcb_'+$.jgrid.jqID(ts.p.id),this).on('click',function(){
+			var checked = this.checked;
+			$('.dbox').each(function(i) { // 정인선 삭제 전체체크
+				this.checked = checked;
+				if($(this).attr('id').indexOf('_') > 0){
+					var info = $(this).attr('id').split('_');
+					$(ts).jqGrid("checKedDelRow", info[2], info[0], checked);
+				}
+			});
+		});
+		
+		
 		if(this.p.multiselect) {
 			var emp=[], chk;
 			$('#cb_'+$.jgrid.jqID(ts.p.id),this).on('click',function(){
@@ -6931,7 +6945,7 @@ $.jgrid.extend({
 	searchData : function(rdata, options) {
 		var t = this;	
 		
-		if(options.nodatamsg && rdata.length === 0)
+		if((options != undefined && options.nodatamsg) && rdata.length === 0)
 			alertMessage('No data found.', 'info');
 		
 		$.each(rdata, function(index, data){
@@ -6963,6 +6977,7 @@ $.jgrid.extend({
 	checKedDelRow : function(iRow, iCol, checked) {
 		var t = this;
 		if(checked){
+			$("#" + iRow).css("background-color", "#dc3545");
 			/** 상태 값이 C 신규 건인지 확인 */
 			var jqFlag = $(t).jqGrid('getCell', iRow, 'jqFlag');
 			if(jqFlag === C){
@@ -6987,6 +7002,7 @@ $.jgrid.extend({
 		}
 			
 		else{
+			$("#" + iRow).css("background-color", "");
 			$(t).jqGrid("afterSaveJqFlag", iRow, t[0].p.basedata[iRow-1]);
 //			afterSaveJqFlag(t, iRow, t[0].p.basedata[iRow-1]);
 		}

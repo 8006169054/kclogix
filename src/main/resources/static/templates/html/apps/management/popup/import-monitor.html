@@ -41,9 +41,15 @@
 										<label for="name">Q'ty</label>
 										<input type="text" class="form-control numberFormat" id="quantity" name="quantity">
 									</div>
-									<div class="form-group" style="width: 100px; margin-right: 15px;">
+									<div class="form-group" style="width: 150px; margin-right: 15px;">
 										<label for="name">Term</label>
-										<input type="text" class="form-control" id="term" name="term">
+										<div class="input-group">
+											<input type="text" class="form-control" id="term" name="term">
+											<div class="input-group-append">
+												<button class="btn btn-primary" type="button" onclick="popupTermNew()">New</button>
+											</div>
+										</div>
+										<input type="hidden" class="form-control" id="termId" name="termId">
 									</div>
 								</div>
 								<div class="form-group row">
@@ -295,6 +301,39 @@
 	</div>
 </div>
 
+
+<!-- Term 추가 팝업 -->
+<div class="modal fade" tabindex="1" role="dialog" id="termNewModal">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Add New Term Information</h5>
+			</div>
+			<div class="modal-body">
+				<div class="col-100">
+					<div class="card">
+						<form id="termNewModalForm" name="termNewModalForm">
+						<div id="termNewModalFormDiv" class="card-body needs-validation">
+						<div class="form-group row">
+							<div class="form-group" style="padding-left: 15px;">
+								<label for="name">Name</label>
+								<input type="text" class="form-control" id="ptermName" name="ptermName" required>
+								<div class="invalid-feedback">This is a required field.</div>
+							</div>
+						</div>
+						</div>
+						</form>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer bg-whitesmoke br">
+				<button type="button" class="btn btn-secondary" onclick="popupTermClose()">Close</button>
+				<button type="button" class="btn btn-success" onclick="popupTermSave()">Save</button>
+			</div>
+		</div>
+	</div>
+</div>
+
 <script type="text/javascript">
 
 $( document ).ready(function() {
@@ -313,6 +352,32 @@ $( document ).ready(function() {
 // 		multiboxonly : true // 다중선택을 단일 선택으로 제한
 	});
 });
+
+function popupTermNew(){
+	$('#termNewModal').modal('show');
+}
+
+async function popupTermSave(){
+	if($('#ptermName').val() === ''){
+		$('#termNewModalFormDiv').addClass('was-validated');
+		return false;
+	}
+	
+	var response = await requestApi('POST', '/api/mdm/popup-term', {name : $('#ptermName').val()});
+	if(response.common.status === 'S'){
+		var addItem = {id : response.data.id, label : response.data.name, value : response.data.name};
+		$('#term').val(response.data.name);
+		$('#termId').val(response.data.id);
+		termList.push(addItem);
+		popupTermClose();
+ 	}
+}
+
+function popupTermClose(){
+	$('#termNewModalForm')[0].reset();
+	$('#termNewModal').modal('hide');
+}
+
 
 function tankNoAdd(){
 	$('#tankNo-table').addRow();
@@ -450,13 +515,58 @@ $("#eta, #ft").on( "focusout", function() {
 	$('#endOfFt').val(endOfFt($("#eta").val(), $("#ft").val()));
 });
 
-async function partnerAutocompleteLoad(){
-	$("#partner").autocomplete({
-		source: partnerList,
+
+var termFiltered = null;
+async function termAutocompleteLoad(){
+	$("#term").autocomplete({
+		source: function(request, response) {
+			termFiltered = $.ui.autocomplete.filter(termList, request.term);
+		    if (termFiltered.length === 0) {
+		    	termFiltered.push({
+		        label: "No results found",
+		        value: ""
+		      });
+		    }
+		    response(termFiltered);
+		},
 		delay: 100,
 		autoFocus: true,
 		minChars: 0,
 		minLength: 0,
+		open: function(){
+	        $(this).autocomplete('widget').css('z-index', 1100);
+	        return false;
+	    },
+	    select: function (event, ui) {
+	    	$('#termId').val(ui.item.id);
+	    },
+	    close : function (event, ui) {
+
+	        return false;
+	    }
+	}).focus(function() {
+	    $(this).autocomplete("search", $(this).val());
+	});
+}
+
+var partnerFiltered = null;
+async function partnerAutocompleteLoad(){
+	$("#partner").autocomplete({
+		source: function(request, response) {
+			partnerFiltered = $.ui.autocomplete.filter(partnerList, request.term);
+		    if (partnerFiltered.length === 0) {
+		    	partnerFiltered.push({
+		        label: "No results found",
+		        value: ""
+		      });
+		    }
+		    response(partnerFiltered);
+		},
+		delay: 100,
+		autoFocus: true,
+		minChars: 0,
+		minLength: 0,
+		maxShowItems: 10,
 		open: function(){
 	        $(this).autocomplete('widget').css('z-index', 1100);
 	        return false;
@@ -472,13 +582,24 @@ async function partnerAutocompleteLoad(){
 	});
 }
 
+var carGoFiltered
 async function itemAutocompleteLoad(){
 	$("#itemName").autocomplete({
-		source: carGoList,
+		source: function(request, response) {
+			carGoFiltered = $.ui.autocomplete.filter(carGoList, request.term);
+		    if (carGoFiltered.length === 0) {
+		    	carGoFiltered.push({
+		        label: "No results found",
+		        value: ""
+		      });
+		    }
+		    response(carGoFiltered);
+		},
 		delay: 100,
 		autoFocus: true,
 		minChars: 0,
 		minLength: 0,
+		maxShowItems: 10,
 		open: function(){
 	        $(this).autocomplete('widget').css('z-index', 1100);
 	        return false;
@@ -496,13 +617,24 @@ async function itemAutocompleteLoad(){
 	});
 }
 
+var terminalFiltered = null;
 async function terminalAutocompleteLoad(){
 	$("#terminal").autocomplete({
-		source: terminalList,
+		source: function(request, response) {
+			terminalFiltered = $.ui.autocomplete.filter(terminalList, request.term);
+		    if (terminalFiltered.length === 0) {
+		    	terminalFiltered.push({
+		        label: "No results found",
+		        value: ""
+		      });
+		    }
+		    response(terminalFiltered);
+		},
 		delay: 100,
 		autoFocus: true,
 		minChars: 0,
 		minLength: 0,
+		maxShowItems: 10,
 		open: function(){
 	        $(this).autocomplete('widget').css('z-index', 1100);
 	        return false;
@@ -520,11 +652,21 @@ async function terminalAutocompleteLoad(){
 	});
 	
 	$("#parkingLotCode").autocomplete({
-		source: terminalList,
+		source: function(request, response) {
+			terminalFiltered = $.ui.autocomplete.filter(terminalList, request.term);
+		    if (terminalFiltered.length === 0) {
+		    	terminalFiltered.push({
+		        label: "No results found",
+		        value: ""
+		      });
+		    }
+		    response(terminalFiltered);
+		},
 		delay: 100,
 		autoFocus: true,
 		minChars: 0,
 		minLength: 0,
+		maxShowItems: 10,
 		open: function(){
 	        $(this).autocomplete('widget').css('z-index', 1100);
 	        return false;
@@ -548,13 +690,24 @@ async function terminalAutocompleteLoad(){
 	
 }
 
+var concineFiltered = null;
 async function customerAutocompleteLoad(){
 	$("#concineName").autocomplete({
-		source: customerList,
+		source: function(request, response) {
+		    concineFiltered = $.ui.autocomplete.filter(customerList, request.term);
+		    if (concineFiltered.length === 0) {
+		    	concineFiltered.push({
+		        label: "No results found",
+		        value: ""
+		      });
+		    }
+		    response(concineFiltered);
+		},
 		delay: 100,
 		autoFocus: true,
 		minChars: 0,
 		minLength: 0,
+		maxShowItems: 10,
 		open: function(){
 	        $(this).autocomplete('widget').css('z-index', 1100);
 	        return false;
@@ -564,6 +717,7 @@ async function customerAutocompleteLoad(){
 	    	$('#concinePic').val(ui.item.pic);
 	    },
 	    close : function (event, ui) {
+	    	console.log($(this).val());
 	        return false;
 	    }
 	}).focus(function() {
@@ -626,16 +780,50 @@ inputs.forEach((input, index) => {
       else if(this.id === 'mblNo') nextId = 'tankNo';
       else if(this.id === 'tankNo') nextId = 'quantity';
       else if(this.id === 'quantity') nextId = 'term';
-      else if(this.id === 'term') nextId = 'concineName';
-      else if(this.id === 'concineName') nextId = 'partner';
-      else if(this.id === 'partner') nextId = 'profitDate';
+      else if(this.id === 'term'){
+		if(termFiltered != null && termFiltered.length === 1){
+			$('#termId').val(termFiltered[0].id);
+			$('#term').val(concineFiltered[0].value);
+		}
+		nextId = 'concineName';
+      }
+      else if(this.id === 'concineName'){
+		if(concineFiltered != null && concineFiltered.length === 1){
+			$('#concineName').val(concineFiltered[0].value);
+			$('#concine').val(concineFiltered[0].code);
+	    	$('#concinePic').val(concineFiltered[0].pic);
+		}
+    	  nextId = 'partner';
+      }
+      else if(this.id === 'partner'){
+    	  if(partnerFiltered != null && partnerFiltered.length === 1){
+    		  $('#partner').val(partnerFiltered[0].value);
+    	  }
+    	  nextId = 'profitDate';
+      }
       else if(this.id === 'profitDate') nextId = 'itemName';
-      else if(this.id === 'itemName') nextId = 'vesselVoyage';
+      else if(this.id === 'itemName'){
+    	  if(carGoFiltered != null && carGoFiltered.length === 1){
+    		  	$('#itemName').val(carGoFiltered[0].value);
+    		  	$('#cargo').val(carGoFiltered[0].code);
+  	    		$('#cargoDate').val(carGoFiltered[0].cargoDate);
+  	    		$('#cargoLocation').val(carGoFiltered[0].location);
+    	  }
+    	  nextId = 'vesselVoyage';
+      }
       else if(this.id === 'vesselVoyage') nextId = 'carrier';
       else if(this.id === 'carrier') nextId = 'pol';
       else if(this.id === 'pol') nextId = 'pod';
       else if(this.id === 'pod') nextId = 'terminal';
-      else if(this.id === 'terminal') nextId = 'etd';
+      else if(this.id === 'terminal' || this.id === 'parkingLotCode'){
+    	  if(terminalFiltered != null && terminalFiltered.length === 1){
+    		  	$('#terminal').val(terminalFiltered[0].value);
+    			$('#terminalCode').val(terminalFiltered[0].code);
+  	    		$('#pod').val(terminalFiltered[0].region);
+  	    		$('#parkingLotCode').val(terminalFiltered[0].parkingLotCode);
+    	  }
+    	  nextId = 'etd';
+      }
       else if(this.id === 'etd') nextId = 'eta';
       else if(this.id === 'eta') nextId = 'ft';
       else if(this.id === 'ft') nextId = 'endOfFt';

@@ -27,8 +27,16 @@
 						<div class="card-body">
 							<form id="searchFrom" name="searchFrom">
 								<div class="form-group row">
+									<label class="col-form-label text-md-left" style="width: 90px;">STATUS</label>
+									<div style="width: 130px; margin-right: 15px;">
+										<select id="sshipmentStatus" name="sshipmentStatus" class="form-control select2" data-minimum-results-for-search="Infinity">
+											<option value="Y" selected="selected">IN PROGRES</option>
+											<option value="N">CLOSED</option>
+											<option value="">All</option>
+										</select>
+									</div>
 									<label class="col-form-label text-md-left" style="width: 90px;">HBL NO.</label>
-									<div style="width: 230px; margin-right: 15px;">
+									<div style="width: 250px; margin-right: 15px;">
 										<input type="text" id="shblNo" name="shblNo" value="" class="form-control">
 									</div>
 									<label class="col-form-label text-md-left" style="width: 80px;">A/N Mail</label>
