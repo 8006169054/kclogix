@@ -26,6 +26,17 @@ public class PartnerService {
 	 * @throws Exception
 	 */
 	@Transactional(readOnly = true)
+	public List<String> selectMonitorColModels() throws Exception {
+		return repository.selectMonitorColNames();
+	}
+	
+	/**
+	 * 
+	 * @param paramDto
+	 * @return
+	 * @throws Exception
+	 */
+	@Transactional(readOnly = true)
 	public List<PartnerDto> selectPartner(PartnerDto paramDto) throws Exception {
 		return repository.selectPartner(paramDto, false);
 	}

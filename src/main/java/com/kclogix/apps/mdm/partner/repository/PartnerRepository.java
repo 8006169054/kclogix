@@ -22,6 +22,15 @@ public class PartnerRepository extends KainosRepositorySupport {
 
 	/**
 	 * 
+	 * @return
+	 * @throws Exception
+	 */
+	public List<String> selectMonitorColNames() throws Exception {
+		return select(mdmPartner.name).from(mdmPartner).fetch();
+	}
+	
+	/**
+	 * 
 	 * @param paramDto
 	 * @param eq
 	 * @return

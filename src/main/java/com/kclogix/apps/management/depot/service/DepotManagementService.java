@@ -24,6 +24,18 @@ public class DepotManagementService {
 
 	/**
 	 * 
+	 * @param partner
+	 * @param depotList
+	 * @param type
+	 * @return
+	 * @throws Exception
+	 */
+	@Transactional(readOnly = true)
+	public List<Long> selectDepotReport(String partner, List<String> depotList, String type) throws Exception {
+		return repository.selectDepotReport(partner, depotList, type);
+	}
+	/**
+	 * 
 	 * @param paramDto
 	 * @return
 	 * @throws Exception

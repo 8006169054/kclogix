@@ -1,14 +1,20 @@
 package com.kclogix.common.view;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.CacheControl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.LocaleResolver;
+
+import com.kclogix.apps.mdm.depot.service.DepotService;
+import com.kclogix.apps.mdm.partner.service.PartnerService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -30,6 +36,7 @@ public class ViewController {
     private boolean httpOnly;
     private final KainosSessionContext kainosSession;
     private final LocaleResolver localeResolver;
+    private final DepotService depotService;
     
 	/**
 	 * Index 페이지
@@ -61,7 +68,7 @@ public class ViewController {
 	 * @throws Exception
 	 */
 	@GetMapping(value = contextPath + "/**")
-    public String view(HttpServletResponse response,  HttpServletRequest request, Locale locale) throws Exception {
+    public String view(HttpServletResponse response,  HttpServletRequest request, Locale locale, Model model) throws Exception {
 		/** URL 주소 창 직접 접근  */
 		if(request.getHeader("REFERER") == null) return "html/index";
 		
@@ -74,6 +81,28 @@ public class ViewController {
 		
 //		setLocale(request, response, locale);
 		// OPEN << 권한 체크 패스
+		if(htmlPath.equalsIgnoreCase("/MANAGEMENT/DEPOT-MONITOR")) {
+			// 해더정도
+			List<String> colNames = new ArrayList<>();
+			colNames.add("LOCATION");
+			List<String> depotList = depotService.selectMonitorColNames();
+			for (int i = 0; i < depotList.size(); i++) {
+				colNames.add(depotList.get(i));
+				colNames.add(depotList.get(i));
+			}
+			colNames.add("TOTAL");
+			colNames.add("TOTAL");
+			
+			model.addAttribute("colNames", colNames);
+//			// 셀정보
+//			List<Integer> colModels = new ArrayList<>();
+//			colModels.add(1); // DEPOT TOTAL
+//			colModels.add(2); // PARTNER
+//			for (int i = 0; i < partnerService.selectMonitorColModels().size(); i++) {
+//				colModels.add(i+3);
+//			}
+//			model.addAttribute("colModels", colModels);
+		}
 		
 //		if(sessionCheck(request))
 			return "html/apps" + htmlPath;

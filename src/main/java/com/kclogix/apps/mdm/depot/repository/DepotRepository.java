@@ -21,6 +21,23 @@ import kainos.framework.utils.KainosStringUtils;
 public class DepotRepository extends KainosRepositorySupport {
 
 	/**
+	 * 테이블 해더 정보를 가져온다.
+	 * @return
+	 * @throws Exception
+	 */
+	public List<String> selectMonitorColNames() throws Exception {
+		return select(mdmDepot.location).from(mdmDepot).fetch();
+	}
+	
+	/**
+	 * @return
+	 * @throws Exception
+	 */
+	public List<String> selectMonitorDepotCode() throws Exception {
+		return select(mdmDepot.depotCode).from(mdmDepot).fetch();
+	}
+	
+	/**
 	 * 
 	 * @param paramDto
 	 * @return

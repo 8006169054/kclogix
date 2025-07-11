@@ -22,6 +22,26 @@ public class DepotService {
 
 	/**
 	 * 
+	 * @return
+	 * @throws Exception
+	 */
+	public List<String> selectMonitorDepotCode() throws Exception {
+		return repository.selectMonitorDepotCode();
+	}
+	
+	/**
+	 * 
+	 * @param paramDto
+	 * @return
+	 * @throws Exception
+	 */
+	@Transactional(readOnly = true)
+	public List<String> selectMonitorColNames() throws Exception {
+		return repository.selectMonitorColNames();
+	}
+	
+	/**
+	 * 
 	 * @param paramDto
 	 * @return
 	 * @throws Exception

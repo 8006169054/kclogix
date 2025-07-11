@@ -22,11 +22,11 @@ public class DepotManagement {
 	private String uuid;
 	private int seq;
 	private String hblNo;
-	private String tankNo;
-	private String partner;
-	private String item;
-	private String returnDepot;
-	private String returnDate;
+//	private String tankNo;
+//	private String partner;
+//	private String item;
+//	private String returnDepot;
+//	private String returnDate;
 	private String cleanedDate;
 	private String outDate;
 	private String allocation;

@@ -4,6 +4,7 @@ import static com.kclogix.common.entity.QDepotManagement.depotManagement;
 import static com.kclogix.common.entity.QMdmCargo.mdmCargo;
 import static com.kclogix.common.entity.QWebsiteTerminalCode.websiteTerminalCode;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -11,6 +12,8 @@ import org.springframework.stereotype.Repository;
 
 import com.kclogix.apps.management.depot.dto.DepotManagementDto;
 import com.kclogix.common.dto.SessionDto;
+import com.kclogix.common.entity.QDepotManagement;
+import com.kclogix.common.entity.QWebsiteTerminalCode;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.CaseBuilder;
@@ -23,6 +26,46 @@ import kainos.framework.utils.KainosStringUtils;
 @Repository
 public class DepotManagementRepository extends KainosRepositorySupport {
 
+	/**
+	 * 
+	 * @param partner
+	 * @param depotList
+	 * @return
+	 */
+	public List<Long> selectDepotReport(String partner, List<String> depotList, String type) throws Exception {
+		List<Long> returnData = new ArrayList<>();
+		for (int i = 0; i < depotList.size(); i++) {
+			if(type.equalsIgnoreCase("INVENTORY")) {
+				returnData.add(select(websiteTerminalCode.uuid.count())
+				    .from(websiteTerminalCode)
+				    .leftJoin(depotManagement)
+				        .on(websiteTerminalCode.uuid.eq(depotManagement.uuid)
+				            .and(websiteTerminalCode.seq.eq(depotManagement.seq))
+				            .and(websiteTerminalCode.hblNo.eq(depotManagement.hblNo)))
+				    .where(
+				    		websiteTerminalCode.delFlg.ne("Y").or(websiteTerminalCode.delFlg.isNull()),
+				    		websiteTerminalCode.partner.eq(partner),
+				    		websiteTerminalCode.returnDepot.eq(depotList.get(i)),
+				    		depotManagement.outDate.isNull().or(depotManagement.outDate.eq(""))
+				    ).fetchOne());
+			}else if(type.equalsIgnoreCase("AV")) {
+				returnData.add(select(websiteTerminalCode.uuid.count())
+					    .from(websiteTerminalCode)
+					    .leftJoin(depotManagement)
+					        .on(websiteTerminalCode.uuid.eq(depotManagement.uuid)
+					            .and(websiteTerminalCode.seq.eq(depotManagement.seq))
+					            .and(websiteTerminalCode.hblNo.eq(depotManagement.hblNo)))
+					    .where(
+					    		websiteTerminalCode.delFlg.ne("Y").or(websiteTerminalCode.delFlg.isNull()),
+					    		websiteTerminalCode.partner.eq(partner),
+					    		websiteTerminalCode.returnDepot.eq(depotList.get(i)),
+					    		depotManagement.outDate.isNull().or(depotManagement.outDate.eq("")),
+					    		depotManagement.allocation.isNull().or(depotManagement.allocation.eq(""))
+					    ).fetchOne());
+			}
+		}
+		return returnData;
+	}
 	
 	/**
 	 * 
@@ -35,7 +78,7 @@ public class DepotManagementRepository extends KainosRepositorySupport {
 				depotManagement.uuid.eq(searchDto.getUuid())
 				.and(depotManagement.seq.eq(searchDto.getSeq()))
 				.and(depotManagement.hblNo.eq(searchDto.getHblNo()))
-				.and(depotManagement.tankNo.eq(searchDto.getTankNo()))
+//				.and(depotManagement.tankNo.eq(searchDto.getTankNo()))
 				).fetchFirst();
 		
 		if(cnt > 0) {
@@ -53,7 +96,7 @@ public class DepotManagementRepository extends KainosRepositorySupport {
 					depotManagement.uuid.eq(searchDto.getUuid())
 					.and(depotManagement.seq.eq(searchDto.getSeq()))
 					.and(depotManagement.hblNo.eq(searchDto.getHblNo()))
-					.and(depotManagement.tankNo.eq(searchDto.getTankNo()))
+//					.and(depotManagement.tankNo.eq(searchDto.getTankNo()))
 			).execute();
 		}
 		else {
@@ -76,7 +119,7 @@ public class DepotManagementRepository extends KainosRepositorySupport {
 				depotManagement.uuid.eq(paramDto.getUuid())
 				.and(depotManagement.seq.eq(paramDto.getSeq()))
 				.and(depotManagement.hblNo.eq(paramDto.getHblNo()))
-				.and(depotManagement.tankNo.eq(paramDto.getTankNo()))
+//				.and(depotManagement.tankNo.eq(paramDto.getTankNo()))
 				)
 		.fetchOne();
 	}
@@ -173,11 +216,11 @@ public class DepotManagementRepository extends KainosRepositorySupport {
 			depotManagement.uuid,
 			depotManagement.seq,
 			depotManagement.hblNo,
-			depotManagement.tankNo,
-			depotManagement.partner,
-			depotManagement.item,
-			depotManagement.returnDepot,
-			depotManagement.returnDate,
+//			depotManagement.tankNo,
+//			depotManagement.partner,
+//			depotManagement.item,
+//			depotManagement.returnDepot,
+//			depotManagement.returnDate,
 			depotManagement.cleanedDate,
 			depotManagement.outDate,
 			depotManagement.allocation,
@@ -190,11 +233,11 @@ public class DepotManagementRepository extends KainosRepositorySupport {
 			paramDto.getUuid(),
 			paramDto.getSeq(),
 			paramDto.getHblNo(),
-			paramDto.getTankNo(),
-			paramDto.getPartner(),
-			paramDto.getItem(),
-			paramDto.getReturnDepot(),
-			paramDto.getReturnDate(),
+//			paramDto.getTankNo(),
+//			paramDto.getPartner(),
+//			paramDto.getItem(),
+//			paramDto.getReturnDepot(),
+//			paramDto.getReturnDate(),
 			paramDto.getCleanedDate(),
 			paramDto.getOutDate(),
 			paramDto.getAllocation(),
@@ -223,7 +266,7 @@ public class DepotManagementRepository extends KainosRepositorySupport {
 				depotManagement.uuid.eq(paramDto.getUuid())
 				.and(depotManagement.seq.eq(paramDto.getSeq()))
 				.and(depotManagement.hblNo.eq(paramDto.getHblNo()))
-				.and(depotManagement.tankNo.eq(paramDto.getTankNo()))
+//				.and(depotManagement.tankNo.eq(paramDto.getTankNo()))
 				)
 		.execute();
 	}
@@ -238,7 +281,7 @@ public class DepotManagementRepository extends KainosRepositorySupport {
 				depotManagement.uuid.eq(paramDto.getUuid())
 				.and(depotManagement.seq.eq(paramDto.getSeq()))
 				.and(depotManagement.hblNo.eq(paramDto.getHblNo()))
-				.and(depotManagement.tankNo.eq(paramDto.getTankNo()))
+//				.and(depotManagement.tankNo.eq(paramDto.getTankNo()))
 				)
 		.execute();
 	}

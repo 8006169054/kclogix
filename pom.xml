@@ -185,7 +185,7 @@
 		</dependency>
 		<dependency>
 			<groupId>com.querydsl</groupId>
-			<artifactId>querydsl-apt</artifactId>
+			<artifactId>querydsl-apt</artifactId> <!-- Q 클래스 자동생성 -->
 			<version>5.0.0</version>
 			<classifier>jakarta</classifier>
 		</dependency>

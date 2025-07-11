@@ -4,6 +4,32 @@
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	layout:decorate="~{layouts/default/layout}" layout:fragment="Content">
 
+<script type="text/javascript">
+var colNamesList = "[[${colNames}]]".replace(/^\[|\]$/g, '').split(',').map(item => item.trim());
+var colModelList = [];
+var groupHeaderList = [{ startColumnName: 0, numberOfColumns: 1, titleText: 'LOCATION' }];
+colNamesList.forEach((element, index) => {
+	if(index === 0)
+		colModelList.push({ name: index, width: 100, align:'center'});
+	else{
+		if(index % 2 === 1){
+			colModelList.push({ name: index, width: 60, align:'center'});
+		}else{
+			colModelList.push({ name: index, width: 50, align:'center'});
+		}
+	}
+		
+});
+
+colNamesList.forEach((element, index) => {
+	if(index > 0 && index % 2 === 1){
+		groupHeaderList.push({ startColumnName: index, numberOfColumns: 2, titleText: element});
+	}
+});
+
+
+</script>
+
 <!-- Main Content -->
 <div class="main-content">
 	<section class="section">
