@@ -10,6 +10,7 @@ import org.springframework.web.servlet.LocaleResolver;
 
 import com.kclogix.apps.common.auth.dto.OpenNoticesDto;
 import com.kclogix.apps.common.auth.service.AuthService;
+import com.kclogix.common.backup.service.BackUpService;
 import com.kclogix.common.dto.SessionDto;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -22,6 +23,7 @@ import lombok.RequiredArgsConstructor;
 public class AuthController {
 	
 	private final AuthService service;
+	private final BackUpService backUpService;
     private final LocaleResolver localeResolver;
     
 	@GetMapping(value = "/open/dblogin")
@@ -42,6 +44,12 @@ public class AuthController {
 	public ResponseEntity<Void> logout(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		localeResolver.setLocale(request, response, Locale.ENGLISH);
 		service.logout();
+		return KainosResponseEntity.noneData();
+	}
+	
+	@GetMapping(value = "/api/backup")
+	public ResponseEntity<Void> backup() throws Exception {
+		backUpService.dbBackup();
 		return KainosResponseEntity.noneData();
 	}
 }
