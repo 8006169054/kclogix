@@ -871,7 +871,8 @@ function endOfFt(etaOrAtadate, ft){
 			plusThree.setDate(toDay.getDate() + parseInt(ft));
 			const result = new Date(plusThree);
 			result.setDate(plusThree.getDate() - 1);
-			returnData = result;
+			if(result != 'Invalid Date')
+				returnData = result;
 		}
 	} catch (error) {
 		console.log(error);
