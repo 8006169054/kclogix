@@ -4294,23 +4294,29 @@ $.fn.jqGrid = function( pin ) {
 			$('#gview_' + ts.p.id).on('paste', function(e) {
 				e.preventDefault();
 				var type = $(':focus').attr('type');
-				if(type === 'text') return;
-				if(!e) e = window.event; // || event
-				if(e.srcElement) e.target = e.srcElement;
-				var clipboardData;
-				if (window.clipboardData && window.clipboardData.getData){ // IE
-					clipboardData = window.clipboardData.getData("Text");
-				}else{
-					var oe = (e.originalEvent || e).clipboardData;
-					clipboardData = oe.getData("text/plain");
-				}
 				
-				clipboardData = clipboardData.split("	");
-				for ( var i = 0 ; i < clipboardData.length ; i++ ) {
-					$(ts).jqGrid("setCell", $.jgrid.jqID(ts.p.iRow), (selectGridData.iCol+i), clipboardData[i]);
-					var iRow = $.jgrid.jqID(ts.p.iRow);
-					$(ts).jqGrid("afterSaveJqFlag", iRow, ts.p.basedata[iRow-1]);
-				}
+					if(!e) e = window.event; // || event
+					if(e.srcElement) e.target = e.srcElement;
+					var clipboardData;
+					if (window.clipboardData && window.clipboardData.getData){ // IE
+						clipboardData = window.clipboardData.getData("Text");
+					}else{
+						var oe = (e.originalEvent || e).clipboardData;
+						clipboardData = oe.getData("text/plain");
+					}
+					
+					clipboardData = clipboardData.split("	");
+					for ( var i = 0 ; i < clipboardData.length ; i++ ) {
+						
+						if(type === 'text'){
+							$(':focus')[0].value += clipboardData[i];
+						} 
+						else {
+							$(ts).jqGrid("setCell", $.jgrid.jqID(ts.p.iRow), (selectGridData.iCol+i), clipboardData[i]);
+							var iRow = $.jgrid.jqID(ts.p.iRow);
+							$(ts).jqGrid("afterSaveJqFlag", iRow, ts.p.basedata[iRow-1]);
+						}
+					}
 				type=null,clipboardData=null;
 			});
 		},
@@ -23965,6 +23971,7 @@ $.jgrid.extend({
 
 			var paste_to_cell = false;
 			$t.addEventListener('paste', function (event) {
+				console.log('addEventListener', paste_to_cell);
 				if(paste_to_cell) {
 					var paste = (event.clipboardData || window.clipboardData).getData('text');
 					$($t).jqGrid('saveCell', $t.p.iRow, $t.p.iCol, paste);

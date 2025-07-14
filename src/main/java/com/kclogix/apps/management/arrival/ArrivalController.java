@@ -113,7 +113,7 @@ public class ArrivalController {
 
 	@PostMapping(value = "/api/management/arrival-notice-send-mail")
 	public ResponseEntity<Void> arrivalNoticeSendMail(
-			@RequestPart("files") MultipartFile[] files,
+			@RequestPart(value = "files", required = false) MultipartFile[] files,
 			@RequestPart("jsonData") WebsiteSearchDto paramDto,
 			@KainosSession SessionDto session) throws Exception {
 		try {
@@ -131,8 +131,10 @@ public class ArrivalController {
 			
 			mailDto.subject("[KCL] Arrival notice 송부의 건, / " + paramDto.getHblNo());
 			mailDto.mailbody(anMailTemplate(paramDto, session, portList), true);
-			for (int i = 0; i < files.length; i++) {
-				mailDto.addAttachment(files[i]);
+			if(files != null) {
+				for (int i = 0; i < files.length; i++) {
+					mailDto.addAttachment(files[i]);
+				}
 			}
 			mg.sendMail(mailDto);
 			service.arrivalNoticeSendMail(paramDto);
