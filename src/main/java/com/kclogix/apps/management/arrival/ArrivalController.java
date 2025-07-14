@@ -123,10 +123,10 @@ public class ArrivalController {
 			if(paramDto.getConcineEmail().indexOf(";") > 0) 
 				recipients = paramDto.getConcineEmail().split(";");
 			else 
-				recipients = new String[] {paramDto.getConcineEmail()};
+				recipients = new String[] {paramDto.getConcineEmail().trim()};
 			
 			for (int i = 0; i < recipients.length; i++) {
-				mailDto.addTo(recipients[i]); //받는사람
+				mailDto.addTo(recipients[i].trim()); //받는사람
 			}
 			
 			mailDto.subject("[KCL] Arrival notice 송부의 건, / " + paramDto.getHblNo());
