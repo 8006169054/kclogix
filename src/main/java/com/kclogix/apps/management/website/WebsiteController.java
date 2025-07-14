@@ -256,4 +256,17 @@ public class WebsiteController {
                 .contentLength(downLoadFile.length)
                 .body(new InputStreamResource(new ByteArrayInputStream(downLoadFile)));
 	}
+	
+	@PostMapping(value = "/api/management/manualupdate")
+	public ResponseEntity<Void> manualUpdate(@RequestBody List<WebsiteDto> paramList, @KainosSession SessionDto session) throws Exception {
+		try {
+			service.manualUpdate(paramList, session);
+		} catch (KainosBusinessException e) {
+			throw e;
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new KainosBusinessException("common.system.error");
+		}
+		return message.getInsertMessage(KainosResponseEntity.builder().build()).close();
+	}
 }

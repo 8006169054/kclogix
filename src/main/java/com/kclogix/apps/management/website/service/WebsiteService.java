@@ -142,4 +142,15 @@ public class WebsiteService {
 			}
 		}
 	}
+
+	@Transactional(transactionManager = KainosKey.DBConfig.TransactionManager.Default, rollbackFor = Exception.class)
+	public void manualUpdate(List<WebsiteDto> paramList, SessionDto session)throws Exception {
+		for (int i = 0; i < paramList.size(); i++) {
+			WebsiteDto dto = paramList.get(i);
+			repository.excleUpdateWebsiteTerminalCode(dto);
+		}
+	}
+
 }
+
+

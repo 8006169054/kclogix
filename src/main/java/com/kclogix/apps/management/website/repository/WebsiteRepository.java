@@ -447,7 +447,7 @@ public class WebsiteRepository extends KainosRepositorySupport {
 		update(websiteTerminalCode)
 //			.set(websiteTerminalCode.sales,				paramDto.getSales())
 //			.set(websiteTerminalCode.carryoverSales,      paramDto.getCarryoverSales())
-			.set(websiteTerminalCode.invoice,             paramDto.getInvoice())
+//			.set(websiteTerminalCode.invoice,             paramDto.getInvoice())
 //			.set(websiteTerminalCode.concine,             !KainosStringUtils.isEmpty(paramDto.getConcine()) ? paramDto.getConcine() : paramDto.getConcineName().trim())
 //			.set(websiteTerminalCode.profitDate,          paramDto.getProfitDate())
 //			.set(websiteTerminalCode.domesticSales,       !KainosStringUtils.isEmpty(paramDto.getDomesticSales()) ? (paramDto.getDomesticSales().replaceAll("US\\$", "")) : "")
@@ -484,9 +484,10 @@ public class WebsiteRepository extends KainosRepositorySupport {
 //			.set(websiteTerminalCode.repositionPrch, 	  paramDto.getRepositionPrch())
 //			.set(websiteTerminalCode.updateUserId, 		  paramDto.getUpdateUserId())
 //			.set(websiteTerminalCode.updateDate, 			new Date())
-//			.set(websiteTerminalCode.shipmentStatus, 		paramDto.getShipmentStatus())
+			.set(websiteTerminalCode.shipmentStatus, 		paramDto.getShipmentStatus())
 //			.set(websiteTerminalCode.demStatus, 			paramDto.getDemStatus())
-		.where(websiteTerminalCode.hblNo.eq(paramDto.getHblNo()).and(websiteTerminalCode.tankNo.eq(paramDto.getTankNo())))
+//		.where(websiteTerminalCode.hblNo.eq(paramDto.getHblNo()).and(websiteTerminalCode.tankNo.eq(paramDto.getTankNo())))
+		.where(websiteTerminalCode.uuid.eq(paramDto.getUuid()).and(websiteTerminalCode.seq.eq(paramDto.getSeq())))
 		.execute();
 	}
 	
