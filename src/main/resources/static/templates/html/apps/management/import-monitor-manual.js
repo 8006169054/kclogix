@@ -899,3 +899,27 @@ async function excelDown(){
 	var date = new Date().toString("yyyymmddhhmm");
 	await requestFileDownload('GET', '/api/management/website-terminal-code-exceldown', $('#searchFrom').serializeObject(), 'kclogix-' + date +'.xlsx');
 }
+
+document.querySelectorAll('.dropdown-item').forEach(item => {
+  item.addEventListener('click', function (e) {
+    e.preventDefault(); // 링크 이동 방지
+    const value = this.getAttribute('data-value');
+    $('#dropdownMenuButton').html($(this).html());
+    comparing(value);
+  });
+});
+
+async function comparing(comparingType){
+	var saveData = $(tableName).jqGrid("getRowData");
+	if(saveData.length === 0){
+		alertMessage(getMessage('0007'), 'info');
+	}else{
+		var response = await requestApi('POST', '/api/management/comparing/' + comparingType, saveData);
+		if(response.common.status === 'S'){
+	 		$(tableName).clearGridData();
+			$(tableName).searchData(response.data, {editor: true});
+	 	}	
+		response = null;
+	}
+}
+

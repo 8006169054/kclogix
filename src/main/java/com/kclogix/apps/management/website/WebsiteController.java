@@ -3,6 +3,7 @@ package com.kclogix.apps.management.website;
 import java.io.ByteArrayInputStream;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import org.springframework.core.io.InputStreamResource;
@@ -11,6 +12,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -268,5 +270,46 @@ public class WebsiteController {
 			throw new KainosBusinessException("common.system.error");
 		}
 		return message.getInsertMessage(KainosResponseEntity.builder().build()).close();
+	}
+	
+	@PostMapping(value = "/api/management/comparing/{comparingType}")
+	public ResponseEntity<WebsiteDto> comparing(
+			@RequestBody List<WebsiteDto> paramList, 
+			@PathVariable String comparingType
+			) throws Exception {
+		try {
+			
+			Comparator<? super WebsiteDto> comparator =	null;
+			if(comparingType.equalsIgnoreCase("1"))
+					comparator = Comparator.comparing(WebsiteDto::getProfitDate).thenComparing(WebsiteDto::getHblNo).thenComparingInt(WebsiteDto::getSeq);
+			else if(comparingType.equalsIgnoreCase("2"))
+					comparator = Comparator.comparing(WebsiteDto::getProfitDate, Comparator.reverseOrder()).thenComparing(WebsiteDto::getHblNo).thenComparingInt(WebsiteDto::getSeq);
+			else if(comparingType.equalsIgnoreCase("3"))
+					comparator = Comparator.comparing(WebsiteDto::getEtd).thenComparing(WebsiteDto::getHblNo).thenComparingInt(WebsiteDto::getSeq);
+			else if(comparingType.equalsIgnoreCase("4"))
+					comparator = Comparator.comparing(WebsiteDto::getEtd, Comparator.reverseOrder()).thenComparing(WebsiteDto::getHblNo).thenComparingInt(WebsiteDto::getSeq);
+			else if(comparingType.equalsIgnoreCase("5"))
+					comparator = Comparator.comparing(WebsiteDto::getEta).thenComparing(WebsiteDto::getHblNo).thenComparingInt(WebsiteDto::getSeq);
+			else if(comparingType.equalsIgnoreCase("6"))
+					comparator = Comparator.comparing(WebsiteDto::getEta, Comparator.reverseOrder()).thenComparing(WebsiteDto::getHblNo).thenComparingInt(WebsiteDto::getSeq);
+			else if(comparingType.equalsIgnoreCase("7"))
+					comparator = Comparator.comparing(WebsiteDto::getEndOfFt).thenComparing(WebsiteDto::getHblNo).thenComparingInt(WebsiteDto::getSeq);
+			else if(comparingType.equalsIgnoreCase("8"))
+					comparator = Comparator.comparing(WebsiteDto::getEndOfFt, Comparator.reverseOrder()).thenComparing(WebsiteDto::getHblNo).thenComparingInt(WebsiteDto::getSeq);
+			else if(comparingType.equalsIgnoreCase("9"))
+					comparator = Comparator.comparing(WebsiteDto::getReturnDate).thenComparing(WebsiteDto::getHblNo).thenComparingInt(WebsiteDto::getSeq);
+			else if(comparingType.equalsIgnoreCase("10"))
+					comparator = Comparator.comparing(WebsiteDto::getReturnDate, Comparator.reverseOrder()).thenComparing(WebsiteDto::getHblNo).thenComparingInt(WebsiteDto::getSeq);
+			
+			if(comparator != null)
+				paramList.sort(comparator);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new KainosBusinessException("common.system.error");
+		}
+		return KainosResponseEntity.builder().build()
+				.addData(handler.GenerationRowSpen(paramList, WebsiteDto.class))
+				.close();
 	}
 }
