@@ -2,6 +2,7 @@ package com.kclogix.apps.management.arrival.repository;
 
 import static com.kclogix.common.entity.QMdmCargo.mdmCargo;
 import static com.kclogix.common.entity.QMdmCustomer.mdmCustomer;
+import static com.kclogix.common.entity.QMdmTerm.mdmTerm;
 import static com.kclogix.common.entity.QMdmTerminal.mdmTerminal;
 import static com.kclogix.common.entity.QWebsiteTerminalCode.websiteTerminalCode;
 
@@ -148,33 +149,38 @@ public class ArrivalRepository extends KainosRepositorySupport {
 					websiteTerminalCode.sales,
 					websiteTerminalCode.carryoverSales,
 					new CaseBuilder().when(websiteTerminalCode.arrivalNotice.eq("1")).then(Expressions.constant("SEND")).otherwise(Expressions.constant("")).as("arrivalNotice"),
-					new CaseBuilder().when(websiteTerminalCode.invoice.eq("1")).then(Expressions.constant("SEND")).otherwise(Expressions.constant("")).as("invoice"),
+					websiteTerminalCode.invoice,
 					new CaseBuilder().when(mdmCustomer.name.isNull()).then(websiteTerminalCode.concine).otherwise(mdmCustomer.name).as("concineName"),
 					mdmCustomer.code.as("concine"),
 					mdmCustomer.pic.as("concinePic"),
-					new CaseBuilder().when(websiteTerminalCode.arrivalNoticeEmail.isNull()).then(mdmCustomer.email).otherwise(websiteTerminalCode.arrivalNoticeEmail).as("concineEmail"),
-					websiteTerminalCode.profitDate,
+					mdmCustomer.email.as("concineEmail"),
+			         websiteTerminalCode.profitDate,
 					websiteTerminalCode.domesticSales,
 					websiteTerminalCode.foreignSales,
-					websiteTerminalCode.shipmentStatus,
 					websiteTerminalCode.quantity,
+					websiteTerminalCode.quantityType,
 					websiteTerminalCode.partner,
 					websiteTerminalCode.tankNo,
-					websiteTerminalCode.term,
+					mdmTerm.id.as("termId"),
+					new CaseBuilder().when(mdmTerm.name.isNull()).then(websiteTerminalCode.term.upper()).otherwise(mdmTerm.name.upper()).as("term"),
 					websiteTerminalCode.item,
 					websiteTerminalCode.vesselVoyage,
 					websiteTerminalCode.carrier,
 					websiteTerminalCode.mblNo,
 					websiteTerminalCode.hblNo,
 					websiteTerminalCode.pol,
+//					websiteTerminalCode.pod,
 					new CaseBuilder().when(mdmTerminal.region.isNull()).then(websiteTerminalCode.pod.upper()).otherwise(mdmTerminal.region.upper()).as("pod"),
 					mdmTerminal.code.as("terminalCode"),
+					mdmTerminal.parkingLotCode,
 					mdmTerminal.name.as("terminalName"),
+//					mdmTerminal.region.upper().as("region"),
 					mdmTerminal.homepage.as("terminalHomepage"),
 					mdmCargo.code.as("cargo"),
 					mdmCargo.cargoDate.upper().as("cargoDate"),
 					mdmCargo.location.upper().as("location"),
 					new CaseBuilder().when(mdmCargo.name.isNull()).then(websiteTerminalCode.item.upper()).otherwise(mdmCargo.name.upper()).as("item"),
+//					ExpressionUtils.as(JPAExpressions.select(terminal.homepage).from(terminal).where(websiteTerminalCode.pod.eq(terminal.region)), "homepage"),
 					websiteTerminalCode.etd,
 					websiteTerminalCode.eta,
 					websiteTerminalCode.ata,
@@ -193,6 +199,8 @@ public class ArrivalRepository extends KainosRepositorySupport {
 					websiteTerminalCode.depotInDate,
 					websiteTerminalCode.repositionPrch,
 					websiteTerminalCode.createUserId,
+					websiteTerminalCode.shipmentStatus,
+					websiteTerminalCode.demStatus,
 					Expressions.stringTemplate("to_char({0}, {1})", websiteTerminalCode.createDate, "YYYY-MM-DD").as("createDate"),
 					websiteTerminalCode.updateUserId,
 					Expressions.stringTemplate("to_char({0}, {1})", websiteTerminalCode.updateDate, "YYYY-MM-DD").as("updateDate")
@@ -200,8 +208,9 @@ public class ArrivalRepository extends KainosRepositorySupport {
 				.leftJoin(mdmCargo).on(websiteTerminalCode.item.eq(mdmCargo.code))
 				.leftJoin(mdmTerminal).on(websiteTerminalCode.terminal.eq(mdmTerminal.code))
 				.leftJoin(mdmCustomer).on(websiteTerminalCode.concine.eq(mdmCustomer.code))
+				.leftJoin(mdmTerm).on(websiteTerminalCode.term.eq(mdmTerm.id))
 				.where(where)
-				.orderBy(websiteTerminalCode.uuid.asc(), websiteTerminalCode.seq.asc())
+				.orderBy(websiteTerminalCode.uuid.asc())
 				.fetch();
 	}
 	
