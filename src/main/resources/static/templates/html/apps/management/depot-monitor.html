@@ -10,12 +10,12 @@ var colModelList = [];
 var groupHeaderList = [{ startColumnName: 0, numberOfColumns: 1, titleText: 'LOCATION' }];
 colNamesList.forEach((element, index) => {
 	if(index === 0)
-		colModelList.push({ name: index, width: 100, align:'center'});
+		colModelList.push({ name: index, width: 100, align:'center', hidden: false});
 	else{
 		if(index % 2 === 1){
-			colModelList.push({ name: index, width: 60, align:'center'});
+			colModelList.push({ name: index, width: 60, align:'center', hidden: false});
 		}else{
-			colModelList.push({ name: index, width: 50, align:'center'});
+			colModelList.push({ name: index, width: 50, align:'center', hidden: false});
 		}
 	}
 		
@@ -43,6 +43,13 @@ colNamesList.forEach((element, index) => {
 				<div class="col-100">
 					<div class="card">
 						<div class="card-header text-right">
+							 <div class="dropdown d-inline mr-2">
+		                      <button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">NoData(Show)</button>
+		                      <div class="dropdown-menu">
+		                        <a class="dropdown-item" href="#" data-action="show">Show</a>
+		                        <a class="dropdown-item" href="#" data-action="hidden">Hidden</a>
+		                      </div>
+		                    </div>
 							<button class="btn btn-primary" onclick="search()">Search</button>
 						</div>
 						<div class="card-body">

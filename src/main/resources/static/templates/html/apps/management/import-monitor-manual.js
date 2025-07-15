@@ -717,6 +717,17 @@ function frozenCelHide(){
 	frozenCelNotVal = frozenCelNotVal.filter(x => !frozenCelVal.includes(x));
 	$(tableName).hideCol(frozenCelVal);
 	$(tableName).showCol(frozenCelNotVal);
+	
+	$(tableName).jqGrid('setGroupHeaders', {
+				useColSpanStyle: true,
+				groupHeaders: [
+                                {startColumnName:'item', numberOfColumns: 3, titleText: 'Item' },
+                                {startColumnName:'pod', numberOfColumns: 5, titleText: 'Terminal' },
+                                {startColumnName:'concineName', numberOfColumns: 2, titleText: 'Customer' }
+                                
+                              ]
+		});
+		
 	$(tableName).refreshFrozen();
 }
 

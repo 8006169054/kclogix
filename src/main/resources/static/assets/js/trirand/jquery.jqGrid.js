@@ -7394,7 +7394,7 @@ $.jgrid.extend({
 						this.hidden = !sw;
 						fndh=true;
 						$($t).triggerHandler("jqGridShowHideCol", [sw,this.name,i]);
-						return false;
+//						return false;
 					}
 					
 				});

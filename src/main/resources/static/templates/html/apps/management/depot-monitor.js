@@ -1,7 +1,16 @@
 var tableName = '#table';
-
+var hideCol = [];
 $( document ).ready(function() {
    	tableInit();
+   	
+	document.querySelectorAll('.dropdown-item').forEach(function(item) {
+  		item.addEventListener('click', function(e) {
+    		e.preventDefault(); // 링크 이동 방지
+   		 	const action = this.getAttribute('data-action');
+    		noDataShowAndHidden(action);
+  		});
+	});
+	
 });
 
 /**
@@ -119,4 +128,29 @@ function colGroup(){
 	  }
 	  i += 2; // 다음 묶음으로 이동
 	}
+}
+
+function noDataShowAndHidden(event){
+	if(event === 'show'){
+		$('#dropdownMenuButton').html('NoData(Show)');
+		$(tableName).jqGrid("showCol", hideCol);
+		hideCol = [];
+	}
+	else if(event === 'hidden'){
+		$('#dropdownMenuButton').html('NoData(Hidden)');
+		var rowData = $(tableName).jqGrid('getRowData', 1);
+		for (var key in rowData) {
+  			if (rowData[key] === '0') {
+				//console.log(key, rowData[key]);
+    			// 해당 컬럼을 숨김 처리
+    			hideCol.push(parseInt(key));
+  			}
+		}
+		$(tableName).jqGrid("hideCol", hideCol);
+	}
+	$(tableName).jqGrid('setGroupHeaders', {
+		useColSpanStyle: true,
+		groupHeaders: groupHeaderList
+	});
+	$(".ui-jqgrid-htable thead tr:nth-child(3)").hide();
 }
