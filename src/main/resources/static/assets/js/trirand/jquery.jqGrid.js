@@ -6983,7 +6983,7 @@ $.jgrid.extend({
 	checKedDelRow : function(iRow, iCol, checked) {
 		var t = this;
 		if(checked){
-			$("#" + iRow).css("background-color", "#dc3545");
+			$("#" + $(t)[0].p.id + " #" + iRow).css("background-color", "#dc3545");
 			/** 상태 값이 C 신규 건인지 확인 */
 			var jqFlag = $(t).jqGrid('getCell', iRow, 'jqFlag');
 			if(jqFlag === C){

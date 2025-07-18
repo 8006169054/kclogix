@@ -1,5 +1,5 @@
 var tableName = '#an-table';
-
+var selectedRowId;
 /**
  * 조회
  */
@@ -13,16 +13,17 @@ async function search() {
 function portTableInit(){
 	$(tableName).jqGrid({
 	   	datatype: "json",
-	   	colNames: ['', 'uuid', 'A/N', 'HBL NO.','CNEE', 'PIC', "e-mail", 'SHIPMENT STATUS', "Q'ty", 'Tank no.', 'Term', 'Name', 'Date', 'Location', 'Vessel / Voyage', 'Carrier', 'MBL NO.', 'POL', 'POD', 'ETD', 'ETA', 'F/T', 'DEM RATE', 'END OF F/T'],
+	   	colNames: ['', 'uuid', 'A/N', 'HBL NO.','CNEE', 'PIC', "", "", 'SHIPMENT STATUS', "Q'ty", 'Tank no.', 'Term', 'Name', 'Date', 'Location', 'Vessel / Voyage', 'Carrier', 'MBL NO.', 'POL', 'POD', 'ETD', 'ETA', 'F/T', 'DEM RATE', 'END OF F/T'],
 	   	colModel: [
 			{ name: 'jqFlag',				width: 40,		align:'center', 	hidden : true,  frozen:true},
 	   		{ name: 'uuid', 				width: 50, 		align:'center',		hidden : true, 	frozen:true},
 	       	{ name: 'arrivalNotice',		width: 70, 		align:'center',		rowspan: true,	frozen:true, formatter: arrivalNoticeFn},
 	       	{ name: 'hblNo', 				width: 140, 	align:'center',		rowspan: true,	frozen:true},
 	       	{ name: 'concineName', 			width: 140, 	align:'center',		rowspan: true,	frozen:true},
-	    	{ name: 'concinePic', 			width: 100,		align:'center',		rowspan: true, editable: true},
-	    	{ name: 'concineEmail', 		width: 300,		align:'center',		rowspan: true, editable: true},
-	    	{ name: 'shipmentStatus', 		width: 80, 		align:'center',		rowspan: true, formatter:'select', edittype:'select', editoptions : {value: 'Y:IN PROGRES;N:CLOSED'}},
+	    	{ name: 'concinePic', 			width: 100,		align:'center',		rowspan: true, 	editable: true},
+	    	{ name: 'concineEmail', 		width: 300,		align:'center',		rowspan: true, 	editable: false},
+	    	{ name: 'emailBt',		 		width: 30,		align:'center',		rowspan: true, 	formatter: eMailBtFn},
+	    	{ name: 'shipmentStatus', 		width: 80, 		align:'center',		rowspan: true, 	formatter:'select', edittype:'select', editoptions : {value: 'Y:IN PROGRES;N:CLOSED'}},
 	    	{ name: 'quantity', 			width: 50, 		align:'center',		rowspan: true},
 	    	{ name: 'tankNo', 				width: 150, 	align:'center'},
 	    	{ name: 'term', 				width: 80, 		align:'center',		rowspan: true},
@@ -51,10 +52,31 @@ function portTableInit(){
 	$(tableName).jqGrid('setGroupHeaders', {
 				useColSpanStyle: true,
 				groupHeaders: [
-                                {startColumnName:'item', numberOfColumns: 3, titleText: 'Item' }
-                                
+                                {startColumnName:'item', numberOfColumns: 3, titleText: 'Item' },
+                                {startColumnName:'concineEmail', numberOfColumns: 2, titleText: 'e-Mail' }
                               ]
 		});
+		
+		
+	//  이메일 팝업 그리드
+	$('#eMail-table').jqGrid({
+	   	datatype: "json",
+	   	colNames: ['','e-Mail'],
+	   	colModel: [
+	   		{ name: 'jqFlag', width: 40, align:'center'},
+	   		{ name: 'eMail', width: 350, align:'center', editable: true}
+	   	],
+		height: 300, 
+		width: '100%',
+		dblEdit : true,
+		delselect: true
+	});
+
+}
+
+function eMailBtFn (cellvalue, options, rowObject ){
+	return "<img src='/assets/img/search.png' height='12px' style='cursor:pointer;' onclick=\"popupEMailNew('" + options.rowId + "','" + rowObject.concineEmail + "')\" />";
+//	return '<ul id="icons" class="ionicons"><i class="ion ion-search" style="cursor:pointer;" onclick="popupEMailNew(\'' + options.rowId + '\', \'' + rowObject.concineEmail + '\')"></i></ul>';
 }
 
 function arrivalNoticeFn (cellvalue, options, rowObject ){
@@ -187,4 +209,74 @@ dropzone.uploadFiles = function(files) {
 
 function fileupload(){
 	$('#fileUploadModal').modal('show');
+}
+
+
+
+///////////////////////////// 이메일 팝업
+
+function popupEMailNew(rowId, values){
+	selectedRowId = rowId;
+	var temp = values;
+	if(!isEmpty(temp)){
+		var gridJson = [];
+		if(temp != '' && temp.indexOf(',') > 0){
+			var eMails = temp.split(",");
+			for(var i=0; i < eMails.length; i++){
+				gridJson[i] = {'eMail': eMails[i]};
+			}
+		}
+		else if(temp != ''){
+			gridJson[0] = {'eMail': temp};
+		}
+		
+		if(gridJson.length > 0) $('#eMail-table').searchData(gridJson, {editor: true});
+	}
+	$('#eMailNewModal').modal('show');
+}
+
+function eMailAdd(){
+	
+	$('#eMail-table').addRow({
+			rowID : null,
+			initdata : {},
+			position :"first", // last, first
+			useDefValues : true,
+			useFormatter : false,
+			addRowParams : {extraparam:{}}
+		});
+}
+
+async function eMailPaste(){
+	 var text = await navigator.clipboard.readText();
+	 text = text.split("\n");
+	 var gridJson = ComGridData('#eMail-table');
+	 for(var i=0; i < text.length; i++){
+		 if(text[i] != '')
+		 	gridJson[gridJson.length] = {'jqFlag' : C, 'eMail': text[i]};
+	 }
+	 $('#eMail-table').clearGridData();
+	 if(gridJson.length > 0) $('#eMail-table').searchData(gridJson, {editor: true});
+}
+
+function popupEMailSave(){
+	var saveData = ComGridData('#eMail-table');
+	var temp = '';
+	for(var i=0; i < saveData.length; i++){
+		if(saveData[i].jqFlag != D){
+			temp += saveData[i].eMail;
+			if(i < saveData.length-1) temp += ",";
+		}
+	}
+	$(tableName).jqGrid("setCell", selectedRowId, 'concineEmail', temp, false, false, true);
+
+	//$('#tankNo').val(temp);
+	// 그리드에 셋해줘야함
+	
+	popupEMailClose();
+}
+
+function popupEMailClose (){
+	$('#eMail-table').clearGridData();
+	$('#eMailNewModal').modal('hide');
 }

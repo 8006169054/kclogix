@@ -170,11 +170,15 @@ public class WebsiteDto {
 	@Field(value = "KH", merge = true)
 	private String quantityType;
 	
+	@Field(value = "KI", merge = true)
+	private String emailBt;
+	
 	private String homepage;
 	private String createUserId;
 	private String createDate;
 	private String updateUserId;
 	private String updateDate;
+
 	
 	@Builder.Default /* 필드명을 rowspan 해야 함 필수 */
 	private RowSpanOtion rowspan = RowSpanOtion.builder().build();
@@ -246,6 +250,8 @@ public class WebsiteDto {
 		private RowSpan termId = RowSpan.builder().build();
 		@Builder.Default
 		private RowSpan quantityType = RowSpan.builder().build();
+		@Builder.Default
+		private RowSpan emailBt = RowSpan.builder().build();
 	};
 	
 //	public String getDomesticSales() {
