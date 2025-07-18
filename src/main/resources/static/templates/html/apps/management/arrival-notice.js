@@ -269,11 +269,11 @@ function popupEMailSave(){
 	for(var i=0; i < saveData.length; i++){
 		if(saveData[i].jqFlag != D){
 			temp += saveData[i].eMail;
-			if(i < saveData.length-1) temp += ",";
+			if(i < saveData.length-1) temp += ";";
 		}
 	}
 	
-	if (temp.endsWith(",")) {
+	if (temp.endsWith(";")) {
 	  temp = temp.slice(0, -1);
 	}
 
