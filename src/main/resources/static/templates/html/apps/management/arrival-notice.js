@@ -220,12 +220,11 @@ function fileupload(){
 
 function popupEMailNew(rowId, values){
 	selectedRowId = rowId;
-	console.log('values', values);
 	var temp = values;
 	if(!isEmpty(temp)){
 		var gridJson = [];
-		if(temp != '' && temp.indexOf(',') > 0){
-			var eMails = temp.split(",");
+		if(temp != '' && temp.indexOf(';') > 0){
+			var eMails = temp.split(";");
 			for(var i=0; i < eMails.length; i++){
 				gridJson[i] = {'eMail': eMails[i]};
 			}
