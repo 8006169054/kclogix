@@ -21,7 +21,7 @@ function portTableInit(){
 	       	{ name: 'hblNo', 				width: 140, 	align:'center',		rowspan: true,	frozen:true},
 	       	{ name: 'concineName', 			width: 140, 	align:'center',		rowspan: true,	frozen:true},
 	    	{ name: 'concinePic', 			width: 100,		align:'center',		rowspan: true, 	editable: true},
-	    	{ name: 'concineEmail', 		width: 300,		align:'center',		rowspan: true, 	editable: false},
+	    	{ name: 'concineEmail', 		width: 300,		align:'center',		rowspan: true, 	editable: true},
 	    	{ name: 'emailBt',		 		width: 30,		align:'center',		rowspan: true, 	formatter: eMailBtFn},
 	    	{ name: 'shipmentStatus', 		width: 80, 		align:'center',		rowspan: true, 	formatter:'select', edittype:'select', editoptions : {value: 'Y:IN PROGRES;N:CLOSED'}},
 	    	{ name: 'quantity', 			width: 50, 		align:'center',		rowspan: true},
@@ -44,9 +44,13 @@ function portTableInit(){
 		height: 530, 
 		width: '100%',
 		dblEdit : true,
-		frozen: true
-//		multiselect : true, // 그리드 왼쪽부분에 체크 박스가 생겨 다중선택이 가능해진다.
-// 		multiboxonly : true // 다중선택을 단일 선택으로 제한
+		frozen: true,
+		onCellSelect: function (rowId, iCol, cellContent, event) {
+			if(iCol === 7){
+				var cellValue = $(tableName).jqGrid("getCell", rowId, 'concineEmail');
+				popupEMailNew(rowId, cellValue);
+			}
+		}
 	});
 	
 	$(tableName).jqGrid('setGroupHeaders', {
@@ -75,8 +79,7 @@ function portTableInit(){
 }
 
 function eMailBtFn (cellvalue, options, rowObject ){
-	return "<img src='/assets/img/search.png' height='12px' style='cursor:pointer;' onclick=\"popupEMailNew('" + options.rowId + "','" + rowObject.concineEmail + "')\" />";
-//	return '<ul id="icons" class="ionicons"><i class="ion ion-search" style="cursor:pointer;" onclick="popupEMailNew(\'' + options.rowId + '\', \'' + rowObject.concineEmail + '\')"></i></ul>';
+	return "<img src='/assets/img/search.png' height='12px' style='cursor:pointer;' />";
 }
 
 function arrivalNoticeFn (cellvalue, options, rowObject ){
@@ -217,6 +220,7 @@ function fileupload(){
 
 function popupEMailNew(rowId, values){
 	selectedRowId = rowId;
+	console.log('values', values);
 	var temp = values;
 	if(!isEmpty(temp)){
 		var gridJson = [];
@@ -268,7 +272,12 @@ function popupEMailSave(){
 			if(i < saveData.length-1) temp += ",";
 		}
 	}
-	$(tableName).jqGrid("setCell", selectedRowId, 'concineEmail', temp, false, false, true);
+	
+	if (temp.endsWith(",")) {
+	  temp = temp.slice(0, -1);
+	}
+
+	$(tableName).jqGrid("setCell", selectedRowId, 'concineEmail', temp, false, false, true, true);
 
 	//$('#tankNo').val(temp);
 	// 그리드에 셋해줘야함
