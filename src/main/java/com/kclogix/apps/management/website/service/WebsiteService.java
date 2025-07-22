@@ -19,7 +19,9 @@ import kainos.framework.core.lang.KainosBusinessException;
 import kainos.framework.utils.KainosDateUtil;
 import kainos.framework.utils.KainosStringUtils;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class WebsiteService {
@@ -137,6 +139,8 @@ public class WebsiteService {
 				repository.insertWebsiteTerminalCode(dto);
 			} else if(dto.getJqFlag().equalsIgnoreCase(JqFlag.Update)) {
 				repository.updateWebsiteTerminalCode(dto);
+				String concine = (!KainosStringUtils.isEmpty(dto.getConcine()) ? dto.getConcine() : dto.getConcineName().trim());
+				log.error(dto.getUuid() + " : " + dto.getHblNo() + " : " + dto.getSeq() + " : " + concine);
 			} else if(dto.getJqFlag().equalsIgnoreCase(JqFlag.Delete)) {
 				repository.deleteWebsiteTerminalCode(dto.getUuid(), dto.getSeq());
 			}
