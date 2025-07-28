@@ -12,8 +12,6 @@ import org.springframework.stereotype.Repository;
 
 import com.kclogix.apps.management.depot.dto.DepotManagementDto;
 import com.kclogix.common.dto.SessionDto;
-import com.kclogix.common.entity.QDepotManagement;
-import com.kclogix.common.entity.QWebsiteTerminalCode;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.CaseBuilder;
@@ -45,7 +43,7 @@ public class DepotManagementRepository extends KainosRepositorySupport {
 				    .where(
 				    		websiteTerminalCode.delFlg.ne("Y").or(websiteTerminalCode.delFlg.isNull()),
 				    		websiteTerminalCode.partner.eq(partner),
-				    		websiteTerminalCode.returnDepot.eq(depotList.get(i)),
+				    		websiteTerminalCode.returnDepot.eq(depotList.get(i)).or(websiteTerminalCode.returnDepot.eq("LINEALL/" + depotList.get(i))),
 				    		depotManagement.outDate.isNull().or(depotManagement.outDate.eq(""))
 				    ).fetchOne());
 			}else if(type.equalsIgnoreCase("AV")) {
@@ -58,7 +56,7 @@ public class DepotManagementRepository extends KainosRepositorySupport {
 					    .where(
 					    		websiteTerminalCode.delFlg.ne("Y").or(websiteTerminalCode.delFlg.isNull()),
 					    		websiteTerminalCode.partner.eq(partner),
-					    		websiteTerminalCode.returnDepot.eq(depotList.get(i)),
+					    		websiteTerminalCode.returnDepot.eq(depotList.get(i)).or(websiteTerminalCode.returnDepot.eq("LINEALL/" + depotList.get(i))),
 					    		depotManagement.outDate.isNull().or(depotManagement.outDate.eq("")),
 					    		depotManagement.allocation.isNull().or(depotManagement.allocation.eq(""))
 					    ).fetchOne());

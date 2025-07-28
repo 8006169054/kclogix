@@ -26,7 +26,7 @@ public class DepotRepository extends KainosRepositorySupport {
 	 * @throws Exception
 	 */
 	public List<String> selectMonitorColNames() throws Exception {
-		return select(mdmDepot.location).from(mdmDepot).fetch();
+		return select(mdmDepot.location).from(mdmDepot).where(mdmDepot.depotCode.startsWith("LINEALL/").not()).fetch();
 	}
 	
 	/**
@@ -34,7 +34,7 @@ public class DepotRepository extends KainosRepositorySupport {
 	 * @throws Exception
 	 */
 	public List<String> selectMonitorDepotCode() throws Exception {
-		return select(mdmDepot.depotCode).from(mdmDepot).fetch();
+		return select(mdmDepot.depotCode).from(mdmDepot).where(mdmDepot.depotCode.startsWith("LINEALL/").not()).fetch();
 	}
 	
 	/**
