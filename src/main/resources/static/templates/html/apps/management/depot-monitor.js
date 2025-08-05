@@ -3,13 +3,13 @@ var hideCol = [];
 $( document ).ready(function() {
    	tableInit();
    	
-	document.querySelectorAll('.dropdown-item').forEach(function(item) {
-  		item.addEventListener('click', function(e) {
-    		e.preventDefault(); // 링크 이동 방지
-   		 	const action = this.getAttribute('data-action');
-    		noDataShowAndHidden(action);
-  		});
-	});
+//	document.querySelectorAll('.dropdown-item').forEach(function(item) {
+//  		item.addEventListener('click', function(e) {
+//    		e.preventDefault(); // 링크 이동 방지
+//   		 	const action = this.getAttribute('data-action');
+//    		noDataShowAndHidden(action);
+//  		});
+//	});
 	
 });
 
