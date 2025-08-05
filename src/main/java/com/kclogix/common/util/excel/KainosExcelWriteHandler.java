@@ -119,11 +119,10 @@ public class KainosExcelWriteHandler {
 					field.setAccessible(true);
 					RowSpan span = (RowSpan)field.get(object);
 					if(span.getRowspan() > 0) {
-//						System.out.println(span.getStartrow()+startRowNum + " , " + span.getEndrow()+startRowNum + " : " + span.getStartcol() + " , " + span.getEndcol());
 						sheet.addMergedRegion(new CellRangeAddress(span.getStartrow()+startRowNum,span.getEndrow()+startRowNum-1,span.getStartcol(),span.getEndcol()));
 					}
 				} catch (IllegalArgumentException | IllegalAccessException e) {
-					e.printStackTrace();
+//					e.printStackTrace();
 				}
 			}
 		}
