@@ -52,7 +52,7 @@ public class DepotManagementController {
 		}
 		
 		/* LOCATION 0번쨰 ROW 데이터 셋팅 */
-		List<String> partnerList = partnerService.selectMonitorColModels();
+		List<String> partnerList = partnerService.selectMonitorColModels(null);
 		for (int i = 0; i < partnerList.size(); i++) {
 			Map<Integer, Object> col = new LinkedHashMap<>();
 			col.put(0, partnerList.get(i));

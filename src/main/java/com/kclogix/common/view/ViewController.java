@@ -81,7 +81,7 @@ public class ViewController {
 		
 //		setLocale(request, response, locale);
 		// OPEN << 권한 체크 패스
-		if(htmlPath.equalsIgnoreCase("/MANAGEMENT/DEPOT-MONITOR")) {
+		if(htmlPath.equalsIgnoreCase("/MANAGEMENT/DEPOT-MONITOR") || htmlPath.equalsIgnoreCase("/PARTNER/DEPOT-MONITOR")) {
 			// 해더정도
 			List<String> colNames = new ArrayList<>();
 			colNames.add("LOCATION");

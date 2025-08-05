@@ -21,13 +21,13 @@ public class PartnerService {
 
 	/**
 	 * 
-	 * @param paramDto
+	 * @param partnerName
 	 * @return
 	 * @throws Exception
 	 */
 	@Transactional(readOnly = true)
-	public List<String> selectMonitorColModels() throws Exception {
-		return repository.selectMonitorColNames();
+	public List<String> selectMonitorColModels(String partnerName) throws Exception {
+		return repository.selectMonitorColNames(partnerName);
 	}
 	
 	/**

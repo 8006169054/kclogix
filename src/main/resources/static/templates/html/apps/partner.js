@@ -1,6 +1,6 @@
 var tableName = '#port-table';
 var hiddenCelVal = [];
-var gridHeight = 630;
+var gridHeight = 600;
 
 $( document ).ready(function() {
 	gridColsearch();

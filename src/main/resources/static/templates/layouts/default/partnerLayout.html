@@ -3,7 +3,7 @@
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <!--공통 JS / CSS 영역을 관리하는 환경 영역-->
 <head th:replace="layouts/common/config :: ConfigFragment" />
-<body>
+<body style="overflow-x: hidden;">
 	<div id ="loading" class="loading-mask" style="display: none;">
         <img style="width: 100px" src="/assets/img/loading.svg" />
     </div>
@@ -11,6 +11,7 @@
 	    <div class="main-wrapper">
 			<!--Header 영역을 참조합니다.-->
 			<header th:replace="layouts/default/partnerHeader :: HeaderFragment"></header>
+			<th:block th:replace="layouts/common/partnerSidebar :: SidebarFragment"></th:block>
 			
 			<!--Content 내용 영역을 참조합니다-->
 			<th:block layout:fragment="Content"></th:block>

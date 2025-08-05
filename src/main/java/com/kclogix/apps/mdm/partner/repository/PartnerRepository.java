@@ -22,11 +22,17 @@ public class PartnerRepository extends KainosRepositorySupport {
 
 	/**
 	 * 
+	 * @param partnerName
 	 * @return
 	 * @throws Exception
 	 */
-	public List<String> selectMonitorColNames() throws Exception {
-		return select(mdmPartner.name).from(mdmPartner).fetch();
+	public List<String> selectMonitorColNames(String partnerName) throws Exception {
+		BooleanBuilder where = new BooleanBuilder();
+		if(!KainosStringUtils.isEmpty(partnerName)) where.and(mdmPartner.name.eq(partnerName));
+		return select(mdmPartner.name)
+				.from(mdmPartner)
+				.where(where)
+				.fetch();
 	}
 	
 	/**
