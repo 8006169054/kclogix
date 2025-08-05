@@ -46,7 +46,7 @@ $('#sprofitDate').daterangepicker({
 
 async function gridColsearch() {
 	let response = await requestApi('GET', '/api/partner/home/website-terminal-code-grid-col');
-	if(response.data != ''){
+	if(response.data != undefined){
 		if(response.data.indexOf(",") > 0){
 			hiddenCelVal = response.data.split(",");
 		}else{
