@@ -900,14 +900,14 @@ async function excelDown(){
 	await requestFileDownload('GET', '/api/management/website-terminal-code-exceldown', $('#searchFrom').serializeObject(), 'kclogix-' + date +'.xlsx');
 }
 
-document.querySelectorAll('.dropdown-item').forEach(item => {
-  item.addEventListener('click', function (e) {
-    e.preventDefault(); // 링크 이동 방지
-    const value = this.getAttribute('data-value');
-    $('#dropdownMenuButton').html($(this).html());
-    comparing(value);
-  });
-});
+//document.querySelectorAll('.dropdown-item').forEach(item => {
+//  item.addEventListener('click', function (e) {
+//    e.preventDefault(); // 링크 이동 방지
+//    const value = this.getAttribute('data-value');
+//    $('#dropdownMenuButton').html($(this).html());
+//    comparing(value);
+//  });
+//});
 
 async function comparing(comparingType){
 	var saveData = $(tableName).jqGrid("getRowData");
