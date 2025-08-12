@@ -48,7 +48,7 @@ function portTableInit(){
 	    	{ name: 'carrier', 				width: 80, 		align:'center',		rowspan: true},
 	    	{ name: 'mblNo', 				width: 140, 	align:'center',		rowspan: true},
 	    	{ name: 'pol', 					width: 100, 	align:'center',		rowspan: true},
-	    	{ name: 'pod', 					width: 100, 	align:'center'},
+	    	{ name: 'pod', 					width: 100, 	align:'center', 	rowspan: true},
 	    	{ name: 'terminalCode', 		width: 100, 	align:'center', 		hidden : true, rowspan: true},
 	    	{ name: 'parkingLotCode', 		width: 80, 		align:'center', 		hidden : false, rowspan: true,	editable : true, edittype: 'text', editoptions: {
 				dataInit:function(elem) {
