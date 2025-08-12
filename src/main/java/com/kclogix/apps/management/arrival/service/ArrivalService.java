@@ -34,4 +34,8 @@ public class ArrivalService {
 		repository.arrivalNoticeSendMail(paramDto);
 	}
 	
+	@Transactional(transactionManager = KainosKey.DBConfig.TransactionManager.Default, rollbackFor = Exception.class)
+	public void updateTerminalCode(WebsiteSearchDto paramDto) throws Exception {
+		repository.updateTerminalCode(paramDto);
+	}
 }

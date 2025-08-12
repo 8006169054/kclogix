@@ -117,6 +117,12 @@ public class ArrivalController {
 			@RequestPart("jsonData") WebsiteSearchDto paramDto,
 			@KainosSession SessionDto session) throws Exception {
 		try {
+			
+			/* 터미널 정보 업데이트 */
+			if(paramDto.getTerminalCode() != null) {
+				service.updateTerminalCode(paramDto);
+			}
+			
 			List<WebsiteDto> portList = websiteService.selectWebsiteTerminalCode(paramDto, false);
 			KainosMailDto mailDto = KainosMailDto.builder().build();
 			String[] recipients = null;

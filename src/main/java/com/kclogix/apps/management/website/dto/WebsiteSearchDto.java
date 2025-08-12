@@ -22,6 +22,7 @@ public class WebsiteSearchDto {
 	private String mblNo; 
 	private String pol;
 	private String pod; 
+	private String terminalCode;
 	private String ata; 
 	private String erd; 
 	private String returnDate; 

@@ -1,5 +1,7 @@
 var tableName = '#an-table';
 var selectedRowId;
+var terminalList = [];
+var terminalCodeList = [];
 /**
  * 조회
  */
@@ -10,10 +12,22 @@ async function search() {
 	response = null;
 }
 
+async function searchTerminalAutocomplete(){
+	var response = await requestApi('GET', '/api/mdm/terminal/autocomplete');
+	if(response.common.status === 'S'){
+		terminalList = response.data;
+	}
+	
+	response = await requestApi('GET', '/api/mdm/terminal/autocompleteParkingLotCode');
+	if(response.common.status === 'S'){
+		terminalCodeList = response.data;
+	}
+	
+}
 function portTableInit(){
 	$(tableName).jqGrid({
 	   	datatype: "json",
-	   	colNames: ['', 'uuid', 'A/N', 'HBL NO.','CNEE', 'PIC', "", "", 'SHIPMENT STATUS', "Q'ty", 'Tank no.', 'Term', 'Name', 'Date', 'Location', 'Vessel / Voyage', 'Carrier', 'MBL NO.', 'POL', 'POD', 'ETD', 'ETA', 'F/T', 'DEM RATE', 'END OF F/T'],
+	   	colNames: ['', 'uuid', 'A/N', 'HBL NO.','CNEE', 'PIC', "", "", 'SHIPMENT STATUS', "Q'ty", 'Tank no.', 'Term', 'Name', 'Date', 'Location', 'Vessel / Voyage', 'Carrier', 'MBL NO.', 'POL', 'POD', 'Code1', 'Code', 'Name', 'Link', 'ETD', 'ETA', 'F/T', 'DEM RATE', 'END OF F/T'],
 	   	colModel: [
 			{ name: 'jqFlag',				width: 40,		align:'center', 	hidden : true,  frozen:true},
 	   		{ name: 'uuid', 				width: 50, 		align:'center',		hidden : true, 	frozen:true},
@@ -35,6 +49,82 @@ function portTableInit(){
 	    	{ name: 'mblNo', 				width: 140, 	align:'center',		rowspan: true},
 	    	{ name: 'pol', 					width: 100, 	align:'center',		rowspan: true},
 	    	{ name: 'pod', 					width: 100, 	align:'center'},
+	    	{ name: 'terminalCode', 		width: 100, 	align:'center', 		hidden : true, rowspan: true},
+	    	{ name: 'parkingLotCode', 		width: 80, 		align:'center', 		hidden : false, rowspan: true,	editable : true, edittype: 'text', editoptions: {
+				dataInit:function(elem) {
+					$(elem).autocomplete({
+						delay: 100,
+						autoFocus: true,
+						minLength: 0,
+						maxShowItems: 10,
+						source: function(request, response) {
+						    const results = $.ui.autocomplete.filter(terminalCodeList, request.term);
+						    if (results.length === 0) {
+						      results.push({
+						        label: "No results found",
+						        value: ""
+						      });
+						    }
+						    response(results);
+						},
+				        select: function (event, ui) {
+							if(ui.item.code != undefined){
+								ComSetCellData(tableName, ComSelectIndex(tableName), 20, ui.item.code, true);
+								ComSetCellData(tableName, ComSelectIndex(tableName), 19, ui.item.region, true);
+								ComSetCellData(tableName, ComSelectIndex(tableName), 22, ui.item.name, true);
+								ComSetCellData(tableName, ComSelectIndex(tableName), 23, ui.item.homepage, true);
+							}
+				        },
+				        close : function (event, ui) {
+				            $(tableName).delay(2000).focus();
+				            return false;
+				        }
+					}).focus(function() {
+			            $(this).autocomplete("search", $(this).val());
+			        }).on("paste", async function() {
+						var text = await navigator.clipboard.readText();
+						$(elem).val(text);
+					});
+				}
+			}},
+	    	{ name: 'terminalName', 		width: 150, 	align:'center',		hidden : false, rowspan: true, editable : true, edittype: 'text', editoptions: {
+				dataInit:function(elem) {
+					$(elem).autocomplete({
+						delay: 100,
+						autoFocus: true,
+						minLength: 0,
+						maxShowItems: 10,
+						source: function(request, response) {
+						    const results = $.ui.autocomplete.filter(terminalList, request.term);
+						    if (results.length === 0) {
+						      results.push({
+						        label: "No results found",
+						        value: ""
+						      });
+						    }
+						    response(results);
+						},
+				        select: function (event, ui) {
+							if(ui.item.code != undefined){
+								ComSetCellData(tableName, ComSelectIndex(tableName), 20, ui.item.code, true);
+								ComSetCellData(tableName, ComSelectIndex(tableName), 19, ui.item.region, true);
+								ComSetCellData(tableName, ComSelectIndex(tableName), 21, ui.item.parkingLotCode, true);
+								ComSetCellData(tableName, ComSelectIndex(tableName), 23, ui.item.homepage, true);
+							}
+				        },
+				        close : function (event, ui) {
+				            $(tableName).delay(2000).focus();
+				            return false;
+				        }
+					}).focus(function() {
+			            $(this).autocomplete("search", $(this).val());
+			        }).on("paste", async function() {
+						var text = await navigator.clipboard.readText();
+						$(elem).val(text);
+					});
+				}
+			}},
+	    	{ name: 'terminalHomepage', 	width: 60, 		align:'center', hidden : false, rowspan: true, formatter: terminalFn},
 	    	{ name: 'etd', 					width: 90, 		align:'center'},
 	    	{ name: 'eta', 					width: 90, 		align:'center'},
 	       	{ name: 'ft', 					width: 70, 		align:'center'},
@@ -57,6 +147,7 @@ function portTableInit(){
 				useColSpanStyle: true,
 				groupHeaders: [
                                 {startColumnName:'item', numberOfColumns: 3, titleText: 'Item' },
+                                {startColumnName:'pod', numberOfColumns: 5, titleText: 'Terminal' },
                                 {startColumnName:'concineEmail', numberOfColumns: 2, titleText: 'e-Mail' }
                               ]
 		});
@@ -87,6 +178,13 @@ function arrivalNoticeFn (cellvalue, options, rowObject ){
 		return '<input type="radio" name="anRadio" id="anRadio" value="' + options.rowId + '" />';
 	else
 		return rowObject.arrivalNotice;
+}
+
+function terminalFn (cellvalue, options, rowObject ){
+	if(emptyChange(rowObject.terminalHomepage) === '')
+		return '';
+	else
+		return '<a href="' + rowObject.terminalHomepage + '" target="_blank"><img src="/assets/img/popup.png" height="22px"></a>';
 }
 
 async function searchCargoAutocomplete(){
@@ -127,7 +225,7 @@ $('#seta').daterangepicker({
 $( document ).ready(function() {
    	portTableInit();
    	searchCargoAutocomplete();
-   	
+   	searchTerminalAutocomplete();
    	$('#anFile').on('change', function () {
     	let fileNames = Array.from(this.files).map(file => file.name).join(', ');
    		 $(this).next('.custom-file-label').html(fileNames);

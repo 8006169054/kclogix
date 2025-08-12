@@ -16,6 +16,7 @@ import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.CaseBuilder;
 import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.jpa.impl.JPAUpdateClause;
 
 import kainos.framework.data.querydsl.support.repository.KainosRepositorySupport;
 import kainos.framework.utils.KainosStringUtils;
@@ -170,6 +171,7 @@ public class ArrivalRepository extends KainosRepositorySupport {
 					websiteTerminalCode.pol,
 					new CaseBuilder().when(mdmTerminal.region.isNull()).then(websiteTerminalCode.pod.upper()).otherwise(mdmTerminal.region.upper()).as("pod"),
 					mdmTerminal.code.as("terminalCode"),
+					mdmTerminal.parkingLotCode,
 					mdmTerminal.name.as("terminalName"),
 					mdmTerminal.homepage.as("terminalHomepage"),
 					mdmCargo.code.as("cargo"),
@@ -205,6 +207,20 @@ public class ArrivalRepository extends KainosRepositorySupport {
 				.where(where)
 				.orderBy(websiteTerminalCode.uuid.asc(), websiteTerminalCode.seq.asc())
 				.fetch();
+	}
+	
+//	.set(websiteTerminalCode.pod,                 paramDto.getPod())
+//	.set(websiteTerminalCode.terminal,            paramDto.getTerminalCode())
+	
+	public void updateTerminalCode(WebsiteSearchDto paramDto) throws Exception {
+		JPAUpdateClause update = update(websiteTerminalCode);
+		if(!KainosStringUtils.isEmpty(paramDto.getPod()))
+				update.set(websiteTerminalCode.pod, paramDto.getPod());
+		if(!KainosStringUtils.isEmpty(paramDto.getTerminalCode()))
+			update.set(websiteTerminalCode.terminal, paramDto.getTerminalCode());
+		
+		update.where(websiteTerminalCode.hblNo.eq(paramDto.getHblNo()))
+		 .execute();
 	}
 	
 }
