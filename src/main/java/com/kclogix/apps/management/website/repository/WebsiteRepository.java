@@ -37,7 +37,8 @@ public class WebsiteRepository extends KainosRepositorySupport {
 		return select(websiteTerminalCode.uuid.count())
 				.from(websiteTerminalCode)
 				.where(websiteTerminalCode.hblNo.eq(paramDto.getHblNo())
-						.and(websiteTerminalCode.tankNo.eq(paramDto.getTankNo())))
+						.and(websiteTerminalCode.tankNo.eq(paramDto.getTankNo()))
+								.and(websiteTerminalCode.delFlg.eq("N")))
 			.fetchOne();
 	}
 	
