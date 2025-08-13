@@ -88,7 +88,7 @@ async function portTableInit(){
 	   		{ name: 'seq', 					width: 50, 		index: 4,align:'center',		hidden : true,	frozen:true},
 	   		{ name: 'uuid', 				width: 50, 		index: 5,align:'center',		hidden : true,	frozen:true},
 	       	{ name: 'hblNo', 				width: 140, 	index: 6,align:'center',		hidden : false, rowspan: true,	frozen:true}, /**여기서부터 히든처리 */
-	       	{ name: 'mblNo', 				width: 140, 	index: 7,align:'center',		hidden : false, rowspan: true, editable: true},
+	       	{ name: 'mblNo', 				width: 140, 	index: 7,align:'center',		hidden : false, rowspan: true,	frozen:true, editable: true},
 	       	{ name: 'tankNo', 				width: 120, 	index: 8,align:'center', 		hidden : false, editable: true,	frozen:true},
 	       	{ name: 'sales', 				width: 50, 		index: 9,align:'center',		hidden : false, rowspan: true,	editable: true},
 	       	{ name: 'carryoverSales', 		width: 50, 		index: 10,align:'center',		hidden : false, rowspan: true,	editable: true},
@@ -381,6 +381,9 @@ async function portTableInit(){
 		    if (prevColIndex !== null) {
 		      const prevColName = colModel[prevColIndex].name;
 		      rowIds.forEach(id => {
+				if(prevColName === 'hblNo' || prevColName === 'mblNo' || prevColName === 'tankNo')
+					grid.jqGrid("setCell", id, prevColName, "", { background: "white" });
+				else
 		        	grid.jqGrid("setCell", id, prevColName, "", { background: "" });
 		      });
 		    }
