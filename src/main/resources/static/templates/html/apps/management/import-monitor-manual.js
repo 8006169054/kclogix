@@ -711,9 +711,20 @@ function portSaveFn(response){
 function frozenCelHide(){
 	var frozenCelNotVal = [];
 	var frozenCelVal = $('#frozenCel').val();
+	for(var i=0; i < frozenCelVal.length; i++){
+		if(frozenCelVal[i] == 'concineName'){
+			frozenCelVal.push('concinePic');
+			break;
+		} 
+	}
+	
 	$("#frozenCel > option").each(function() {
 		frozenCelNotVal.push(this.value);
+		if(this.value == 'concineName'){
+			frozenCelNotVal.push('concinePic');
+		} 
 	});
+	
 	frozenCelNotVal = frozenCelNotVal.filter(x => !frozenCelVal.includes(x));
 	$(tableName).hideCol(frozenCelVal);
 	$(tableName).showCol(frozenCelNotVal);
@@ -727,6 +738,7 @@ function frozenCelHide(){
                                 
                               ]
 		});
+	
 		
 	$(tableName).refreshFrozen();
 }
