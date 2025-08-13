@@ -62,25 +62,25 @@ async function search() {
 
 var cargoIndex = 2;
 var concineIndex = 3;
-var concinePicIndex = 13;
+var concinePicIndex = 14;
 
 var addIndex = 1;
-var cargoDateIndex = 22 + addIndex;
-var locationIndex = 23 + addIndex;
-var regionIndex = 28 + addIndex;
-var terminalCodeIndex = 29 + addIndex;
-var parkingLotCodeIndex = 30 + addIndex;
-var terminalNameIndex = 31 + addIndex;
-var terminalHomepageIndex = 32 + addIndex;
-var endOfFtIndex = 39 + addIndex;
-var termIdIndex = 51 + addIndex;
+var cargoDateIndex = 24;
+var locationIndex = 25;
+var regionIndex = 29;
+var terminalCodeIndex = 30;
+var parkingLotCodeIndex = 31;
+var terminalNameIndex = 32;
+var terminalHomepageIndex = 33;
+var endOfFtIndex = 40;
+var termIdIndex = 52;
 
 async function portTableInit(){
 	$(tableName).jqGrid({
 		url: '/api/management/website-terminal-code-init',  
 		mtype: 'GET',
 	   	datatype: "json",
-	   	colNames: ['','cargo','concine code', 'seq', 'uuid', 'HBL NO.', 'Tank no.', '매출', '이월 매출', 'A/N&EDI', 'INVOICE', 'CNEE', 'PIC', 'SHIPMENT STATUS', 'PROFIT DATE', '국내매출', '해외매출', "Q'ty", 'Packing Type', 'Partner', 'Term', 'Name', 'Date', 'Location', 'Vessel / Voyage', 'Carrier', 'MBL NO.', 'POL', 'POD', 'Code1', 'Code', 'Name', 'Link', 'ETD', 'ETA', 'ATA', '비고', 'F/T', 'DEM RATE', 'END OF F/T', 'ESTIMATE RETURN DATE', 'RETURN DATE', 'RETURN DEPOT', 'DEM STATUS', 'TOTAL DEM', 'DEM BILLING', 'DEM RCVD', 'DEM(USD) COMMISSION', 'DEM COMMISSION', 'DEPOT IN DATE(REPO ONLY)', 'REPOSITION 매입', 'termId'],
+	   	colNames: ['','cargo','concine code', 'seq', 'uuid', 'HBL NO.', 'MBL NO.', 'Tank no.', '매출', '이월 매출', 'A/N&EDI', 'INVOICE', 'CNEE', 'PIC', 'SHIPMENT STATUS', 'PROFIT DATE', '국내매출', '해외매출', "Q'ty", 'Packing Type', 'Partner', 'Term', 'Name', 'Date', 'Location', 'Vessel / Voyage', 'Carrier', 'POL', 'POD', 'Code1', 'Code', 'Name', 'Link', 'ETD', 'ETA', 'ATA', '비고', 'F/T', 'DEM RATE', 'END OF F/T', 'ESTIMATE RETURN DATE', 'RETURN DATE', 'RETURN DEPOT', 'DEM STATUS', 'TOTAL DEM', 'DEM BILLING', 'DEM RCVD', 'DEM(USD) COMMISSION', 'DEM COMMISSION', 'DEPOT IN DATE(REPO ONLY)', 'REPOSITION 매입', 'termId'],
 	   	colModel: [
 	   		{ name: 'jqFlag',				width: 40,		index: 1,align:'center', 	hidden : false,	frozen:true},
 	   		{ name: 'cargo',				width: 100,		index: 2,align:'center', 		hidden : true, rowspan: true,	editable : true, frozen:true},
@@ -88,12 +88,13 @@ async function portTableInit(){
 	   		{ name: 'seq', 					width: 50, 		index: 4,align:'center',		hidden : true,	frozen:true},
 	   		{ name: 'uuid', 				width: 50, 		index: 5,align:'center',		hidden : true,	frozen:true},
 	       	{ name: 'hblNo', 				width: 140, 	index: 6,align:'center',		hidden : false, rowspan: true,	frozen:true}, /**여기서부터 히든처리 */
-	       	{ name: 'tankNo', 				width: 120, 	index: 7,align:'center', 		hidden : false, editable: true,	frozen:true},
-	       	{ name: 'sales', 				width: 50, 		index: 8,align:'center',		hidden : false, rowspan: true,	editable: true},
-	       	{ name: 'carryoverSales', 		width: 50, 		index: 9,align:'center',		hidden : false, rowspan: true,	editable: true},
-	       	{ name: 'arrivalNotice',		width: 70, 		index: 10,align:'center',		hidden : false, rowspan: true},
-	       	{ name: 'invoice', 				width: 70, 		index: 11,align:'center',		hidden : false, rowspan: true, editable: true},
-	    	{ name: 'concineName',			width: 150, 	index: 12,align:'center',		hidden : false, rowspan: true, editable: true, editoptions: {
+	       	{ name: 'mblNo', 				width: 140, 	index: 7,align:'center',		hidden : false, rowspan: true, editable: true},
+	       	{ name: 'tankNo', 				width: 120, 	index: 8,align:'center', 		hidden : false, editable: true,	frozen:true},
+	       	{ name: 'sales', 				width: 50, 		index: 9,align:'center',		hidden : false, rowspan: true,	editable: true},
+	       	{ name: 'carryoverSales', 		width: 50, 		index: 10,align:'center',		hidden : false, rowspan: true,	editable: true},
+	       	{ name: 'arrivalNotice',		width: 70, 		index: 11,align:'center',		hidden : false, rowspan: true},
+	       	{ name: 'invoice', 				width: 70, 		index: 12,align:'center',		hidden : false, rowspan: true, editable: true},
+	    	{ name: 'concineName',			width: 150, 	index: 13,align:'center',		hidden : false, rowspan: true, editable: true, editoptions: {
 				dataInit:function(elem) {
 					$(elem).autocomplete({
 						delay: 100,
@@ -126,14 +127,14 @@ async function portTableInit(){
 					});
 				}
 			}},
-			{ name: 'concinePic', 			width: 80, 		index: 13,align:'center',		hidden : false, rowspan: true},
-			{ name: 'shipmentStatus', 		width: 80, 		index: 14,align:'center',		hidden : false, rowspan: true, editable: true, formatter:'select', edittype:'select', editoptions : {value: 'Y:IN PROGRES;N:CLOSED'}},
-	    	{ name: 'profitDate', 			width: 90, 		index: 15,align:'center',		hidden : false, rowspan: true, editable: true, edittype: "date"},
-	    	{ name: 'domesticSales', 		width: 80, 		index: 16,align:'center',		hidden : false, rowspan: true, editable: true, formatter: domesticSalesFn},
-	    	{ name: 'foreignSales', 		width: 80, 		index: 17,align:'center',		hidden : false, rowspan: true, editable: true, formatter: foreignSalesFn},
-	    	{ name: 'quantity', 			width: 50, 		index: 18,align:'center',		hidden : false, rowspan: true, editable: true},
-	    	{ name: 'quantityType', 		width: 80, 		align:'center',		hidden : false, rowspan: true, editable: true, formatter:'select', edittype:'select', editoptions : {value: 'TANK:TANK;GP:GP;HC:HC;LCL:LCL;AIR:AIR'}},
-	    	{ name: 'partner',				width: 100, 	index: 19,align:'center', 		hidden : false, rowspan: false, editable : true, edittype: 'text', editoptions: {
+			{ name: 'concinePic', 			width: 80, 		index: 14,align:'center',		hidden : false, rowspan: true},
+			{ name: 'shipmentStatus', 		width: 80, 		index: 15,align:'center',		hidden : false, rowspan: true, editable: true, formatter:'select', edittype:'select', editoptions : {value: 'Y:IN PROGRES;N:CLOSED'}},
+	    	{ name: 'profitDate', 			width: 90, 		index: 16,align:'center',		hidden : false, rowspan: true, editable: true, edittype: "date"},
+	    	{ name: 'domesticSales', 		width: 80, 		index: 17,align:'center',		hidden : false, rowspan: true, editable: true, formatter: domesticSalesFn},
+	    	{ name: 'foreignSales', 		width: 80, 		index: 18,align:'center',		hidden : false, rowspan: true, editable: true, formatter: foreignSalesFn},
+	    	{ name: 'quantity', 			width: 50, 		index: 19,align:'center',		hidden : false, rowspan: true, editable: true},
+	    	{ name: 'quantityType', 		width: 80, 		index: 20,align:'center',		hidden : false, rowspan: true, editable: true, formatter:'select', edittype:'select', editoptions : {value: 'TANK:TANK;GP:GP;HC:HC;LCL:LCL;AIR:AIR'}},
+	    	{ name: 'partner',				width: 100, 	index: 21,align:'center', 		hidden : false, rowspan: false, editable : true, edittype: 'text', editoptions: {
 				dataInit:function(elem) {
 					$(elem).autocomplete({
 						delay: 100,
@@ -164,7 +165,7 @@ async function portTableInit(){
 					});
 				}
 			}},
-	    	{ name: 'term', 				width: 80, 		index: 20,align:'center',	hidden : false, rowspan: true, editable : true, edittype: 'text', editoptions: {
+	    	{ name: 'term', 				width: 80, 		index: 22,align:'center',	hidden : false, rowspan: true, editable : true, edittype: 'text', editoptions: {
 				dataInit:function(elem) {
 					$(elem).autocomplete({
 						delay: 100,
@@ -196,7 +197,7 @@ async function portTableInit(){
 					});
 				}
 			}},
-	    	{ name: 'item',					width: 220, 	index: 21,align:'center', 	hidden : false, rowspan: true, editable : true, edittype: 'text', editoptions: {
+	    	{ name: 'item',					width: 220, 	index: 23,align:'center', 	hidden : false, rowspan: true, editable : true, edittype: 'text', editoptions: {
 				dataInit:function(elem) {
 					$(elem).autocomplete({
 						delay: 100,
@@ -230,15 +231,15 @@ async function portTableInit(){
 					});
 				}
 			}},
-			{ name: 'cargoDate', 			width: 80, 		index: 22,align:'center',		hidden : true, rowspan: true},
-			{ name: 'location', 			width: 100, 	index: 23,align:'center',		hidden : false, rowspan: true},
-	    	{ name: 'vesselVoyage', 		width: 200, 	index: 24,align:'center',		hidden : false, rowspan: true, editable: true},
-	    	{ name: 'carrier', 				width: 80, 		index: 25,align:'center',		hidden : false, rowspan: true, editable: true},
-	    	{ name: 'mblNo', 				width: 140, 	index: 26,align:'center',		hidden : false, rowspan: true, editable: true},
-	    	{ name: 'pol', 					width: 100, 	index: 27,align:'center',		hidden : false, rowspan: true, editable: true},
-	    	{ name: 'pod', 					width: 100, 	index: 28,align:'center',		hidden : false, rowspan: true},
-	    	{ name: 'terminalCode', 		width: 100, 	index: 29,align:'center', 		hidden : true, rowspan: true},
-	    	{ name: 'parkingLotCode', 		width: 80, 		index: 30,align:'center', 		hidden : false, rowspan: true,	editable : true, edittype: 'text', editoptions: {
+			{ name: 'cargoDate', 			width: 80, 		index: 24,align:'center',		hidden : true, rowspan: true},
+			{ name: 'location', 			width: 100, 	index: 25,align:'center',		hidden : false, rowspan: true},
+	    	{ name: 'vesselVoyage', 		width: 200, 	index: 26,align:'center',		hidden : false, rowspan: true, editable: true},
+	    	{ name: 'carrier', 				width: 80, 		index: 27,align:'center',		hidden : false, rowspan: true, editable: true},
+	    	
+	    	{ name: 'pol', 					width: 100, 	index: 28,align:'center',		hidden : false, rowspan: true, editable: true},
+	    	{ name: 'pod', 					width: 100, 	index: 29,align:'center',		hidden : false, rowspan: true},
+	    	{ name: 'terminalCode', 		width: 100, 	index: 30,align:'center', 		hidden : true, rowspan: true},
+	    	{ name: 'parkingLotCode', 		width: 80, 		index: 31,align:'center', 		hidden : false, rowspan: true,	editable : true, edittype: 'text', editoptions: {
 				dataInit:function(elem) {
 					$(elem).autocomplete({
 						delay: 100,
@@ -275,7 +276,7 @@ async function portTableInit(){
 					});
 				}
 			}},
-	    	{ name: 'terminalName', 		width: 150, 	index: 31,align:'center',		hidden : false, rowspan: true, editable : true, edittype: 'text', editoptions: {
+	    	{ name: 'terminalName', 		width: 150, 	index: 32,align:'center',		hidden : false, rowspan: true, editable : true, edittype: 'text', editoptions: {
 				dataInit:function(elem) {
 					$(elem).autocomplete({
 						delay: 100,
@@ -312,17 +313,17 @@ async function portTableInit(){
 					});
 				}
 			}},
-	    	{ name: 'terminalHomepage', 	width: 60, 		index: 32,align:'center', hidden : false, rowspan: true, formatter: terminalFn},
-	    	{ name: 'etd', 					width: 90, 		index: 33,align:'center', editable: true, edittype: "date"},
-	    	{ name: 'eta', 					width: 90, 		index: 34,align:'center', editable: true, edittype: "date"},
-	       	{ name: 'ata', 					width: 90, 		index: 35,align:'center', editable: true, edittype: "date"},
-	       	{ name: 'remark', 				width: 250, 	index: 36,align:'center', editable: true,	rowspan: true, edittype: 'textarea'},
-	       	{ name: 'ft', 					width: 70, 		index: 37,align:'center', editable: true},
-	       	{ name: 'demRate', 				width: 80, 		index: 38,align:'center', editable: true},
-	       	{ name: 'endOfFt', 				width: 90, 		index: 39,align:'center', editable: true, editoptions : {pk:true}, edittype: "date"},
-	       	{ name: 'estimateReturnDate', 	width: 160, 	index: 40,align:'center', editable: true, edittype: "date"},
-	       	{ name: 'returnDate', 			width: 100, 	index: 41,align:'center', editable: true, edittype: "date"},
-	       	{ name: 'returnDepot', 			width: 100, 	index: 42,align:'center', editable: true,	editable : true, edittype: 'text', editoptions: {
+	    	{ name: 'terminalHomepage', 	width: 60, 		index: 33,align:'center', hidden : false, rowspan: true, formatter: terminalFn},
+	    	{ name: 'etd', 					width: 90, 		index: 34,align:'center', editable: true, edittype: "date"},
+	    	{ name: 'eta', 					width: 90, 		index: 35,align:'center', editable: true, edittype: "date"},
+	       	{ name: 'ata', 					width: 90, 		index: 36,align:'center', editable: true, edittype: "date"},
+	       	{ name: 'remark', 				width: 250, 	index: 37,align:'center', editable: true,	rowspan: true, edittype: 'textarea'},
+	       	{ name: 'ft', 					width: 70, 		index: 38,align:'center', editable: true},
+	       	{ name: 'demRate', 				width: 80, 		index: 39,align:'center', editable: true},
+	       	{ name: 'endOfFt', 				width: 90, 		index: 40,align:'center', editable: true, editoptions : {pk:true}, edittype: "date"},
+	       	{ name: 'estimateReturnDate', 	width: 160, 	index: 41,align:'center', editable: true, edittype: "date"},
+	       	{ name: 'returnDate', 			width: 100, 	index: 42,align:'center', editable: true, edittype: "date"},
+	       	{ name: 'returnDepot', 			width: 100, 	index: 43,align:'center', editable: true,	editable : true, edittype: 'text', editoptions: {
 				dataInit:function(elem) {
 					$(elem).autocomplete({
 						delay: 100,
@@ -353,15 +354,15 @@ async function portTableInit(){
 					});
 				}
 			}},
-	       	{ name: 'demStatus', 			width: 100, 	index: 43,align:'center', editable: true},
-	       	{ name: 'totalDem', 			width: 100, 	index: 44,align:'center', editable: true, editoptions : {pk:true}},
-	       	{ name: 'demReceived', 			width: 80, 		index: 45,align:'center', editable: true},
-	       	{ name: 'demRcvd', 				width: 90, 		index: 46,align:'center', editable: true},
-	       	{ name: 'demPrch', 				width: 100, 	index: 47,align:'center', editable: true, editoptions : {pk:true}},
-	       	{ name: 'demSales', 			width: 100, 	index: 48,align:'center', editable: true, editoptions : {pk:true}},
-	       	{ name: 'depotInDate', 			width: 180, 	index: 49,align:'center', editable: true, edittype: "date"},
-	       	{ name: 'repositionPrch', 		width: 120, 	index: 50,align:'center', editable: true},
-	       	{ name: 'termId', 				width: 100, 	index: 51,align:'center', editable: true, hidden : true, rowspan: true}
+	       	{ name: 'demStatus', 			width: 100, 	index: 44,align:'center', editable: true},
+	       	{ name: 'totalDem', 			width: 100, 	index: 45,align:'center', editable: true, editoptions : {pk:true}},
+	       	{ name: 'demReceived', 			width: 80, 		index: 46,align:'center', editable: true},
+	       	{ name: 'demRcvd', 				width: 90, 		index: 47,align:'center', editable: true},
+	       	{ name: 'demPrch', 				width: 100, 	index: 48,align:'center', editable: true, editoptions : {pk:true}},
+	       	{ name: 'demSales', 			width: 100, 	index: 49,align:'center', editable: true, editoptions : {pk:true}},
+	       	{ name: 'depotInDate', 			width: 180, 	index: 50,align:'center', editable: true, edittype: "date"},
+	       	{ name: 'repositionPrch', 		width: 120, 	index: 51,align:'center', editable: true},
+	       	{ name: 'termId', 				width: 100, 	index: 52,align:'center', editable: true, hidden : true, rowspan: true}
 	   	],
 		height: gridHeight,
 		width: '100%',
