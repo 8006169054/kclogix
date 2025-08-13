@@ -2,10 +2,13 @@ package com.kclogix.apps.management.website.repository;
 
 import static com.kclogix.common.entity.QMdmCargo.mdmCargo;
 import static com.kclogix.common.entity.QMdmCustomer.mdmCustomer;
-import static com.kclogix.common.entity.QMdmTerminal.mdmTerminal;
 import static com.kclogix.common.entity.QMdmTerm.mdmTerm;
+import static com.kclogix.common.entity.QMdmTerminal.mdmTerminal;
 import static com.kclogix.common.entity.QWebsiteTerminalCode.websiteTerminalCode;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Date;
 import java.util.List;
 
@@ -399,7 +402,7 @@ public class WebsiteRepository extends KainosRepositorySupport {
 			.set(websiteTerminalCode.remark,              paramDto.getRemark())
 			.set(websiteTerminalCode.ft,                  paramDto.getFt())
 			.set(websiteTerminalCode.demRate,             paramDto.getDemRate())
-			.set(websiteTerminalCode.endOfFt,             paramDto.getEndOfFt())
+			.set(websiteTerminalCode.endOfFt,             endOfFt(paramDto.getAta(), paramDto.getFt()))
 			.set(websiteTerminalCode.estimateReturnDate,  paramDto.getEstimateReturnDate())
 			.set(websiteTerminalCode.returnDate,          paramDto.getReturnDate())
 			.set(websiteTerminalCode.demReceived,         paramDto.getDemReceived())
@@ -492,4 +495,35 @@ public class WebsiteRepository extends KainosRepositorySupport {
 		.execute();
 	}
 	
+	/**
+     * 특정 날짜에 ft 일을 더한 후 하루를 뺀 날짜를 계산하여 YYYY-MM-DD 형식의 문자열로 반환합니다.
+     * @param etaOrAtaDate 기준 날짜 (YYYY-MM-DD 형식의 문자열)
+     * @param ft 더할 일수 (문자열)
+     * @return 계산된 날짜 (YYYY-MM-DD 형식의 문자열) 또는 계산 오류 시 "N/A"
+     */
+    public String endOfFt(String etaOrAtaDate, String ft) {
+        // 날짜 파싱 및 계산 중 오류가 발생할 수 있으므로 try-catch 블록으로 감싸줍니다.
+        try {
+            // 1. 기준 날짜를 LocalDate 객체로 변환합니다.
+            LocalDate originalDate = LocalDate.parse(etaOrAtaDate);
+
+            // 2. 더할 일수(ft)를 정수로 변환합니다.
+            int ftDays = Integer.parseInt(ft);
+
+            // 3. 자바스크립트 로직과 동일하게 ft일을 더한 후 하루를 뺍니다.
+            //    ft-1 일 을 더하는 것과 동일합니다.
+            //    28일 더하고 하루를 빼므로, 27일을 더하는 것과 같습니다.
+            LocalDate resultDate = originalDate.plusDays(ftDays - 1);
+
+            // 4. 날짜를 YYYY-MM-DD 형식의 문자열로 포맷하여 반환합니다.
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            return resultDate.format(formatter);
+
+        } catch (DateTimeParseException | NumberFormatException e) {
+            // 날짜 또는 숫자를 파싱하는 데 오류가 발생하면 "N/A"를 반환합니다.
+            log.error("날짜 또는 숫자를 파싱하는 중 오류가 발생했습니다: " + e.getMessage());
+            return "N/A";
+        }
+    }
+
 }
