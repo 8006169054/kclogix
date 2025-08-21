@@ -86,7 +86,7 @@ public class WebsiteRepository extends KainosRepositorySupport {
 					websiteTerminalCode.hblNo,
 					websiteTerminalCode.pol,
 //					websiteTerminalCode.pod,
-					new CaseBuilder().when(mdmTerminal.region.isNull()).then(websiteTerminalCode.pod.upper()).otherwise(mdmTerminal.region.upper()).as("pod"),
+					new CaseBuilder().when(mdmTerminal.region.isNull().or(mdmTerminal.region.isEmpty())).then(websiteTerminalCode.pod.upper()).otherwise(mdmTerminal.region.upper()).as("pod"),
 					mdmTerminal.code.as("terminalCode"),
 					mdmTerminal.parkingLotCode,
 					mdmTerminal.name.as("terminalName"),
