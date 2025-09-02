@@ -36,6 +36,7 @@ function ComSetCellData(gridName, rowId, col, value, rowspan){
 	else if(rowspan === true){
 		$(gridName).setCellRowSpan(rowId, col, value);
 	}
+	$(gridName).jqGrid("afterSaveJqFlag", rowId, $(gridName)[0].p.basedata[rowId-1]);
 }
 
 function ComGetCellData(gridName, rowId, col){
