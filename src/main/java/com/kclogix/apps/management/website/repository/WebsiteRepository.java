@@ -21,6 +21,7 @@ import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.CaseBuilder;
 import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.StringTemplate;
 
 import kainos.framework.data.querydsl.support.repository.KainosRepositorySupport;
 import kainos.framework.utils.KainosStringUtils;
@@ -154,10 +155,23 @@ public class WebsiteRepository extends KainosRepositorySupport {
 	 * @param where
 	 */
 	private void searchWhere(WebsiteSearchDto paramDto, BooleanBuilder where) {
-		if(!KainosStringUtils.isEmpty(paramDto.getHblNo()))
-			where.and(websiteTerminalCode.hblNo.contains(paramDto.getHblNo()));
-		else if(!KainosStringUtils.isEmpty(paramDto.getMblNo()))
-			where.and(websiteTerminalCode.mblNo.contains(paramDto.getMblNo()));
+		if(!KainosStringUtils.isEmpty(paramDto.getHblNo())) {
+			// DTO에서 하이픈 제거된 검색어 준비
+			String hblNoWithoutHyphen = paramDto.getHblNo().replaceAll("-", "").trim();
+			// 💡 websiteTerminalCode.hblNo에서 하이픈을 제거하는 SQL 함수 호출
+			StringTemplate hblNoReplaced = Expressions.stringTemplate(
+			    "REPLACE({0}, {1}, {2})",
+			    websiteTerminalCode.hblNo, // {0}: 대상 컬럼
+			    "-",                      // {1}: 찾을 문자 (하이픈)
+			    ""                        // {2}: 바꿀 문자 (빈 문자열)
+			);
+			where.and(hblNoReplaced.contains(hblNoWithoutHyphen));
+		}
+			
+		else if(!KainosStringUtils.isEmpty(paramDto.getMblNo())) {
+			where.and(websiteTerminalCode.mblNo.contains(paramDto.getMblNo().trim()));
+		}
+			
 		else {
 			
 			if(!KainosStringUtils.isEmpty(paramDto.getPartner())) {
