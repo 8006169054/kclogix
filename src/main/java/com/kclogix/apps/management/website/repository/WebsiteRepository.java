@@ -179,7 +179,7 @@ public class WebsiteRepository extends KainosRepositorySupport {
 			}
 			
 			if(!KainosStringUtils.isEmpty(paramDto.getTankNo())) {
-				where.and(websiteTerminalCode.tankNo.eq(paramDto.getTankNo()));
+				where.and(websiteTerminalCode.tankNo.trim().eq(paramDto.getTankNo().trim()));
 			}
 			
 			if(!KainosStringUtils.isEmpty(paramDto.getItem())) {
