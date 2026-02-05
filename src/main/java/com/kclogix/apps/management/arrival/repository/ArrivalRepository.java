@@ -6,12 +6,14 @@ import static com.kclogix.common.entity.QMdmTerm.mdmTerm;
 import static com.kclogix.common.entity.QMdmTerminal.mdmTerminal;
 import static com.kclogix.common.entity.QWebsiteTerminalCode.websiteTerminalCode;
 
+import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
 import com.kclogix.apps.management.website.dto.WebsiteDto;
 import com.kclogix.apps.management.website.dto.WebsiteSearchDto;
+import com.kclogix.common.dto.SessionDto;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.CaseBuilder;
@@ -221,6 +223,23 @@ public class ArrivalRepository extends KainosRepositorySupport {
 		
 		update.where(websiteTerminalCode.hblNo.eq(paramDto.getHblNo()))
 		 .execute();
+	}
+	
+	/**
+	 * 
+	 * @param paramList
+	 * @param session
+	 * @throws Exception
+	 */
+	public void arrivalnoticeSave(List<WebsiteDto> paramList, SessionDto session)throws Exception {
+		for (Iterator<WebsiteDto> iterator = paramList.iterator(); iterator.hasNext();) {
+			WebsiteDto paramDto = iterator.next();
+			update(websiteTerminalCode)
+			.set(websiteTerminalCode.eta, paramDto.getEta())
+			.set(websiteTerminalCode.etd, paramDto.getEtd())
+			.where(websiteTerminalCode.uuid.eq(paramDto.getUuid()).and(websiteTerminalCode.seq.eq(paramDto.getSeq())))
+			.execute();
+		}
 	}
 	
 }

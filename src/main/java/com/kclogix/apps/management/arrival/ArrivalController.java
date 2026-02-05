@@ -23,6 +23,7 @@ import com.kclogix.apps.management.website.dto.WebsiteSearchDto;
 import com.kclogix.apps.management.website.service.WebsiteService;
 import com.kclogix.common.dto.SessionDto;
 import com.kclogix.common.util.MailUtil;
+import com.kclogix.common.util.MessageUtil;
 import com.kclogix.common.util.excel.GridRowSpenHandler;
 import com.kclogix.common.util.mail.MicrosoftGraph;
 
@@ -39,10 +40,23 @@ public class ArrivalController {
 	
 	private final ArrivalService service;
 	private final WebsiteService websiteService;
-	
 	private final GridRowSpenHandler handler;
 	private final MailUtil mailutil;
 	private final MicrosoftGraph mg; // Microsoft Graph
+	private final MessageUtil message;
+	
+	@PostMapping(value = "/api/management/arrivalnotice-save")
+	public ResponseEntity<Void> arrivalnoticeSave(@RequestBody List<WebsiteDto> paramList, @KainosSession SessionDto session) throws Exception {
+		try {
+			service.arrivalnoticeSave(paramList, session);
+		} catch (KainosBusinessException e) {
+			throw e;
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new KainosBusinessException("common.system.error");
+		}
+		return message.getUpdateMessage(KainosResponseEntity.builder().build()).close();
+	}
 	
 	@GetMapping(value = "/api/management/arrivalnotice")
 	public ResponseEntity<WebsiteDto> selectArrivalnotice(

@@ -27,9 +27,9 @@ async function searchTerminalAutocomplete(){
 function portTableInit(){
 	$(tableName).jqGrid({
 	   	datatype: "json",
-	   	colNames: ['', 'uuid', 'A/N', 'HBL NO.', 'MBL NO.', 'CNEE', 'PIC', "", "", 'SHIPMENT STATUS', "Q'ty", 'Tank no.', 'Term', 'Name', 'Date', 'Location', 'Vessel / Voyage', 'Carrier', 'POL', 'POD', 'Code1', 'Code', 'Name', 'Link', 'ETD', 'ETA', 'F/T', 'DEM RATE', 'END OF F/T'],
+	   	colNames: ['', 'uuid', 'A/N', 'HBL NO.', 'MBL NO.', 'CNEE', 'PIC', "", "", 'SHIPMENT STATUS', "Q'ty", 'Tank no.', 'Term', 'Name', 'Date', 'Location', 'Vessel / Voyage', 'Carrier', 'POL', 'POD', 'Code1', 'Code', 'Name', 'Link', 'ETD', 'ETA', 'F/T', 'DEM RATE', 'END OF F/T', 'Seq'],
 	   	colModel: [
-			{ name: 'jqFlag',				width: 40,		align:'center', 	hidden : true,  frozen:true},
+			{ name: 'jqFlag',				width: 40,		align:'center', 	hidden : false,  frozen:true},
 	   		{ name: 'uuid', 				width: 50, 		align:'center',		hidden : true, 	frozen:true},
 	       	{ name: 'arrivalNotice',		width: 70, 		align:'center',		rowspan: true,	frozen:true, formatter: arrivalNoticeFn},
 	       	{ name: 'hblNo', 				width: 140, 	align:'center',		rowspan: true,	frozen:true},
@@ -126,11 +126,12 @@ function portTableInit(){
 				}
 			}},
 	    	{ name: 'terminalHomepage', 	width: 60, 		align:'center', hidden : false, rowspan: true, formatter: terminalFn},
-	    	{ name: 'etd', 					width: 90, 		align:'center'},
-	    	{ name: 'eta', 					width: 90, 		align:'center'},
+	    	{ name: 'etd', 					width: 90, 		align:'center', editable: true, edittype: "date"},
+	    	{ name: 'eta', 					width: 90, 		align:'center', editable: true, edittype: "date"},
 	       	{ name: 'ft', 					width: 70, 		align:'center'},
 	       	{ name: 'demRate', 				width: 80, 		align:'center'},
-	       	{ name: 'endOfFt', 				width: 90, 		align:'center'}
+	       	{ name: 'endOfFt', 				width: 90, 		align:'center'},
+	       	{ name: 'seq', 					width: 90, 		align:'center', hidden : true}
 	   	],
 		height: 530, 
 		width: '100%',
@@ -386,4 +387,32 @@ function popupEMailSave(){
 function popupEMailClose (){
 	$('#eMail-table').clearGridData();
 	$('#eMailNewModal').modal('hide');
+}
+
+async function confirmSave(){
+	var saveData = $(tableName).saveGridData();
+	if(saveData.length === 0)
+		alertMessage(getMessage('0001'), 'info');
+	else{
+//		message, type, title, callFn
+		var up = 0;
+		for(var i=0; i<saveData.length; i++){
+			if(saveData[i].jqFlag === 'U') up++;
+		}
+		var msg = 'There are ' + up + ' modifications. Save changes?'
+		confirmMessage(msg, 'info', 'Save', save);
+	}
+}
+
+async function save(selection){
+	if(selection){
+		var saveData = $(tableName).saveGridData();
+		await requestApi('POST', '/api/management/arrivalnotice-save', saveData, {successFn : portSaveFn, errorFn : portSaveFn});
+	}
+}
+
+function portSaveFn(response){
+	if(response.common.status === 'S'){
+ 		search();
+ 	}
 }
