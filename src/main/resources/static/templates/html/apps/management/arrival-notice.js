@@ -126,8 +126,8 @@ function portTableInit(){
 				}
 			}},
 	    	{ name: 'terminalHomepage', 	width: 60, 		align:'center', hidden : false, rowspan: true, formatter: terminalFn},
-	    	{ name: 'etd', 					width: 90, 		align:'center', editable: true, edittype: "date"},
-	    	{ name: 'eta', 					width: 90, 		align:'center', editable: true, edittype: "date"},
+	    	{ name: 'etd', 					width: 90, 		align:'center', editable: true, rowspan: true, edittype: "date"},
+	    	{ name: 'eta', 					width: 90, 		align:'center', editable: true, rowspan: true, edittype: "date"},
 	       	{ name: 'ft', 					width: 70, 		align:'center'},
 	       	{ name: 'demRate', 				width: 80, 		align:'center'},
 	       	{ name: 'endOfFt', 				width: 90, 		align:'center'},

@@ -314,9 +314,9 @@ async function portTableInit(){
 				}
 			}},
 	    	{ name: 'terminalHomepage', 	width: 60, 		index: 33,align:'center', hidden : false, rowspan: true, formatter: terminalFn},
-	    	{ name: 'etd', 					width: 90, 		index: 34,align:'center', editable: true, edittype: "date"},
-	    	{ name: 'eta', 					width: 90, 		index: 35,align:'center', editable: true, edittype: "date"},
-	       	{ name: 'ata', 					width: 90, 		index: 36,align:'center', editable: true, edittype: "date"},
+	    	{ name: 'etd', 					width: 90, 		index: 34,align:'center', editable: true, rowspan: true, edittype: "date"},
+	    	{ name: 'eta', 					width: 90, 		index: 35,align:'center', editable: true, rowspan: true, edittype: "date"},
+	       	{ name: 'ata', 					width: 90, 		index: 36,align:'center', editable: true, rowspan: true, edittype: "date"},
 	       	{ name: 'remark', 				width: 250, 	index: 37,align:'center', editable: true,	rowspan: true, edittype: 'textarea'},
 	       	{ name: 'ft', 					width: 70, 		index: 38,align:'center', editable: true},
 	       	{ name: 'demRate', 				width: 80, 		index: 39,align:'center', editable: true},

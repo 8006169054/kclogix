@@ -95,13 +95,13 @@ public class WebsiteDto {
 	@Field(value = "Y", merge = true)
 	private String terminalName; //TERMINAL code
 	
-	@Field(value = "Z")
+	@Field(value = "Z", merge = true)
 	private String etd; //ETD
 	
-	@Field(value = "AA")
+	@Field(value = "AA", merge = true)
 	private String eta; //ETA
 	
-	@Field(value = "AB")
+	@Field(value = "AB", merge = true)
 	private String ata; //ATA
 	
 	@Field(value = "AC", merge = true)
@@ -246,6 +246,12 @@ public class WebsiteDto {
 		private RowSpan parkingLotCode = RowSpan.builder().build();
 		@Builder.Default
 		private RowSpan terminalName = RowSpan.builder().build();
+		@Builder.Default
+		private RowSpan etd = RowSpan.builder().build();
+		@Builder.Default
+		private RowSpan eta = RowSpan.builder().build();
+		@Builder.Default
+		private RowSpan ata = RowSpan.builder().build();
 		@Builder.Default
 		private RowSpan termId = RowSpan.builder().build();
 		@Builder.Default
